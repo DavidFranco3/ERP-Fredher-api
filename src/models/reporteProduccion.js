@@ -8,8 +8,7 @@ const reporteProduccion = new Schema({
     faltas: {type: String},
     supervisor: { type: String },
     turno: { type: String },
-    empresa: { type: String },
-    productos: { type: Array, default: [] },
+    registros: { type: Array, default: [] },
     eficienciaGeneralMaquinas: { type: String },
     observacionesTurno: { type: String }
 }, {

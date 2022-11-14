@@ -76,11 +76,11 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 router.get("/obtenerNoReporte", verifyToken , async (req, res) => {
     const registroReportesProduccion = await reportesProduccion.find().count();
     if(registroReportesProduccion === 0){
-        res.status(200).json({ folioReporte: "1"})
+        res.status(200).json({ folio: "1"})
     } else {
         const ultimoReporte = await reportesProduccion.findOne().sort( { _id: -1 } );
         const tempFolio = parseInt(ultimoReporte.folio) + 1
-        res.status(200).json({ folioReporte: tempFolio.toString()})
+        res.status(200).json({ folio: tempFolio.toString()})
     }
 });
 
@@ -96,10 +96,10 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 // Actualizar datos del reporte de producción
 router.put("/actualizar/:id", verifyToken ,async (req, res) => {
     const { id } = req.params;
-    const { supervisor, turno, empresa, productos, eficienciaGeneralMaquinas, observacionesTurno } = req.body;
+    const { supervisor, turno, asistencias, faltas, fecha, registros, eficienciaGeneralMaquinas, observacionesTurno } = req.body;
 
     await reportesProduccion
-        .updateOne({ _id: id }, { $set: { supervisor, turno, empresa, productos, eficienciaGeneralMaquinas, observacionesTurno } })
+        .updateOne({ _id: id }, { $set: {  supervisor, turno, asistencias, faltas, fecha, registros, eficienciaGeneralMaquinas, observacionesTurno } })
         .then((data) => res.status(200).json({ mensaje: "Datos del reporte de producción actualizados"}))
         .catch((error) => res.json({ message: error }));
 });
