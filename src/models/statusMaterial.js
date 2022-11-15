@@ -4,13 +4,23 @@ const { Schema } = mongoose;
 const statusMaterial = new Schema({
     item: {type: String},
     folio: {type: String},
+    folioInspeccion: {type: String},
+    propiedadInspeccion: {type: String},
+    cantidadInspeccion: {type: String},
+    fechaInspeccion: {type: String},
+    tipoMaterialInspeccion: {type: String},
+    recibioInspeccion: {type: String},
+    loteInspeccion: {type: String},
+    nombreInspeccion: {type: String},
+    resultadoInspeccion: {type: String},
     etiqueta: {type: String},
     fecha: {type: String},
     descripcionMaterial: {type: String},
     rechazo: {type: String},
+    nombre: {type: String},
     auditor: {type: String},
     supervisor: {type: String},
-    descripcionEfecto: {type: String},
+    descripcionDefecto: {type: String},
     cantidad: {type: String},
     tipoRechazo: {type: String},
     correccion: {type: String},
@@ -28,4 +38,4 @@ const statusMaterial = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("StatusMaterial", statusMaterial, "statusMaterial");
+module.exports = mongoose.model("StatusMaterial", statusMaterial, "StatusMaterial");

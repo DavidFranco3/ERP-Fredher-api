@@ -78,6 +78,7 @@ app.use("/etiquetaPrimeraPieza/", require("./src/routes/etiquetaPrimeraPieza.rou
 app.use("/mes/", require("./src/routes/mes.routes"));
 app.use("/produccion/", require("./src/routes/produccion.routes"));
 app.use("/inspeccionMaterial/", require("./src/routes/inspeccionMaterial.routes"));
+app.use("/statusMaterial/", require("./src/routes/statusMaterial.routes"));
 
 // Estaticos
 // app.use('/public', express.static('public'));
