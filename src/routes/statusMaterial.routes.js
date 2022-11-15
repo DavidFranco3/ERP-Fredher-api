@@ -131,9 +131,9 @@ router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
 // Actualizar datos del pedido
 router.put("/actualizar/:id", verifyToken ,async (req, res) => {
     const { id } = req.params;
-    const { generalidades, planeacion, bom, resultados, materiaPrima, observaciones } = req.body;
+    const { folioInspeccion, propiedadInspeccion, cantidadInspeccion, fechaInspeccion, tipoMaterialInspeccion, recibioInspeccion, loteInspeccion, nombreInspeccion, resultadoInspeccion, etiqueta, fecha, descripcionMaterial, rechazo, nombre, auditor, supervisor, descripcionDefecto, cantidad, tipoRechazo, correccion, clienteProveedor, lote, recibio, turno, propiedad, liberacion, descripcion, comentarios, condicion, observaciones } = req.body;
     await statusMaterial
-        .updateOne({ _id: id }, { $set: { generalidades, planeacion, bom, resultados, materiaPrima, observaciones } })
+        .updateOne({ _id: id }, { $set: { folioInspeccion, propiedadInspeccion, cantidadInspeccion, fechaInspeccion, tipoMaterialInspeccion, recibioInspeccion, loteInspeccion, nombreInspeccion, resultadoInspeccion, etiqueta, fecha, descripcionMaterial, rechazo, nombre, auditor, supervisor, descripcionDefecto, cantidad, tipoRechazo, correccion, clienteProveedor, lote, recibio, turno, propiedad, liberacion, descripcion, comentarios, condicion, observaciones } })
         .then((data) => res.status(200).json({ mensaje: "Información del status de material actualizada"}))
         .catch((error) => res.json({ message: error }));
 });
