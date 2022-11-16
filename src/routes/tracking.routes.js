@@ -96,10 +96,10 @@ router.get("/obtenerTracking/:ordenVenta", verifyToken ,async (req, res) => {
 });
 
 // Borrar un tracking
-router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
-    const { id } = req.params;
+router.delete("/eliminar/:ordenVenta", verifyToken ,async (req, res) => {
+    const { ordenVenta } = req.params;
     await tracking
-        .remove({ _id: id })
+        .remove({ ordenVenta: ordenVenta })
         .then((data) => res.status(200).json({ status: "Tracking eliminado"}))
         .catch((error) => res.json({ message: error }));
 });
