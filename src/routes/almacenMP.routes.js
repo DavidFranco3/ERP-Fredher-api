@@ -144,9 +144,9 @@ router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
 // Registro de entrada y salida de almacen de materias primas
 router.put("/registraMovimientos/:id", verifyToken ,async (req, res) => {
     const { id } = req.params;
-    const { movimientos, cantidadExistencia } = req.body;
+    const { fecha, movimientos, cantidadExistencia } = req.body;
     await almacenMPRoutes
-        .updateOne({ _id: id }, { $set: { movimientos, cantidadExistencia } })
+        .updateOne({ _id: id }, { $set: { fecha, movimientos, cantidadExistencia } })
         .then((data) => res.status(200).json({ mensaje: "Se ha registrado un movimiento de materia prima", datos: data}))
         .catch((error) => res.json({ message: error }));
 });
@@ -154,9 +154,9 @@ router.put("/registraMovimientos/:id", verifyToken ,async (req, res) => {
 // Modifica existencias de materia prima
 router.put("/modificaExistencias/:id", verifyToken ,async (req, res) => {
     const { id } = req.params;
-    const { referencia, nombreMP, lote, um } = req.body;
+    const { nombreMP, um } = req.body;
     await almacenMPRoutes
-        .updateOne({ _id: id }, { $set: { referencia, nombreMP, lote, um } })
+        .updateOne({ _id: id }, { $set: { nombreMP, um } })
         .then((data) => res.status(200).json({ mensaje: "Existencias de materia prima actualizadas"}))
         .catch((error) => res.json({ message: error }));
 });
