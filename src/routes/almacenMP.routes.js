@@ -154,9 +154,9 @@ router.put("/registraMovimientos/:id", verifyToken ,async (req, res) => {
 // Modifica existencias de materia prima
 router.put("/modificaExistencias/:id", verifyToken ,async (req, res) => {
     const { id } = req.params;
-    const { existenciasOV, existenciasStock, existenciasTotales } = req.body;
+    const { referencia, nombreMP, lote, um } = req.body;
     await almacenMPRoutes
-        .updateOne({ _id: id }, { $set: { existenciasOV, existenciasStock, existenciasTotales } })
+        .updateOne({ _id: id }, { $set: { referencia, nombreMP, lote, um } })
         .then((data) => res.status(200).json({ mensaje: "Existencias de materia prima actualizadas"}))
         .catch((error) => res.json({ message: error }));
 });
