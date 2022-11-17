@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const etiquetasIdentificacionPT = new Schema({
     item: {type: String},
+    folio: {type: String},
     fecha: {type: String},
     descripcion: {type: String},
     noParte: {type: String},

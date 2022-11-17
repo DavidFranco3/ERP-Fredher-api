@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const almacenmp = new Schema({
+const almacenMP = new Schema({
     item: {type: String},
     folioAlmacen: { type: String },
     nombreMP: {type: String},
@@ -14,4 +14,4 @@ const almacenmp = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("AlmacenMP", almacenmp, "AlmacenMP");
+module.exports = mongoose.model("AlmacenMP", almacenMP, "AlmacenMP");
