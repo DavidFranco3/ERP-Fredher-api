@@ -22,7 +22,7 @@ const inspeccionPieza = new Schema({
         operador: {type: String},
         revisiones: {type: Array, default: []}
     }, 
-    motivoCancelacion: {type: String},
+    status: {type: String}
 }, {
     timestamps: true
 });
