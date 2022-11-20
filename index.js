@@ -75,6 +75,7 @@ app.use("/requerimientosPlaneacion/", require("./src/routes/requerimientosPlanea
 app.use("/asignacionPedido/", require("./src/routes/asignacionPedido.routes"));
 app.use("/integracionVentasGastos/", require("./src/routes/integracionVentasGastos.routes"));
 app.use("/etiquetaPrimeraPieza/", require("./src/routes/etiquetaPrimeraPieza.routes"));
+app.use("/etiquetaMolido/", require("./src/routes/etiquetasMolido.routes"));
 app.use("/etiquetaPT/", require("./src/routes/etiquetasIdentificacionPT.routes"));
 app.use("/mes/", require("./src/routes/mes.routes"));
 app.use("/inspeccionPieza/", require("./src/routes/inspeccionPieza.routes"));
