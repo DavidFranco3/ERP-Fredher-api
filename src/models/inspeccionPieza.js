@@ -12,17 +12,12 @@ const inspeccionPieza = new Schema({
     noParte: {type: String},
     material: {type: String},
     cantidadLote: {type: String},
-    turno1: {
+    revisiones: {
         elaboro: {type: String},
         operador: {type: String},
         turno: {type: String},
         revisiones: {type: Array, default: []}
     }, 
-    turno2: {
-        elaboro: {type: String},
-        operador: {type: String},
-        revisiones: {type: Array, default: []}
-    },
     motivoCancelacion: {type: String}, 
     status: {type: String}
 }, {

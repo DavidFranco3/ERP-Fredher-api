@@ -117,9 +117,9 @@ router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
 // Actualizar datos de la inspeccion
 router.put("/actualizar/:id", verifyToken ,async (req, res) => {
     const { id } = req.params;
-    const { fechaElaboracion, fechaEntrega, cliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega, total, productos } = req.body;
+    const { fechaElaboracion, noOP, fechaArranqueMaquina, noMaquina, cliente, descripcionPieza, noParte, material, cantidadLote, revisiones } = req.body;
     await inspeccionPieza
-        .updateOne({ _id: id }, { $set: { fechaElaboracion, fechaEntrega, cliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega, total, productos } })
+        .updateOne({ _id: id }, { $set: { fechaElaboracion, noOP, fechaArranqueMaquina, noMaquina, cliente, descripcionPieza, noParte, material, cantidadLote, revisiones } })
         .then((data) => res.status(200).json({ mensaje: "Información de la inspeccion de pieza actualizada"}))
         .catch((error) => res.json({ message: error }));
 });
