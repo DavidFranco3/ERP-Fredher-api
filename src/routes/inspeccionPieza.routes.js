@@ -107,9 +107,9 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 // Para actualizar el estado de la inspeccion de pieza
 router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { motivoCancelacion, status } = req.body;
     await inspeccionPieza
-        .updateOne({ _id: id }, { $set: { status } })
+        .updateOne({ _id: id }, { $set: { motivoCancelacion, status } })
         .then((data) => res.status(200).json({ mensaje: "Estado de la inspeccion de pieza actualizado"}))
         .catch((error) => res.json({ message: error }));
 });

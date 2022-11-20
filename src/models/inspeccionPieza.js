@@ -21,7 +21,8 @@ const inspeccionPieza = new Schema({
         elaboro: {type: String},
         operador: {type: String},
         revisiones: {type: Array, default: []}
-    }, 
+    },
+    motivoCancelacion: {type: String}, 
     status: {type: String}
 }, {
     timestamps: true
