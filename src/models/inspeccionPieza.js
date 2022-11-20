@@ -15,6 +15,7 @@ const inspeccionPieza = new Schema({
     turno1: {
         elaboro: {type: String},
         operador: {type: String},
+        turno: {type: String},
         revisiones: {type: Array, default: []}
     }, 
     turno2: {
