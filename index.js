@@ -82,6 +82,7 @@ app.use("/inspeccionPieza/", require("./src/routes/inspeccionPieza.routes"));
 app.use("/produccion/", require("./src/routes/produccion.routes"));
 app.use("/inspeccionMaterial/", require("./src/routes/inspeccionMaterial.routes"));
 app.use("/statusMaterial/", require("./src/routes/statusMaterial.routes"));
+app.use("/liberacionProductoProceso/", require("./src/routes/liberacionProductoProceso.routes"));
 
 // Estaticos
 // app.use('/public', express.static('public'));
