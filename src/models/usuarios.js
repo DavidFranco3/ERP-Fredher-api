@@ -3,8 +3,6 @@ const { Schema } = mongoose;
 
 const usuarios = new Schema({
     nombre: { type: String },
-    apellidos: { type: String },
-    curp: { type: String },
     nss: { type: String },
     rfc: { type: String },
     telefonoCelular: { type: String },
@@ -16,13 +14,11 @@ const usuarios = new Schema({
         colonia: { type: String },
         municipio: { type: String },
         estado: { type: String },
-        pais: { type: String }
     },
     departamento: { type: String },
     fechaIngreso: { type: String },
     correo: { type: String },
     password: { type: String },
-    foto: { type: String },
     estadoUsuario: { type: String }
 }, {
     timestamps: true

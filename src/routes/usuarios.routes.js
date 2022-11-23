@@ -12,7 +12,7 @@ router.post("/registro", async (req, res) => {
     const { correo } = req.body;
 
     // Inicia validacion para no registrar usuarios con el mismo correo electronico
-    const busqueda = await admin.findOne({ correo });
+    const busqueda = await usuarios.findOne({ correo });
 
     if (busqueda && busqueda.correo === correo) {
         return res.status(401).json({mensaje: "Correo ya registrado"});
