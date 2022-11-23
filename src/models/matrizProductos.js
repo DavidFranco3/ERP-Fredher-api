@@ -10,6 +10,7 @@ const MatrizProductos = new Schema({
     },
     noParte: { type: String },
     descripcion: { type: String },
+    precioVenta: {type: String},
     datosPieza: {
         pesoPiezas: { type: String },
         pesoColada: { type: String },
