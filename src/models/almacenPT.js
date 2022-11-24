@@ -2,13 +2,16 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const almacenPT = new Schema({
-    item: {type: String},
+    idProducto: {type: String},
     folioAlmacen: { type: String },
-    nombreProducto: {type: String},
-    um: {type: String},
-    fecha: {type: String},
+    folioMP: { type: String },
+    nombre: { type: String },
+    descripcion: { type: String },
+    um: { type: String },
     movimientos: { type: Array, default: [] },
-    cantidadExistencia: {type: String},
+    existenciasOV: { type: String },
+    existenciasStock: { type: String },
+    existenciasTotales: { type: String },
     estado: { type: String }
 }, {
     timestamps: true
