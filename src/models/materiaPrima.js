@@ -4,15 +4,9 @@ const { Schema } = mongoose;
 const materiaPrima = new Schema({
     item: {type: String},
     folio: { type: String },
-    producto: {type: String},
-    cantidadProducir: {type: String},
-    material: {type: String},
-    umMaterial: {type: String},
-    materialUnidades: {type: String},
-    materialNecesario: {type: String},
-    reservado: {type: String},
-    fechaReservado: {type: String},
-    tiempoespera: { type: String },
+    descripcion: {type: String},
+    precio: {type: String},
+    proveedor: {type: String}
 }, {
     timestamps: true
 });
