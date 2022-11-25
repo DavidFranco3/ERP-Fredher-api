@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const almacenModel = require("../models/almacen");
 
 // Registro de almacen
-router.post("/registro", verifyToken,  async (req, res) => {
+router.post("/registro",  async (req, res) => {
     const elementosAlmacen = almacenModel(req.body);
     await elementosAlmacen
         .save()
@@ -18,7 +16,7 @@ router.post("/registro", verifyToken,  async (req, res) => {
 });
 
 // Obtener todos los articulos del almacen
-router.get("/listar", verifyToken , async (req, res) => {
+router.get("/listar", async (req, res) => {
     await almacenModel
         .find()
         .sort( { _id: -1 } )
@@ -27,7 +25,7 @@ router.get("/listar", verifyToken , async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken , async (req, res) => {
+router.get("/total", async (req, res) => {
     await almacenModel
         .find()
         .count()
@@ -53,7 +51,7 @@ router.get("/listarPaginando" , async (req, res) => {
 });
 
 // Obtener un elemento del almacen
-router.get("/obtener/:id", verifyToken ,async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await almacenModel
@@ -63,7 +61,7 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 });
 
 // Borrar un elemento del almacen
-router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await almacenModel
         .remove({ _id: id })
@@ -72,7 +70,7 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 });
 
 // Actualizar datos de algun elemento del almacen
-router.put("/actualizar/:id", verifyToken ,async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { folio, factura, entradaSinFactura, fechaEntrada, fechaSalida, proveedor, almacen, empresa, clase, referenciaCalidad, productos } = req.body;
     await almacenModel
@@ -80,41 +78,5 @@ router.put("/actualizar/:id", verifyToken ,async (req, res) => {
         .then((data) => res.status(200).json({ status: "Articulo actualizado"}))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if(await isExpired(token)) {
-            return res.status(401).send({mensaje: "Token Invalido"});
-        }
-        if (!payload) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        req._id = payload._id;
-        next();
-    } catch(e) {
-        //console.log(e)
-        return res.status(401).send({mensaje: "Petición no Autorizada"});
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0){
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

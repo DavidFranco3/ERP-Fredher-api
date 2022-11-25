@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const planeacion = require("../models/planeacion");
 
 // Registro de planeación
@@ -27,7 +25,7 @@ router.post("/registro",  async (req, res) => {
 });
 
 // Obtener todas las planeaciones
-router.get("/listar", verifyToken , async (req, res) => {
+router.get("/listar", async (req, res) => {
     await planeacion
         .find()
         .sort( { _id: -1 } )
@@ -36,7 +34,7 @@ router.get("/listar", verifyToken , async (req, res) => {
 });
 
 // Obtener el folio de la planeación
-router.get("/obtenerFolio", verifyToken , async (req, res) => {
+router.get("/obtenerFolio", async (req, res) => {
     const registroPedidosVenta = await planeacion.find().count();
     if(registroPedidosVenta === 0){
         res.status(200).json({ noPlaneacion: "P-1"})
@@ -65,7 +63,7 @@ router.get("/listarPaginando" , async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken , async (req, res) => {
+router.get("/total", async (req, res) => {
     await planeacion
         .find()
         .count()
@@ -75,7 +73,7 @@ router.get("/total", verifyToken , async (req, res) => {
 });
 
 // Obtener una planeacion en especifico
-router.get("/obtener/:id", verifyToken ,async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await planeacion
@@ -85,7 +83,7 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 });
 
 // Para obtener una planeación segun el folio
-router.get("/obtenerDatos/:folio", verifyToken ,async (req, res) => {
+router.get("/obtenerDatos/:folio", async (req, res) => {
     const { folio } = req.params;
 
     await planeacion
@@ -95,7 +93,7 @@ router.get("/obtenerDatos/:folio", verifyToken ,async (req, res) => {
 });
 
 // Para obtener una planeación segun un orden de venta
-router.get("/obtenxOrdenVenta/:ordenVenta", verifyToken ,async (req, res) => {
+router.get("/obtenxOrdenVenta/:ordenVenta", async (req, res) => {
     const { ordenVenta } = req.params;
 
     await planeacion
@@ -105,7 +103,7 @@ router.get("/obtenxOrdenVenta/:ordenVenta", verifyToken ,async (req, res) => {
 });
 
 // Borrar una planeación
-router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await planeacion
         .remove({ _id: id })
@@ -114,7 +112,7 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 });
 
 // Actualizar, dando visto bueno a planeación, por producto
-router.put("/actualizar/:id", verifyToken ,async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { productos, detalles, estado } = req.body;
     await planeacion
@@ -122,41 +120,5 @@ router.put("/actualizar/:id", verifyToken ,async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Cambio de estado de aprobacion completado"}))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if(await isExpired(token)) {
-            return res.status(401).send({mensaje: "Token Invalido"});
-        }
-        if (!payload) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        req._id = payload._id;
-        next();
-    } catch(e) {
-        //console.log(e)
-        return res.status(401).send({mensaje: "Petición no Autorizada"});
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0){
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

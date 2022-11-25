@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const logs = require("../models/LogGeneral");
 
 // Registro de logs
@@ -28,7 +26,7 @@ router.post("/registro",  async (req, res) => {
 });
 
 // Obtener todos los logs
-router.get("/listar", verifyToken , async (req, res) => {
+router.get("/listar", async (req, res) => {
     await logs
         .find()
         .sort( { _id: -1 } )
@@ -37,7 +35,7 @@ router.get("/listar", verifyToken , async (req, res) => {
 });
 
 // Obtener el numero de log
-router.get("/obtenerNoLog", verifyToken , async (req, res) => {
+router.get("/obtenerNoLog", async (req, res) => {
     const registroLogs = await logs.find().count();
     if(registroLogs === 0){
         res.status(200).json({ noLog: "1"})
@@ -65,7 +63,7 @@ router.get("/listarPaginando" , async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken , async (req, res) => {
+router.get("/total", async (req, res) => {
     await logs
         .find()
         .count()
@@ -75,7 +73,7 @@ router.get("/total", verifyToken , async (req, res) => {
 });
 
 // Obtener un log en especifico
-router.get("/obtener/:id", verifyToken ,async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await logs
@@ -85,7 +83,7 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 });
 
 // Borrar un log --
-router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await logs
         .remove({ _id: id })
@@ -94,7 +92,7 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 });
 
 // Actualizar datos del log
-router.put("/actualizar/:id", verifyToken ,async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { usuario, correo, dispositivo, descripcion, detalles } = req.body;
     await logs
@@ -102,41 +100,5 @@ router.put("/actualizar/:id", verifyToken ,async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Seguimiento del log actualizado ...."}))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if(await isExpired(token)) {
-            return res.status(401).send({mensaje: "Token Invalido"});
-        }
-        if (!payload) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        req._id = payload._id;
-        next();
-    } catch(e) {
-        //console.log(e)
-        return res.status(401).send({mensaje: "Petición no Autorizada"});
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0){
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

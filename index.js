@@ -1,103 +1,134 @@
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 const express = require("express");
-const favicon = require('serve-favicon');
-const fs = require("fs");
-const path = require('path')
+const favicon = require("serve-favicon");
+const path = require("path");
 const morgan = require("morgan");
 const cors = require("cors");
-const https = require('https');
 
-const { mongoose } = require("./src/database")
-const file = path.join(__dirname, "logoFredher.ico")
+require("./src/database");
+
+const file = path.join(__dirname, "favicon.ico");
+
+const notFound = require("./src/middleware/notFound");
+const handleErrors = require("./src/middleware/handleErrors");
+const { verifyToken } = require("./src/middleware/verifyToken");
 
 // Configuración del servidor
 const app = express();
 
-// Configuracion para desplegar
-app.set("port", process.env.PORT || 5050);
+Sentry.init({
+  dsn: "https://34cda94143a14ff3938078498a0bc8e4@o1301469.ingest.sentry.io/6538433",
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({ app }),
+  ],
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-    next();
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
 });
 
-app.get("/",(req,res)=>{
-    return res.status(401).json({mensaje: "API del sistema ERP Personalizado de Fredher"});
-})
+// RequestHandler creates a separate execution context using domains, so that every
+// transaction/span/breadcrumb is attached to its own Hub instance
+app.use(Sentry.Handlers.requestHandler());
+// TracingHandler creates a trace for every incoming request
+app.use(Sentry.Handlers.tracingHandler());
+
+// Configuracion para desplegar
+const PORT = process.env.PORT || 5050;
+
+app.all("*", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Authorization, responseType, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+  } else {
+    next();
+  }
+});
+
+app.get("/", (_req, res) => {
+  return res.status(200).json({
+    mensaje: "API del sistema ERP Personalizado de Fredher",
+  });
+});
 
 // Middlewares
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(favicon(file));
 app.use(cors());
-// app.use(cookieParser());
 
 // Routes
 app.use(require("./src/routes/login.routes"))
-app.use("/usuarios/", require("./src/routes/usuarios.routes"));
-app.use("/departamentos/", require("./src/routes/departamentos.routes"));
-app.use("/clientes", require("./src/routes/clientes.routes"));
-app.use("/almacen", require("./src/routes/almacen.routes"));
-app.use("/ventas", require("./src/routes/pedidoVenta.routes"));
-app.use("/materiasPrimas", require("./src/routes/materiaPrima.routes"));
-app.use("/catalogoProductos", require("./src/routes/catalogoProductos.routes"));
-app.use("/matrizProductos", require("./src/routes/matrizProductos.routes"));
-app.use("/correos/", require("./src/routes/correos.routes"));
-app.use("/cotizacion/", require("./src/routes/cotizacion.routes"));
-app.use("/proveedores/", require("./src/routes/proveedores.routes"));
-app.use("/requisicion/", require("./src/routes/requisicion.routes"));
-app.use("/reportesCalidad/", require("./src/routes/reportesCalidad.routes"));
-app.use("/logs/", require("./src/routes/logSistema.routes"));
-app.use("/notificaciones/", require("./src/routes/notificaciones.routes"));
-app.use("/remisiones/", require("./src/routes/remisiones.routes"));
-app.use("/rechazos/", require("./src/routes/productosRechazados.routes"));
-app.use("/acusesRecibo/", require("./src/routes/acusesRecibo.routes"));
-app.use("/devoluciones/", require("./src/routes/devoluciones.routes"));
-app.use("/reporteDevoluciones/", require("./src/routes/reporteDevoluciones.routes"));
-app.use("/compras/", require("./src/routes/compras.routes"));
-app.use("/reportesproduccion/", require("./src/routes/reporteProduccion.routes"));
-app.use("/tracking/", require("./src/routes/tracking.routes"));
-app.use("/estudiosFactibilidad/", require("./src/routes/estudioFactibilidad.routes"));
-app.use("/encuestaSatisfaccion/", require("./src/routes/encuestaSatisFaccion.routes"));
-app.use("/requerimientosEspecificos/", require("./src/routes/requerimientosEspecificos.routes"));
-app.use("/verificacionEmbarques/", require("./src/routes/verificacionEmbarques.routes"));
-app.use("/ordenProduccion/", require("./src/routes/ordenProduccion.routes"));
-app.use("/salidaPlanta/", require("./src/routes/salidaPlanta.routes"));
+app.use("/usuarios/", verifyToken, require("./src/routes/usuarios.routes"));
+app.use("/departamentos/", verifyToken, require("./src/routes/departamentos.routes"));
+app.use("/clientes", verifyToken, require("./src/routes/clientes.routes"));
+app.use("/almacen", verifyToken, require("./src/routes/almacen.routes"));
+app.use("/ventas", verifyToken, require("./src/routes/pedidoVenta.routes"));
+app.use("/materiasPrimas", verifyToken, require("./src/routes/materiaPrima.routes"));
+app.use("/catalogoProductos", verifyToken, require("./src/routes/catalogoProductos.routes"));
+app.use("/matrizProductos", verifyToken, require("./src/routes/matrizProductos.routes"));
+app.use("/correos/", verifyToken, require("./src/routes/correos.routes"));
+app.use("/cotizacion/", verifyToken, require("./src/routes/cotizacion.routes"));
+app.use("/proveedores/", verifyToken, require("./src/routes/proveedores.routes"));
+app.use("/requisicion/", verifyToken, require("./src/routes/requisicion.routes"));
+app.use("/reportesCalidad/", verifyToken, require("./src/routes/reportesCalidad.routes"));
+app.use("/logs/", verifyToken, require("./src/routes/logSistema.routes"));
+app.use("/notificaciones/", verifyToken, require("./src/routes/notificaciones.routes"));
+app.use("/remisiones/", verifyToken, require("./src/routes/remisiones.routes"));
+app.use("/rechazos/", verifyToken, require("./src/routes/productosRechazados.routes"));
+app.use("/acusesRecibo/", verifyToken, require("./src/routes/acusesRecibo.routes"));
+app.use("/devoluciones/", verifyToken, require("./src/routes/devoluciones.routes"));
+app.use("/reporteDevoluciones/", verifyToken, require("./src/routes/reporteDevoluciones.routes"));
+app.use("/compras/", verifyToken, require("./src/routes/compras.routes"));
+app.use("/reportesproduccion/", verifyToken, require("./src/routes/reporteProduccion.routes"));
+app.use("/tracking/", verifyToken, require("./src/routes/tracking.routes"));
+app.use("/estudiosFactibilidad/", verifyToken, require("./src/routes/estudioFactibilidad.routes"));
+app.use("/encuestaSatisfaccion/", verifyToken, require("./src/routes/encuestaSatisFaccion.routes"));
+app.use("/requerimientosEspecificos/", verifyToken, require("./src/routes/requerimientosEspecificos.routes"));
+app.use("/verificacionEmbarques/", verifyToken, require("./src/routes/verificacionEmbarques.routes"));
+app.use("/ordenProduccion/", verifyToken, require("./src/routes/ordenProduccion.routes"));
+app.use("/salidaPlanta/", verifyToken, require("./src/routes/salidaPlanta.routes"));
 app.use("/existenciasAlmacen/", require("./src/routes/existenciasAlmacen.routes"));
-app.use("/usoEmpaque/", require("./src/routes/usoEmpaque.routes"));
-app.use("/planeacion/", require("./src/routes/planeacion.routes"));
-app.use("/almacenMP/", require("./src/routes/almacenMP.routes"));
-app.use("/almacenPT/", require("./src/routes/almacenPT.routes"));
-app.use("/almacenGeneral/", require("./src/routes/almacenGeneral.routes"));
-app.use("/requerimientosPlaneacion/", require("./src/routes/requerimientosPlaneacion.routes"));
-app.use("/asignacionPedido/", require("./src/routes/asignacionPedido.routes"));
-app.use("/integracionVentasGastos/", require("./src/routes/integracionVentasGastos.routes"));
-app.use("/etiquetaPrimeraPieza/", require("./src/routes/etiquetaPrimeraPieza.routes"));
-app.use("/etiquetaMolido/", require("./src/routes/etiquetasMolido.routes"));
-app.use("/etiquetaPT/", require("./src/routes/etiquetasIdentificacionPT.routes"));
-app.use("/mes/", require("./src/routes/mes.routes"));
-app.use("/inspeccionPieza/", require("./src/routes/inspeccionPieza.routes"));
-app.use("/produccion/", require("./src/routes/produccion.routes"));
-app.use("/inspeccionMaterial/", require("./src/routes/inspeccionMaterial.routes"));
-app.use("/statusMaterial/", require("./src/routes/statusMaterial.routes"));
-app.use("/liberacionProductoProceso/", require("./src/routes/liberacionProductoProceso.routes"));
-app.use("/certificadosCalidad/", require("./src/routes/certificadosCalidad.routes"));
-app.use("/maquinas/", require("./src/routes/maquinas.routes"));
+app.use("/usoEmpaque/", verifyToken, require("./src/routes/usoEmpaque.routes"));
+app.use("/planeacion/", verifyToken, require("./src/routes/planeacion.routes"));
+app.use("/almacenMP/", verifyToken, require("./src/routes/almacenMP.routes"));
+app.use("/almacenPT/", verifyToken, require("./src/routes/almacenPT.routes"));
+app.use("/almacenGeneral/", verifyToken, require("./src/routes/almacenGeneral.routes"));
+app.use("/requerimientosPlaneacion/", verifyToken, require("./src/routes/requerimientosPlaneacion.routes"));
+app.use("/asignacionPedido/", verifyToken, require("./src/routes/asignacionPedido.routes"));
+app.use("/integracionVentasGastos/", verifyToken, require("./src/routes/integracionVentasGastos.routes"));
+app.use("/etiquetaPrimeraPieza/", verifyToken, require("./src/routes/etiquetaPrimeraPieza.routes"));
+app.use("/etiquetaMolido/", verifyToken, require("./src/routes/etiquetasMolido.routes"));
+app.use("/etiquetaPT/", verifyToken, require("./src/routes/etiquetasIdentificacionPT.routes"));
+app.use("/mes/", verifyToken, require("./src/routes/mes.routes"));
+app.use("/inspeccionPieza/", verifyToken, require("./src/routes/inspeccionPieza.routes"));
+app.use("/produccion/", verifyToken, require("./src/routes/produccion.routes"));
+app.use("/inspeccionMaterial/", verifyToken, require("./src/routes/inspeccionMaterial.routes"));
+app.use("/statusMaterial/", verifyToken, require("./src/routes/statusMaterial.routes"));
+app.use("/liberacionProductoProceso/", verifyToken, require("./src/routes/liberacionProductoProceso.routes"));
+app.use("/certificadosCalidad/", verifyToken, require("./src/routes/certificadosCalidad.routes"));
+app.use("/maquinas/", verifyToken, require("./src/routes/maquinas.routes"));
 
-// Estaticos
-// app.use('/public', express.static('public'));
-
-// Configuración para el inicio el servidor
+app.use(notFound);
+app.use(Sentry.Handlers.errorHandler());
+app.use(handleErrors);
 
 // Inicio del servidor en modo local
-app.listen(app.get("port"), () => {
-    console.log(`Servidor en el puerto ${app.get("port")}`);
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
+module.exports = { server, app };
 
-// Inicio del servidor en modo de producción
-/*const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(app.get("port"));
-console.log(`Servidor en el puerto ${app.get("port")}`);*/

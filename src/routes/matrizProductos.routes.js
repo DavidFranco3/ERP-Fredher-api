@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const productos = require("../models/matrizProductos");
 const { map } = require("lodash")
 
 // Para registrar productos
-router.post("/registro", verifyToken, async (req, res) => {
+router.post("/registro", async (req, res) => {
     const { noInterno } = req.body;
     //console.log(folio)
 
@@ -28,7 +26,7 @@ router.post("/registro", verifyToken, async (req, res) => {
 });
 
 // Para obtener el listado de productos
-router.get("/listar", verifyToken, async (req, res) => {
+router.get("/listar", async (req, res) => {
     await productos
         .find()
         .sort({ _id: -1 })
@@ -37,7 +35,7 @@ router.get("/listar", verifyToken, async (req, res) => {
 });
 
 // Para obtener el listado de productos activos
-router.get("/listarActivos", verifyToken, async (req, res) => {
+router.get("/listarActivos", async (req, res) => {
     await productos
         .find()
         .sort({ _id: -1 })
@@ -54,7 +52,7 @@ router.get("/listarActivos", verifyToken, async (req, res) => {
 });
 
 // Para obtener el listado de productos obsoletos
-router.get("/listarObsoletos", verifyToken, async (req, res) => {
+router.get("/listarObsoletos", async (req, res) => {
     await productos
         .find()
         .sort({ _id: -1 })
@@ -87,7 +85,7 @@ router.get("/listarPaginando", async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken, async (req, res) => {
+router.get("/total", async (req, res) => {
     await productos
         .find()
         .count()
@@ -97,7 +95,7 @@ router.get("/total", verifyToken, async (req, res) => {
 });
 
 // Para obtener los datos de un pedido en especifico segun el id especificado
-router.get("/obtener/:id", verifyToken, async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await productos
@@ -107,7 +105,7 @@ router.get("/obtener/:id", verifyToken, async (req, res) => {
 });
 
 // Para obtener los datos de un producto del catalogo en especifico segun el numero interno
-router.get("/obtenerPorNoInterno/:noInterno", verifyToken, async (req, res) => {
+router.get("/obtenerPorNoInterno/:noInterno", async (req, res) => {
     const { noInterno } = req.params;
     //console.log("buscando")
     await productos
@@ -117,7 +115,7 @@ router.get("/obtenerPorNoInterno/:noInterno", verifyToken, async (req, res) => {
 });
 
 // Para eliminar productos
-router.delete("/eliminar/:id", verifyToken, async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await productos
         .remove({ _id: id })
@@ -126,7 +124,7 @@ router.delete("/eliminar/:id", verifyToken, async (req, res) => {
 });
 
 // Para cambiar el estado de los productos
-router.put("/actualizarestado/:id", verifyToken, async (req, res) => {
+router.put("/actualizarestado/:id", async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
     await productos
@@ -136,7 +134,7 @@ router.put("/actualizarestado/:id", verifyToken, async (req, res) => {
 });
 
 // Para actualizar los datos de los productos
-router.put("/actualizar/:id", verifyToken, async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { noInterno, cliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } = req.body;
     await productos
@@ -144,42 +142,5 @@ router.put("/actualizar/:id", verifyToken, async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
-
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if (await isExpired(token)) {
-            return res.status(401).send({ mensaje: "Token Invalido" });
-        }
-        if (!payload) {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-        req._id = payload._id;
-        next();
-    } catch (e) {
-        //console.log(e)
-        return res.status(401).send({ mensaje: "Petición no Autorizada" });
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0) {
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

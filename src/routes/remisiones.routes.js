@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const remisiones = require("../models/remisiones");
 
 // Registro de remisiones
@@ -28,7 +26,7 @@ router.post("/registro",  async (req, res) => {
 });
 
 // Obtener todas la remisiones
-router.get("/listar", verifyToken , async (req, res) => {
+router.get("/listar", async (req, res) => {
     await remisiones
         .find()
         .sort( { _id: -1 } )
@@ -37,7 +35,7 @@ router.get("/listar", verifyToken , async (req, res) => {
 });
 
 // Obtener el numero de remision actual
-router.get("/obtenerNoRemision", verifyToken , async (req, res) => {
+router.get("/obtenerNoRemision", async (req, res) => {
     const registroRemisiones = await remisiones.find().count();
     if(registroRemisiones === 0){
         res.status(200).json({ noRemision: "1"})
@@ -66,7 +64,7 @@ router.get("/listarPaginando" , async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken , async (req, res) => {
+router.get("/total", async (req, res) => {
     await remisiones
         .find()
         .count()
@@ -76,7 +74,7 @@ router.get("/total", verifyToken , async (req, res) => {
 });
 
 // Obtener una remisión en especifico
-router.get("/obtener/:id", verifyToken ,async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await remisiones
@@ -86,7 +84,7 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 });
 
 // Borrar una remisión
-router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await remisiones
         .remove({ _id: id })
@@ -95,7 +93,7 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 });
 
 // Actualizar datos de la remisión
-router.put("/actualizar/:id", verifyToken ,async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { idOrdenVenta, idCliente, productos, subtotales, impuestos, descuentos, total } = req.body;
     await remisiones
@@ -103,41 +101,5 @@ router.put("/actualizar/:id", verifyToken ,async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Información de la remisión actualizada"}))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if(await isExpired(token)) {
-            return res.status(401).send({mensaje: "Token Invalido"});
-        }
-        if (!payload) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        req._id = payload._id;
-        next();
-    } catch(e) {
-        //console.log(e)
-        return res.status(401).send({mensaje: "Petición no Autorizada"});
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0){
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

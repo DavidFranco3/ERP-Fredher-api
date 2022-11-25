@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const reportesCalidad = require("../models/calidad");
 
 // Registro de reportes de calidad
-router.post("/registro", verifyToken, async (req, res) => {
+router.post("/registro", async (req, res) => {
     const { folio } = req.body;
 
     // Inicia validacion para no registrar reportes de calidad con el mismo folio
@@ -28,7 +26,7 @@ router.post("/registro", verifyToken, async (req, res) => {
 });
 
 // Obtener todos los reportes de calidad
-router.get("/listar", verifyToken , async (req, res) => {
+router.get("/listar", async (req, res) => {
     await reportesCalidad
         .find()
         .sort( { _id: -1 } )
@@ -37,7 +35,7 @@ router.get("/listar", verifyToken , async (req, res) => {
 });
 
 // Listar paginando los reportes de calidad
-router.get("/listarPaginando" , verifyToken, async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
@@ -53,7 +51,7 @@ router.get("/listarPaginando" , verifyToken, async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken , async (req, res) => {
+router.get("/total", async (req, res) => {
     await reportesCalidad
         .find()
         .count()
@@ -63,7 +61,7 @@ router.get("/total", verifyToken , async (req, res) => {
 });
 
 // Obtener una reporte de calidad en especifico
-router.get("/obtener/:id", verifyToken ,async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await reportesCalidad
@@ -73,7 +71,7 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 });
 
 // Obtener el actual de folio del reporte de calidad
-router.get("/obtenerNoReportesCalidad", verifyToken , async (req, res) => {
+router.get("/obtenerNoReportesCalidad", async (req, res) => {
     const registroreportesCalidad = await reportesCalidad.find().count();
     if(registroreportesCalidad === 0){
         res.status(200).json({ folioReporte: "1"})
@@ -85,7 +83,7 @@ router.get("/obtenerNoReportesCalidad", verifyToken , async (req, res) => {
 });
 
 // Borrar una reporte
-router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await reportesCalidad
         .remove({ _id: id })
@@ -94,7 +92,7 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 });
 
 // Actualizar datos del reporte
-router.put("/actualizar/:id", verifyToken ,async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { descripcion, noParte, noOrden, cantidad, turno, operador, supervisor, inspector } = req.body;
 
@@ -103,41 +101,5 @@ router.put("/actualizar/:id", verifyToken ,async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Datos del reporte actualizados"}))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if(await isExpired(token)) {
-            return res.status(401).send({mensaje: "Token Invalido"});
-        }
-        if (!payload) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        req._id = payload._id;
-        next();
-    } catch(e) {
-        //console.log(e)
-        return res.status(401).send({mensaje: "Petición no Autorizada"});
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0){
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

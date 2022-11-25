@@ -1,8 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
-const { map } = require("lodash");
 const almacenGeneral = require("../models/almacenGeneral");
 
 // Registro inicial en almacen general
@@ -27,7 +24,7 @@ router.post("/registroInicial",  async (req, res) => {
 });
 
 // Obtener todos los registros del almacén general
-router.get("/listar", verifyToken , async (req, res) => {
+router.get("/listar", async (req, res) => {
     await almacenGeneral
         .find()
         .sort( { _id: -1 } )
@@ -36,7 +33,7 @@ router.get("/listar", verifyToken , async (req, res) => {
 });
 
 // Obtener el folio actual
-router.get("/obtenerFolio", verifyToken , async (req, res) => {
+router.get("/obtenerFolio", async (req, res) => {
     const registroalmacenGeneral = await almacenGeneral.find().count();
     if(registroalmacenGeneral === 0){
         res.status(200).json({ folio: "AG-1"})
@@ -65,7 +62,7 @@ router.get("/listarPaginando" , async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken , async (req, res) => {
+router.get("/total", async (req, res) => {
     await almacenGeneral
         .find()
         .count()
@@ -75,7 +72,7 @@ router.get("/total", verifyToken , async (req, res) => {
 });
 
 // Obtener un articulo del almacen general en especifico segun el id especificado
-router.get("/obtener/:id", verifyToken ,async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
 
     await almacenGeneral
@@ -85,7 +82,7 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 });
 
 // Para obtener una materia prima segun el folio de la materia prima
-router.get("/obtenerDatosAG/:folioAlmacen", verifyToken ,async (req, res) => {
+router.get("/obtenerDatosAG/:folioAlmacen", async (req, res) => {
     const { folioMP } = req.params;
 
     await almacenGeneral
@@ -95,7 +92,7 @@ router.get("/obtenerDatosAG/:folioAlmacen", verifyToken ,async (req, res) => {
 });
 
 // Para obtener el listado de movimientos de un articulo del almacen general, segun el folio del almacen
-router.get("/listarMovimientosAG/:folioAlmacen", verifyToken ,async (req, res) => {
+router.get("/listarMovimientosAG/:folioAlmacen", async (req, res) => {
     const { folioAlmacen } = req.params;
 
     await almacenGeneral
@@ -107,7 +104,7 @@ router.get("/listarMovimientosAG/:folioAlmacen", verifyToken ,async (req, res) =
 });
 
 // Borrar un articulo del almacen general
-router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await almacenGeneral
         .remove({ _id: id })
@@ -116,7 +113,7 @@ router.delete("/eliminar/:id", verifyToken ,async (req, res) => {
 });
 
 // Actualizar estado de artículo del almacén general
-router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
+router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, um, tipo, estado } = req.body;
     await almacenGeneral
@@ -126,7 +123,7 @@ router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
 });
 
 // Registro de entrada y salida de almacen de materias primas
-router.put("/registraMovimientos/:id", verifyToken ,async (req, res) => {
+router.put("/registraMovimientos/:id", async (req, res) => {
     const { id } = req.params;
     const { movimientos, existenciasOV, existenciasStock, existenciasTotales } = req.body;
     await almacenGeneral
@@ -136,7 +133,7 @@ router.put("/registraMovimientos/:id", verifyToken ,async (req, res) => {
 });
 
 // Modifica existencias de PT del almacen
-router.put("/modificaExistencias/:id", verifyToken ,async (req, res) => {
+router.put("/modificaExistencias/:id", async (req, res) => {
     const { id } = req.params;
     const { existenciasOV, existenciasStock, existenciasTotales } = req.body;
     await almacenGeneral
@@ -144,41 +141,5 @@ router.put("/modificaExistencias/:id", verifyToken ,async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Existencias del artículo en almacén general actualizadas"}))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if(await isExpired(token)) {
-            return res.status(401).send({mensaje: "Token Invalido"});
-        }
-        if (!payload) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        req._id = payload._id;
-        next();
-    } catch(e) {
-        //console.log(e)
-        return res.status(401).send({mensaje: "Petición no Autorizada"});
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0){
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

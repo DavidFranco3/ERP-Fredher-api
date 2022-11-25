@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const requisicion = require("../models/requisicion");
 
 // Registro de requisiciones
-router.post("/registro", verifyToken, async (req, res) => {
+router.post("/registro", async (req, res) => {
     const { folio } = req.body;
 
     // Inicia validacion para no registrar usuarios con el mismo correo electronico
@@ -29,7 +27,7 @@ router.post("/registro", verifyToken, async (req, res) => {
 });
 
 // Obtener todas las requisiciones
-router.get("/listar", verifyToken, async (req, res) => {
+router.get("/listar", async (req, res) => {
     await requisicion
         .find()
         .sort({ _id: -1 })
@@ -38,7 +36,7 @@ router.get("/listar", verifyToken, async (req, res) => {
 });
 
 // Listar paginando los requisiciones
-router.get("/listarPaginandoDepartamento", verifyToken, async (req, res) => {
+router.get("/listarPaginandoDepartamento", async (req, res) => {
     const { pagina, limite, departamento } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
@@ -54,7 +52,7 @@ router.get("/listarPaginandoDepartamento", verifyToken, async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/totalDepartamento", verifyToken, async (req, res) => {
+router.get("/totalDepartamento", async (req, res) => {
     const { departamento } = req.query;
 
     await requisicion
@@ -66,7 +64,7 @@ router.get("/totalDepartamento", verifyToken, async (req, res) => {
 });
 
 // Listar requisiciones por departamento
-router.get("/listarDepartamento", verifyToken, async (req, res) => {
+router.get("/listarDepartamento", async (req, res) => {
     const { departamento } = req.query;
 
     await requisicion
@@ -77,7 +75,7 @@ router.get("/listarDepartamento", verifyToken, async (req, res) => {
 });
 
 // Obtener una requisicion en especifico
-router.get("/obtener/:id", verifyToken, async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await requisicion
@@ -87,7 +85,7 @@ router.get("/obtener/:id", verifyToken, async (req, res) => {
 });
 
 // Obtener por folio una requisicion
-router.get("/obtenerDatos/:folio", verifyToken, async (req, res) => {
+router.get("/obtenerDatos/:folio", async (req, res) => {
     const { folio } = req.params;
     //console.log("buscando")
     await requisicion
@@ -97,7 +95,7 @@ router.get("/obtenerDatos/:folio", verifyToken, async (req, res) => {
 });
 
 // Obtener el numero de folio de la compra actual
-router.get("/obtenerNoRequisicion", verifyToken , async (req, res) => {
+router.get("/obtenerNoRequisicion", async (req, res) => {
     const registroRequisicion = await requisicion.find().count();
     if(registroRequisicion === 0){
         res.status(200).json({ noRequisicion: "REQ-1"})
@@ -110,7 +108,7 @@ router.get("/obtenerNoRequisicion", verifyToken , async (req, res) => {
 });
 
 // Obtener el numero de folio de la compra actual
-router.get("/obtenerItem", verifyToken, async (req, res) => {
+router.get("/obtenerItem", async (req, res) => {
     const registroRequisiciones = await requisicion.find().count();
     if (registroRequisiciones === 0) {
         res.status(200).json({ item: 1 });
@@ -125,7 +123,7 @@ router.get("/obtenerItem", verifyToken, async (req, res) => {
 });
 
 // Borrar una requisicion
-router.delete("/eliminar/:id", verifyToken, async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await requisicion
         .remove({ _id: id })
@@ -134,7 +132,7 @@ router.delete("/eliminar/:id", verifyToken, async (req, res) => {
 });
 
 // Cambiar status de una requisicion
-router.put("/cambiarStatus/:id", verifyToken, async (req, res) => {
+router.put("/cambiarStatus/:id", async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     await requisicion
@@ -144,7 +142,7 @@ router.put("/cambiarStatus/:id", verifyToken, async (req, res) => {
 });
 
 // Actualizar datos del requisicion
-router.put("/actualizar/:id", verifyToken, async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { fechaElaboracion, solicitante, productosSolicitados, comentarios, aprobo, status } = req.body;
 
@@ -153,41 +151,5 @@ router.put("/actualizar/:id", verifyToken, async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Datos de la requisición actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if (await isExpired(token)) {
-            return res.status(401).send({ mensaje: "Token Invalido" });
-        }
-        if (!payload) {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-        req._id = payload._id;
-        next();
-    } catch (e) {
-        //console.log(e)
-        return res.status(401).send({ mensaje: "Petición no Autorizada" });
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0) {
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

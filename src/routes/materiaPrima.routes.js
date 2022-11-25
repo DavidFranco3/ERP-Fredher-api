@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const materiaPrima = require("../models/materiaPrima");
 
 // Para registrar materias primas
-router.post("/registro", verifyToken, async (req, res) => {
+router.post("/registro", async (req, res) => {
     const { folio } = req.body;
     //console.log(folio)
     // Inicia validacion para no registrar productos con el mismo numero interno
@@ -26,7 +24,7 @@ router.post("/registro", verifyToken, async (req, res) => {
 });
 
 // Para obtener el listado de materias primas
-router.get("/listar", verifyToken, async (req, res) => {
+router.get("/listar", async (req, res) => {
     await materiaPrima
         .find()
         .sort({ _id: -1 })
@@ -35,7 +33,7 @@ router.get("/listar", verifyToken, async (req, res) => {
 });
 
 // Obtener el numero de folio de la compra actual
-router.get("/obtenerItem", verifyToken, async (req, res) => {
+router.get("/obtenerItem", async (req, res) => {
     const registroAsignacion = await materiaPrima.find().count();
     if (registroAsignacion === 0) {
         res.status(200).json({ item: 1 });
@@ -66,7 +64,7 @@ router.get("/listarPaginando", async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken, async (req, res) => {
+router.get("/total", async (req, res) => {
     await materiaPrima
         .find()
         .count()
@@ -76,7 +74,7 @@ router.get("/total", verifyToken, async (req, res) => {
 });
 
 // Para obtener datos de una materia prima
-router.get("/obtener/:id", verifyToken, async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await materiaPrima
@@ -86,7 +84,7 @@ router.get("/obtener/:id", verifyToken, async (req, res) => {
 });
 
 // Obtener los datos de la materia prima segun el folio
-router.get("/obtenerPorFolio/:folio", verifyToken, async (req, res) => {
+router.get("/obtenerPorFolio/:folio", async (req, res) => {
     const { folio } = req.params;
     //console.log("buscando")
     await materiaPrima
@@ -96,7 +94,7 @@ router.get("/obtenerPorFolio/:folio", verifyToken, async (req, res) => {
 });
 
 // Para obtener el folio actual de materia prima
-router.get("/obtenerFolio", verifyToken, async (req, res) => {
+router.get("/obtenerFolio", async (req, res) => {
     const registroAlmacenMP = await materiaPrima.find().count();
     if (registroAlmacenMP === 0) {
         res.status(200).json({ noMP: "MP-1" })
@@ -109,7 +107,7 @@ router.get("/obtenerFolio", verifyToken, async (req, res) => {
 });
 
 // Para eliminar materias primas
-router.delete("/eliminar/:id", verifyToken, async (req, res) => {
+router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await materiaPrima
         .remove({ _id: id })
@@ -118,7 +116,7 @@ router.delete("/eliminar/:id", verifyToken, async (req, res) => {
 });
 
 // Para actualizar los datos de los materias primas
-router.put("/actualizar/:id", verifyToken, async (req, res) => {
+router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { descripcion, precio, proveedor } = req.body;
     await materiaPrima
@@ -126,42 +124,5 @@ router.put("/actualizar/:id", verifyToken, async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Material actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
-
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if (await isExpired(token)) {
-            return res.status(401).send({ mensaje: "Token Invalido" });
-        }
-        if (!payload) {
-            return res.status(401).send({ mensaje: "Petición no Autorizada" });
-        }
-        req._id = payload._id;
-        next();
-    } catch (e) {
-        //console.log(e)
-        return res.status(401).send({ mensaje: "Petición no Autorizada" });
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0) {
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;

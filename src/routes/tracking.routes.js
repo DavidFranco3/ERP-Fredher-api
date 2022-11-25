@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const tracking = require("../models/tracking");
 
 // Registro de nuevo tracking
@@ -28,7 +26,7 @@ router.post("/registro",  async (req, res) => {
 });
 
 // Obtener todos los tracking
-router.get("/listar", verifyToken , async (req, res) => {
+router.get("/listar", async (req, res) => {
     await tracking
         .find()
         .sort( { _id: -1 } )
@@ -37,7 +35,7 @@ router.get("/listar", verifyToken , async (req, res) => {
 });
 
 // Obtener el numero de tracking actual
-router.get("/obtenerNoTracking", verifyToken , async (req, res) => {
+router.get("/obtenerNoTracking", async (req, res) => {
     const registroTracking = await tracking.find().count();
     if(registroTracking === 0){
         res.status(200).json({ noTracking: "1"})
@@ -50,7 +48,7 @@ router.get("/obtenerNoTracking", verifyToken , async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/total", verifyToken , async (req, res) => {
+router.get("/total", async (req, res) => {
     await tracking
         .find()
         .count()
@@ -76,7 +74,7 @@ router.get("/listarPaginando" , async (req, res) => {
 });
 
 // Obtener un tracking en especifico
-router.get("/obtener/:id", verifyToken ,async (req, res) => {
+router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
     await tracking
@@ -86,7 +84,7 @@ router.get("/obtener/:id", verifyToken ,async (req, res) => {
 });
 
 // Obtener los datos de un tracking segun el orden de venta solicitado
-router.get("/obtenerTracking/:ordenVenta", verifyToken ,async (req, res) => {
+router.get("/obtenerTracking/:ordenVenta", async (req, res) => {
     const { ordenVenta } = req.params;
 
     await tracking
@@ -96,7 +94,7 @@ router.get("/obtenerTracking/:ordenVenta", verifyToken ,async (req, res) => {
 });
 
 // Borrar un tracking
-router.delete("/eliminar/:ordenVenta", verifyToken ,async (req, res) => {
+router.delete("/eliminar/:ordenVenta", async (req, res) => {
     const { ordenVenta } = req.params;
     await tracking
         .remove({ ordenVenta: ordenVenta })
@@ -105,7 +103,7 @@ router.delete("/eliminar/:ordenVenta", verifyToken ,async (req, res) => {
 });
 
 // Para actualizar el estado del tracking
-router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
+router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
     const { status, indicador } = req.body;
     await tracking
@@ -115,7 +113,7 @@ router.put("/actualizarEstado/:id", verifyToken ,async (req, res) => {
 });
 
 // Actualizar datos del pedido
-router.put("/actualizar/:ordenVenta", verifyToken ,async (req, res) => {
+router.put("/actualizar/:ordenVenta", async (req, res) => {
     const { ordenVenta } = req.params;
     const { status, indicador } = req.body;
     await tracking
@@ -123,41 +121,5 @@ router.put("/actualizar/:ordenVenta", verifyToken ,async (req, res) => {
         .then((data) => res.status(200).json({ mensaje: "Información del tracking"}))
         .catch((error) => res.json({ message: error }));
 });
-
-async function verifyToken(req, res, next) {
-    try {
-        if (!req.headers.authorization) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-
-        const payload = await jwt.verify(token, 'secretkey');
-        if(await isExpired(token)) {
-            return res.status(401).send({mensaje: "Token Invalido"});
-        }
-        if (!payload) {
-            return res.status(401).send({mensaje: "Petición no Autorizada"});
-        }
-        req._id = payload._id;
-        next();
-    } catch(e) {
-        //console.log(e)
-        return res.status(401).send({mensaje: "Petición no Autorizada"});
-    }
-}
-
-async function isExpired(token) {
-    const { exp } = jwtDecode(token);
-    const expire = exp * 1000;
-    const timeout = expire - Date.now()
-
-    if (timeout < 0){
-        return true;
-    }
-    return false;
-}
 
 module.exports = router;
