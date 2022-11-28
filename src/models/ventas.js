@@ -6,6 +6,7 @@ const ventas = new Schema({
     fechaElaboracion: { type: String },
     fechaEntrega: { type: String },
     cliente: { type: String },
+    nombreCliente: {type: String},
     condicionesPago: { type: String },
     especificaciones: {type: String},
     incoterms: {type: String},
