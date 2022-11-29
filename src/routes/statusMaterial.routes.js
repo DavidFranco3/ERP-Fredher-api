@@ -61,7 +61,8 @@ router.get("/obtenerItem", async (req, res) => {
         res.status(200).json({ item: tempItem });
     }
 });
-// Listar los status de material registrados
+
+// Listar paginando los elementos de las compras
 router.get("/listarPaginando" , async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -89,7 +90,7 @@ router.get("/obtener/:id", async (req, res) => {
 
 // Obtener el total de registros de la colección
 router.get("/total", async (req, res) => {
-    await statusMateria
+    await statusMaterial
         .find()
         .count()
         .sort( { _id: -1 } )
