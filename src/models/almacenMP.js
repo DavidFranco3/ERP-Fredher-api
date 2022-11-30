@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const almacenMP = new Schema({
     item: {type: String},
     folioAlmacen: { type: String },
+    folioMP: {type: String},
     nombreMP: {type: String},
     um: {type: String},
     fecha: {type: String},

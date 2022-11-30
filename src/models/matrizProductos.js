@@ -19,6 +19,7 @@ const MatrizProductos = new Schema({
         porcentajeMolido: { type: String }
     },
     materiaPrima: {
+        idMaterial: {type: String},
         descripcion: { type: String }
     },
     pigmentoMasterBach: {

@@ -106,6 +106,16 @@ router.get("/obtenerDatosFolioMP/:folioAlmacen", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Para obtener una materia prima segun el folio de la materia prima
+router.get("/obtenerDatosMP/:folioMP", async (req, res) => {
+    const { folioMP } = req.params;
+
+    await almacenMPRoutes
+        .findOne({ folioMP })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Para obtener el listado de movimientos de una materia prima
 router.get("/listarMovimientosMP/:folioAlmacen", async (req, res) => {
     const { folioAlmacen } = req.params;

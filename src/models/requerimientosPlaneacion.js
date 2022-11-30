@@ -33,6 +33,11 @@ const RequerimientosPlaneacion = new Schema({
         empaque: {type: String},
         bolsasCajasUtilizar: {type: String},
     },
+    datosRequisicion: {
+        kgMaterial: {type: String},
+        almacenMP: {type: String},
+        cantidadPedir: {type: String}
+    },
     estado: {type: String}
 }, {
     timestamps: true
