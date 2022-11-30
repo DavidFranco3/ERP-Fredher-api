@@ -24,7 +24,8 @@ const MatrizProductos = new Schema({
     pigmentoMasterBach: {
         descripcion: { type: String },
         aplicacionGxKG: { type: String },
-        proveedor: { type: String }
+        proveedor: { type: String },
+        nombreProveedor: {type: String},
     },
     tiempoCiclo: { type: String },
     noOperadores: { type: String },
