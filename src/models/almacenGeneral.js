@@ -3,6 +3,8 @@ const { Schema } = mongoose;
 
 const almacenGeneral = new Schema({
     folioAlmacen: { type: String },
+    idInsumo: {type: String},
+    folioInsumo: {type: String},
     nombre: { type: String },
     descripcion: { type: String },
     um: { type: String },

@@ -36,6 +36,7 @@ const RequerimientosPlaneacion = new Schema({
     datosRequisicion: {
         kgMaterial: {type: String},
         almacenMP: {type: String},
+        cantidadSugerida: {type: String},
         cantidadPedir: {type: String}
     },
     estado: {type: String}

@@ -120,6 +120,7 @@ app.use("/statusMaterial/", verifyToken, require("./src/routes/statusMaterial.ro
 app.use("/liberacionProductoProceso/", verifyToken, require("./src/routes/liberacionProductoProceso.routes"));
 app.use("/certificadosCalidad/", verifyToken, require("./src/routes/certificadosCalidad.routes"));
 app.use("/maquinas/", verifyToken, require("./src/routes/maquinas.routes"));
+app.use("/insumos/", verifyToken, require("./src/routes/insumos.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
