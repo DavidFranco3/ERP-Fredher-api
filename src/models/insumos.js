@@ -5,6 +5,7 @@ const insumos = new Schema({
     item: {type: String},
     folio: { type: String },
     descripcion: {type: String},
+    um: {type: String},
     precio: {type: String},
     proveedor: {type: String}
 }, {

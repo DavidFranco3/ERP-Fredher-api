@@ -118,9 +118,9 @@ router.delete("/eliminar/:id", async (req, res) => {
 // Para actualizar los datos de los insumos
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { descripcion, precio, proveedor } = req.body;
+    const { descripcion, precio, um, proveedor } = req.body;
     await insumo
-        .updateOne({ _id: id }, { $set: { descripcion, precio, proveedor } })
+        .updateOne({ _id: id }, { $set: { descripcion, precio, um, proveedor } })
         .then((data) => res.status(200).json({ mensaje: "Insumo actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
