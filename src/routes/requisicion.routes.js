@@ -36,14 +36,14 @@ router.get("/listar", async (req, res) => {
 });
 
 // Listar paginando los requisiciones
-router.get("/listarPaginandoDepartamento", async (req, res) => {
-    const { pagina, limite, departamento } = req.query;
+router.get("/listarPaginando", async (req, res) => {
+    const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
     await requisicion
-        .find({ departamento: departamento })
+        .find()
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -52,11 +52,10 @@ router.get("/listarPaginandoDepartamento", async (req, res) => {
 });
 
 // Obtener el total de registros de la colección
-router.get("/totalDepartamento", async (req, res) => {
-    const { departamento } = req.query;
+router.get("/total", async (req, res) => {
 
     await requisicion
-        .find({ departamento: departamento })
+        .find()
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -144,10 +143,10 @@ router.put("/cambiarStatus/:id", async (req, res) => {
 // Actualizar datos del requisicion
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { fechaElaboracion, solicitante, productosSolicitados, comentarios, aprobo, status } = req.body;
+    const { fechaElaboracion, solicitante, productosSolicitados, departamento, comentarios, aprobo, status } = req.body;
 
     await requisicion
-        .updateOne({ _id: id }, { $set: { fechaElaboracion, solicitante, productosSolicitados, comentarios, aprobo, status } })
+        .updateOne({ _id: id }, { $set: { fechaElaboracion, solicitante, productosSolicitados, departamento, comentarios, aprobo, status } })
         .then((data) => res.status(200).json({ mensaje: "Datos de la requisición actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
