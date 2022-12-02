@@ -121,6 +121,8 @@ app.use("/liberacionProductoProceso/", verifyToken, require("./src/routes/libera
 app.use("/certificadosCalidad/", verifyToken, require("./src/routes/certificadosCalidad.routes"));
 app.use("/maquinas/", verifyToken, require("./src/routes/maquinas.routes"));
 app.use("/insumos/", verifyToken, require("./src/routes/insumos.routes"));
+app.use("/pigmento/", verifyToken, require("./src/routes/pigmento.routes"));
+app.use("/empaques/", verifyToken, require("./src/routes/empaques.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
