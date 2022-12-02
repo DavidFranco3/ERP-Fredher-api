@@ -6,6 +6,7 @@ const materiaPrima = new Schema({
     folio: { type: String },
     descripcion: {type: String},
     precio: {type: String},
+    um: {type: String},
     proveedor: {type: String}
 }, {
     timestamps: true

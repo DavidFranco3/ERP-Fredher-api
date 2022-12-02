@@ -9,6 +9,8 @@ const requisicion = new Schema({
     aprobo: { type: String },
     comentarios: { type: String },
     departamento: { type: String },
+    tipoRequisicion: {type: String},
+    tipoAplicacion: {type: String},
     productosSolicitados: { type: Array, default: [] },
     status: { type: String }
 }, {

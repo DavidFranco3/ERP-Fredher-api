@@ -143,10 +143,10 @@ router.put("/cambiarStatus/:id", async (req, res) => {
 // Actualizar datos del requisicion
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { fechaElaboracion, solicitante, productosSolicitados, departamento, comentarios, aprobo, status } = req.body;
+    const { fechaElaboracion, solicitante, productosSolicitados, departamento, tipoAplicacion, tipoRequisicion, comentarios, aprobo, status } = req.body;
 
     await requisicion
-        .updateOne({ _id: id }, { $set: { fechaElaboracion, solicitante, productosSolicitados, departamento, comentarios, aprobo, status } })
+        .updateOne({ _id: id }, { $set: { fechaElaboracion, solicitante, productosSolicitados, tipoAplicacion, tipoRequisicion, departamento, comentarios, aprobo, status } })
         .then((data) => res.status(200).json({ mensaje: "Datos de la requisición actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
