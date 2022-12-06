@@ -99,7 +99,7 @@ router.get("/obtenerFolio", async (req, res) => {
     if (registroAlmacenMP === 0) {
         res.status(200).json({ noEmpaque: "EMP-1" })
     } else {
-        const ultimaMP = await prigmento.findOne().sort({ _id: -1 });
+        const ultimaMP = await empaques.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaMP.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
         res.status(200).json({ noEmpaque: "EMP-" + tempFolio.toString().padStart(1, 0) })
