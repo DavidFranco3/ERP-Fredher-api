@@ -8,8 +8,10 @@ const produccion = new Schema({
         ordenVenta: {type: String},
         noInterno: {type: String},
         noParte: {type: String},
+        idProducto: {type: String},
         producto: {type: String},
         cliente: {type: String},
+        nombreCliente: {type: String}
     },
     planeacion: {
         ordenProduccion: {type: String},
