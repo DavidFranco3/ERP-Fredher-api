@@ -9,6 +9,7 @@ const RequerimientosPlaneacion = new Schema({
         producto: {type: String},
         nombreProducto: {type: String},
         um: {type: String},
+        ov: {type: String},
         almacenProductoTerminado: {type: String},
         nombreProveedor: {type: String},
         ordenVenta: { type: Array, default: [] },

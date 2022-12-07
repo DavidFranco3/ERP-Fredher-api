@@ -6,8 +6,22 @@ const mongoose = require('mongoose');
 // Credenciales para conexion a Mongo Atlas
 const URI = "mongodb+srv://erpFredher:A0KB3nEK33q53xCQ@cluster0.dsbmu.mongodb.net/erp-Fredher";
 
-mongoose.connect(URI)
-    .then(db => console.log("DB is connected"))
-    .catch(error => console.error(error));
+mongoose.Promise = global.Promise;
+
+mongoose
+  .connect(URI, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log("Database connection successful");
+  })
+  .catch((err) => {
+    console.log("Database connection error: ", err);
+  });
+
+process.on("uncaughtException", (err, origin) => {
+  console.error("Caught exception: " + err);
+  console.error("Exception origin: " + origin);
+});
 
 module.exports = mongoose;
