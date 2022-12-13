@@ -15,8 +15,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-      "@sentry/node": "7.21.1",
-      "@sentry/tracing": "7.21.1",
+      "@sentry/node": "7.25.0",
+      "@sentry/tracing": "7.25.0",
       "atob": "^2.1.2",
       "base64-stream": "1.0.0",
       "cors": "2.8.5",
@@ -25,7 +25,7 @@
       "jwt-decode": "3.1.2",
       "lodash": "4.17.21",
       "moment": "2.29.4",
-      "mongoose": "6.7.3",
+      "mongoose": "6.8.0",
       "mongoose-paginate-v2": "1.7.1",
       "morgan": "1.10.0",
       "node-blob": "^0.0.2",
@@ -34,7 +34,7 @@
       "serve-favicon": "2.5.0"
     },
     "devDependencies": {
-      "eslint": "8.28.0",
+      "eslint": "8.29.0",
       "eslint-config-prettier": "8.5.0",
       "eslint-plugin-import": "2.26.0",
       "eslint-plugin-node": "11.1.0",
@@ -42,9 +42,9 @@
       "eslint-plugin-promise": "6.1.1",
       "eslint-plugin-standard": "5.0.0",
       "husky": "=8",
-      "lint-staged": ">=13.0.4",
+      "lint-staged": ">=13.1.0",
       "nodemon": "2.0.20",
-      "prettier": "2.8.0",
+      "prettier": "2.8.1",
       "standard": "17.0.0"
     },
     "eslintConfig": {

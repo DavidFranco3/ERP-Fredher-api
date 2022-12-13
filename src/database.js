@@ -8,6 +8,8 @@ const URI = "mongodb+srv://erpFredher:A0KB3nEK33q53xCQ@cluster0.dsbmu.mongodb.ne
 
 mongoose.Promise = global.Promise;
 
+mongoose.set('strictQuery', true);
+
 mongoose
   .connect(URI, {
     useNewUrlParser: true,
