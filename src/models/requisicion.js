@@ -5,6 +5,7 @@ const requisicion = new Schema({
     item: { type: String },
     folio: { type: String },
     fechaElaboracion: { type: String },
+    fechaRequisicion: {type: String},
     solicitante: { type: String },
     aprobo: { type: String },
     comentarios: { type: String },
