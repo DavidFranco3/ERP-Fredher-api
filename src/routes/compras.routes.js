@@ -59,10 +59,11 @@ router.get("/listarProductos", async (req, res) => {
             let datosCompras = []
 
             map(data, (compra, indexPrincipal) => {
-                map(compra, (productos, index) => {
+                map(compra.productos, (productos, index) => {
                     const { cantidad, um, descripcion, precio, subtotal } = productos;
                     console.log(productos)
-                    datosCompras.push({ folio: data[indexPrincipal].folio, proveedor: data[indexPrincipal].proveedor, fechaSolicitud: data[indexPrincipal].fechaSolicitud, fechaEntrega: data[indexPrincipal].fechaEntrega, descripcion: descripcion, cantidad: cantidad, total: data[indexPrincipal].total })
+                    datosCompras.push({ id: data[indexPrincipal]._id, folio: data[indexPrincipal].folio, proveedor: data[indexPrincipal].proveedor, fechaSolicitud: data[indexPrincipal].fechaSolicitud, fechaEntrega: data[indexPrincipal].fechaEntrega, descripcion: descripcion, cantidad: cantidad, um: um, precio: precio, subtotal: subtotal, total: data[indexPrincipal].total })
+                    console.log(datosCompras)
                 })
             })
             res.status(200).json(datosCompras)

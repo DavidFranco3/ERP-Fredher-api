@@ -3,7 +3,7 @@ const router = express.Router();
 const almacenGeneral = require("../models/almacenGeneral");
 
 // Registro inicial en almacen general
-router.post("/registroInicial",  async (req, res) => {
+router.post("/registroInicial", async (req, res) => {
     const { folioAlmacen } = req.body;
 
     // Inicia validacion para no registrar datos con el mismo folio
@@ -27,7 +27,7 @@ router.post("/registroInicial",  async (req, res) => {
 router.get("/listar", async (req, res) => {
     await almacenGeneral
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -35,26 +35,26 @@ router.get("/listar", async (req, res) => {
 // Obtener el folio actual
 router.get("/obtenerFolio", async (req, res) => {
     const registroalmacenGeneral = await almacenGeneral.find().count();
-    if(registroalmacenGeneral === 0){
-        res.status(200).json({ folio: "AG-1"})
+    if (registroalmacenGeneral === 0) {
+        res.status(200).json({ folio: "AG-1" })
     } else {
-        const ultimaAlmacen = await almacenGeneral.findOne().sort( { _id: -1 } );
+        const ultimaAlmacen = await almacenGeneral.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaAlmacen.folioAlmacen.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ folio: "AG-" + tempFolio.toString().padStart(1, 0)})
+        res.status(200).json({ folio: "AG-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
 // Listar paginando los datos del almacén general
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await almacenGeneral
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -66,7 +66,7 @@ router.get("/total", async (req, res) => {
     await almacenGeneral
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -108,7 +108,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await almacenGeneral
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Atención!, Materia artículo eliminado del almacén general"}))
+        .then((data) => res.status(200).json({ mensaje: "Atención!, Materia artículo eliminado del almacén general" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -118,7 +118,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { nombre, descripcion, um, tipo, estado } = req.body;
     await almacenGeneral
         .updateOne({ _id: id }, { $set: { nombre, descripcion, um, tipo, estado } })
-        .then((data) => res.status(200).json({ mensaje: "Artículo del almacén general actualizado"}))
+        .then((data) => res.status(200).json({ mensaje: "Artículo del almacén general actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -128,7 +128,7 @@ router.put("/registraMovimientos/:id", async (req, res) => {
     const { movimientos, existenciasOV, existenciasStock, existenciasTotales } = req.body;
     await almacenGeneral
         .updateOne({ _id: id }, { $set: { movimientos, existenciasOV, existenciasStock, existenciasTotales } })
-        .then((data) => res.status(200).json({ mensaje: "Se ha registrado un movimiento de PT del almacén", datos: data}))
+        .then((data) => res.status(200).json({ mensaje: "Se ha registrado un movimiento de PT del almacén", datos: data }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -138,7 +138,7 @@ router.put("/modificaExistencias/:id", async (req, res) => {
     const { existenciasOV, existenciasStock, existenciasTotales } = req.body;
     await almacenGeneral
         .updateOne({ _id: id }, { $set: { existenciasOV, existenciasStock, existenciasTotales } })
-        .then((data) => res.status(200).json({ mensaje: "Existencias del artículo en almacén general actualizadas"}))
+        .then((data) => res.status(200).json({ mensaje: "Existencias del artículo en almacén general actualizadas" }))
         .catch((error) => res.json({ message: error }));
 });
 

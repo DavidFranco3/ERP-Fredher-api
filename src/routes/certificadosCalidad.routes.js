@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const certificadosCalidad = require("../models/certificadosCalidad");
-const { map } = require("lodash");
 
 // Registro de las compras
 router.post("/registro", async (req, res) => {

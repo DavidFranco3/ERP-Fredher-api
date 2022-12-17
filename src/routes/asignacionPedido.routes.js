@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const asignacionPedido = require("../models/asignacionPedido");
 
 // Registro de pedidos
