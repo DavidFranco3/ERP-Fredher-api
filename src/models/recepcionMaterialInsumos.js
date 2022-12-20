@@ -4,6 +4,9 @@ const { Schema } = mongoose;
 const recepcionMaterialInsumos = new Schema({
     folio: { type: String },
     fechaRecepcion: {type: String},
+    ordenCompra: {type: String},
+    proveedor: {type: String},
+    nombreProveedor: {type: String},
     precio: {type: String},
     cantidad: {type: String},
     valorTotal: {type: String},
