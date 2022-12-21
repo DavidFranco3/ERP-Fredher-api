@@ -23,6 +23,27 @@ router.post("/registroInicial", async (req, res) => {
     }
 });
 
+// Registro inicial en almacen general
+router.post("/registroGestion", async (req, res) => {
+    const { folioInsumo } = req.body;
+
+    // Inicia validacion para no registrar datos con el mismo folio
+    const busqueda = await almacenGeneral.findOne({ folioInsumo });
+
+    if (busqueda && busqueda.folioInsumo === folioInsumo) {
+        return res.status(401).json({ mensaje: "Ya existe un registro con este folio" });
+    } else {
+        const pedidos = almacenGeneral(req.body);
+        await pedidos
+            .save()
+            .then((data) =>
+                res.status(200).json(
+                    { mensaje: "Se ha registrado correctamente el artículo en el almacén general", datos: data }
+                ))
+            .catch((error) => res.json({ message: error }));
+    }
+});
+
 // Obtener todos los registros del almacén general
 router.get("/listar", async (req, res) => {
     await almacenGeneral
@@ -87,6 +108,15 @@ router.get("/obtenerDatosAG/:folioAlmacen", async (req, res) => {
 
     await almacenGeneral
         .findOne({ folioMP })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+router.get("/obtenerDatosFolioInsumo/:folioInsumo", async (req, res) => {
+    const { folioInsumo } = req.params;
+
+    await almacenGeneral
+        .findOne({ folioInsumo })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });

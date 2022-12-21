@@ -23,6 +23,27 @@ router.post("/registroInicial",  async (req, res) => {
     }
 });
 
+// Registro inicial de MP en almacen
+router.post("/registroGestion",  async (req, res) => {
+    const { folioMP } = req.body;
+
+    // Inicia validacion para no registrar una materia prima con el mismo folio
+    const busqueda = await almacenMPRoutes.findOne({ folioMP });
+
+    if (busqueda && busqueda.folioMP === folioMP) {
+        return res.status(401).json({ mensaje: "Esta materia prima ya esta registrada" });
+    } else {
+        const pedidos = almacenMPRoutes(req.body);
+        await pedidos
+            .save()
+            .then((data) =>
+                res.status(200).json(
+                    { mensaje: "Se ha registrado la materia prima", datos: data }
+                ))
+            .catch((error) => res.json({ message: error }));
+    }
+});
+
 // Obtener todas las materias primas del almacen
 router.get("/listar", async (req, res) => {
     await almacenMPRoutes
