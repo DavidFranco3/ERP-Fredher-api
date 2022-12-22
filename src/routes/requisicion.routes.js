@@ -88,7 +88,7 @@ router.get("/obtenerDatos/:folio", async (req, res) => {
     const { folio } = req.params;
     //console.log("buscando")
     await requisicion
-        .find({ folio })
+        .findOne({ folio })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });

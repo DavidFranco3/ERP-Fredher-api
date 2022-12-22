@@ -21,7 +21,9 @@ const MatrizProductos = new Schema({
     },
     materiaPrima: {
         idMaterial: {type: String},
-        descripcion: { type: String }
+        folioMaterial: {type: String},
+        descripcion: { type: String },
+        precioMaterial: {type: String}
     },
     pigmentoMasterBach: {
         descripcion: { type: String },

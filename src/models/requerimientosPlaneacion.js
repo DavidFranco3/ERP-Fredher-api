@@ -22,6 +22,9 @@ const RequerimientosPlaneacion = new Schema({
     },
     bom: {
         material: {type: String},
+        idMaterial: {type: String},
+        folioMaterial: {type: String},
+        precioMaterial: {type: String},
         molido: {type: String},
         pesoPieza: {type: String},
         pesoColada: {type: String},
