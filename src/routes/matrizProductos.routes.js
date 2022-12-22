@@ -135,12 +135,19 @@ router.put("/actualizarestado/:id", async (req, res) => {
 
 // Para actualizar los datos de los productos
 router.put("/actualizar/:id", async (req, res) => {
-    const { id } = req.params;
-    const { noInterno, cliente, nombreCliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } = req.body;
-    await productos
+        const { id } = req.params;
+        const { noInterno, cliente, nombreCliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } = req.body;
+
+    const busqueda = await productos.findOne({ noInterno });
+
+    if (busqueda && busqueda.noInterno === noInterno && busqueda._id != id) {
+        return res.status(401).json({ mensaje: "Ya existe un producto con este número interno" });
+    } else {
+        await productos
         .updateOne({ _id: id }, { $set: { noInterno, cliente, nombreCliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } })
         .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada" }))
         .catch((error) => res.json({ message: error }));
+    }
 });
 
 module.exports = router;
