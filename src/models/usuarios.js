@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const usuarios = new Schema({
+    foto: {type: String},
     nombre: { type: String },
     nss: { type: String },
     rfc: { type: String },
