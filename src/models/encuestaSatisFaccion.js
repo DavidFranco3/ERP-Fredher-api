@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const encuestaSatisfaccion = new Schema({
     folio: { type: String },
+    sucursal: {type: String},
     datosCliente: {
         nombre: { type: String },
         cargo: { type: String },

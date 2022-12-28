@@ -5,6 +5,7 @@ const embarques = new Schema({
     unidadAlmacen: { type: String },
     unidadTransporte: { type: String },
     fechaCarga: { type: Date },
+    sucursal: {type: String},
     fechaPartida: { type: Date }
 }, {
     timestamps: true

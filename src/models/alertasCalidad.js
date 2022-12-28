@@ -6,6 +6,7 @@ const alertasCalidad = new Schema({
     folio: {type: String},
     fecha: {type: String},
     cliente: {type: String},
+    sucursal: {type: String},
     descripcionPieza: {type: String},
     descripcionNoConformidad: {type: String},
     cantidadPiezasCondicion: {type: String},

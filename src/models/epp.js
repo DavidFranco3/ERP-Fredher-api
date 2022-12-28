@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 
 const epp = new Schema({
     nombre: { type: String },
-    descripcion: { type: String }
+    descripcion: { type: String },
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

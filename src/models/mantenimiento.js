@@ -5,6 +5,7 @@ const mantenimiento = new Schema({
     nombreEquipo: { type: String },
     departamento: { type: String },
     planMantenimiento: { type: String },
+    sucursal: {type: String},
     descripcion: { type: String }
 }, {
     timestamps: true

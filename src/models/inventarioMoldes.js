@@ -9,6 +9,7 @@ const inventarioMoldes = new Schema({
     cavMolde: {type: String},
     noParte: {type: String},
     descripcion: {type: String},
+    sucursal: {type: String},
     statusMolde: {type: String},
 }, {
     timestamps: true

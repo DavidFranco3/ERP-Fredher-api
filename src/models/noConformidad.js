@@ -14,6 +14,7 @@ const noConformidad = new Schema({
     responsables: {type: String},
     fechaCierre: {type: String},
     statusFinal: {type: String},
+    sucursal: {type: String},
     evidencia: {
         imagen1: {type: String},
         imagen2: {type: String},

@@ -10,6 +10,7 @@ const controlParametrosMaquina = new Schema({
         tonelaje: {type: String},
         cliente: {type: String},
         noParte: {type: String},
+        sucursal: {type: String},
         descripcion: {type: String},
         noCavidades: {type: String},
         tiempoCiclo: {type: String},

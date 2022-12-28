@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const almacen = new Schema({
     folio: { type: String },
     factura: { type: String },
+    sucursal: {type: String},
     entradaSinfactura: { type: String },
     fechaEntrada: { type: String },
     fechaSalida: { type: String },

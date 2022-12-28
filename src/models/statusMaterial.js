@@ -33,7 +33,8 @@ const statusMaterial = new Schema({
     descripcion: {type: String},
     comentarios: {type: String},
     condicion: {type: String},
-    observaciones: {type: String}
+    observaciones: {type: String},
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

@@ -8,6 +8,7 @@ const salidaPlanta = new Schema({
     destino: { type: String },
     autoriza: { type: String },
     fechaEntrega: { type: String },
+    sucursal: {type: String},
     articulos: { type: Array, default: [] }
 }, {
     timestamps: true

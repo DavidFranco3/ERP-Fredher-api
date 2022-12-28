@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const logCalidad = new Schema({
     descripcion: { type: String },
+    sucursal: {type: String},
     imagenes: { type: Array, default: [] },
 }, {
     timestamps: true

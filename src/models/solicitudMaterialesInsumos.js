@@ -9,7 +9,8 @@ const solicitudMaterialesInsumos = new Schema({
     nombreSolicitante: {type: String},
     fechaRequiere: {type: String},
     areaSolicitante: {type: String},
-    productos: {type: Array, default:[]}
+    productos: {type: Array, default:[]},
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

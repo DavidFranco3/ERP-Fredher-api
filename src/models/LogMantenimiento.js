@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const logMantenimiento = new Schema({
     descripcion: { type: String },
     imagenes: { type: Array, default: [] },
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

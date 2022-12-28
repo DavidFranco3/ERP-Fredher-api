@@ -11,6 +11,7 @@ const programaMantenimientoPreventivo = new Schema({
     noMoldeInterno: {type: String},
     noCavidades: {type: String},
     tipoColada: {type: String},
+    sucursal: {type: String},
     dimensionesMoldes: {type: String},
     condicion1: {type: Array, default: [] },
     condicion2: {type: Array, default: [] },

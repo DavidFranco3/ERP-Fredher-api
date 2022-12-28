@@ -5,6 +5,7 @@ const clientes = new Schema({
     nombre: { type: String },
     rfc: { type: String },
     regimenFiscal: {type: String},
+    sucursal: {type: String},
     direccion : {
         calle: { type: String },
         numeroExterior: { type: String },

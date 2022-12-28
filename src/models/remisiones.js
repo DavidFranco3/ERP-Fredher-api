@@ -6,6 +6,7 @@ const remisiones = new Schema({
     idOrdenVenta: { type: String },
     idCliente: { type: String },
     productos: { type: Array, default: [] },
+    sucursal: {type: String},
     subtotales: {
         cantidad: { type: String },
         precio: { type: String },

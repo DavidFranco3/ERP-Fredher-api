@@ -6,6 +6,7 @@ const etiquetasPrimeraPieza = new Schema({
     fecha: {type: String},
     noMaquina: {type: String},
     descripcionProducto: {type: String},
+    sucursal: {type: String},
     cliente: {type: String},
     peso: {type: String},
     noCavidades: {type: String},

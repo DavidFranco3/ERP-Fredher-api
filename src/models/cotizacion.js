@@ -6,6 +6,7 @@ const cotizacion = new Schema({
     fechaCreacion: { type: String },
     vendedor: { type: String },
     referencia: { type: String },
+    sucursal: {type: String},
     cliente: { type: String },
     comentarios: { type: String },
     status: { type: String }

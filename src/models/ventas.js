@@ -15,6 +15,7 @@ const ventas = new Schema({
     lugarEntrega: { type: String },
     cotizacion: {type: String},
     ordenCompra: {type: String},
+    sucursal: {type: String},
     total: {type: String},
     productos: { type: Array, default: [] },
     status: { type: String }

@@ -6,6 +6,7 @@ const pigmento = new Schema({
     nombre: {type: String},
     um: {type: String},
     precio: {type: String},
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

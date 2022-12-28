@@ -7,6 +7,7 @@ const requerimientosEspecificos = new Schema({
     fecha: { type: String },
     cliente: { type: String },
     nombreQuienElabora: { type: String },
+    sucursal: {type: String},
     especificacionesProducto: { type: Array, default: [] },
     materiales: { type: Array, default: [] },
     maquinaria: { type: Array, default: [] },

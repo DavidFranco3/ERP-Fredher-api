@@ -5,6 +5,7 @@ const riesgos = new Schema({
     nombre: { type: String },
     departamento: { type: String },
     descripcion: { type: String },
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

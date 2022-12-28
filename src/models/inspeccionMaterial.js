@@ -19,6 +19,7 @@ const InspeccionMaterial = new Schema({
     certificadoCalidad: {type: String},
     empaqueDañado: {type: String},
     resultadoFinalInspeccion: {type: String},
+    sucursal: {type: String},
     observaciones: {type: String}
 }, {
     timestamps: true

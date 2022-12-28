@@ -6,6 +6,7 @@ const etiquetasIdentificacionPT = new Schema({
     folio: {type: String},
     fecha: {type: String},
     descripcion: {type: String},
+    sucursal: {type: String},
     noParte: {type: String},
     noOrden: {type: String},
     cantidad: {type: String},

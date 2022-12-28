@@ -6,6 +6,7 @@ const maquinas = new Schema({
     marca: {type: String},
     tonelaje: {type: String},
     lugar: {type: String},
+    sucursal: {type: String},
     status: {type: String}
 }, {
     timestamps: true

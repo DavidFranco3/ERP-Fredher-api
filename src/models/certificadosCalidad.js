@@ -7,6 +7,7 @@ const certificadosCalidad = new Schema({
     fecha: {type: String},
     noOrdenInterna: {type: String},
     tamañoLote: {type: String},
+    sucursal: {type: String},
     cliente: {type: String},
     descripcion: {type: String},
     numeroParte: {type: String},

@@ -17,6 +17,7 @@ const proveedores = new Schema({
     lugarRecoleccion: { type: String },
     horario: { type: String },
     comentarios: { type: String },
+    sucursal: {type: String},
     estado: { type: String }
 }, {
     timestamps: true

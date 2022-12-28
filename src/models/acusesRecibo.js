@@ -5,7 +5,8 @@ const acusesRecibo = new Schema({
     folio: { type: String },
     idRemision: { type: String },
     productos: { type: Array, default: [] },
-    cantidadAceptada: { type: String }
+    cantidadAceptada: { type: String },
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

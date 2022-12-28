@@ -25,7 +25,8 @@ const tiquet = new Schema({
     logistica: {
         numero: { type: String },
         descripcion: { type: String }
-    }
+    },
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

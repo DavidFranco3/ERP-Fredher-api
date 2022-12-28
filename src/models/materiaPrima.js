@@ -7,6 +7,7 @@ const materiaPrima = new Schema({
     descripcion: {type: String},
     precio: {type: String},
     um: {type: String},
+    sucursal: {type: String},
     proveedor: {type: String}
 }, {
     timestamps: true

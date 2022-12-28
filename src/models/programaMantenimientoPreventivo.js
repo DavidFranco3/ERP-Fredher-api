@@ -5,6 +5,7 @@ const programaMantenimientoPreventivo = new Schema({
     item: {type: String},
     ident: {type: String},
     descripcion: {type: String},
+    sucursal: {type: String},
     fechasProgramadas: {
         semana1: {type: String},
         semana2: {type: String},

@@ -14,6 +14,7 @@ const programaMaquina = new Schema({
     stdTurno: {type: String},
     turnosRequeridos: {type: String},
     fechaInicial: {type: String},
+    sucursal: {type: String},
     fechaFinal: {type: String}
 }, {
     timestamps: true

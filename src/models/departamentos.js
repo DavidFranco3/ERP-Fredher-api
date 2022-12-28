@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const departamentos = new Schema({
-    nombre: { type: String }
+    nombre: { type: String },
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

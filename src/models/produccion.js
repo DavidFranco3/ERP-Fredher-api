@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const produccion = new Schema({
     item: {type: String},
     folio: {type: String},
+    sucursal: {type: String},
     generalidades: {
         ordenVenta: {type: String},
         noInterno: {type: String},

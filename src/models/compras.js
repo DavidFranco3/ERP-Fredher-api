@@ -6,6 +6,7 @@ const compras = new Schema({
     folio: { type: String },
     proveedor: { type: String },
     requisicion: {type: String},
+    sucursal: {type: String},
     nombreProveedor: {type: String},
     fechaSolicitud: { type: String },
     fechaEntrega: { type: String },

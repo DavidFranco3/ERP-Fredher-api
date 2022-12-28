@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const logistica = new Schema({
     embarqueEnviado: { type: String },
     fechaPartida: { type: Date },
+    sucursal: {type: String},
     costos: {
         costoIda: { type: String },
         costoVuelta: { type: String },

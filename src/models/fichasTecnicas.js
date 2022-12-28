@@ -8,6 +8,7 @@ const fichasTecnicas = new Schema({
     fechaElaboracion: {type: String},
     realizo: {type: String},
     autorizo: {type: String},
+    sucursal: {type: String},
     fichas: {type: Array, default: []},
 }, {
     timestamps: true

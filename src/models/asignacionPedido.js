@@ -7,6 +7,7 @@ const AsignacionPedido = new Schema({
    cliente: { type: String },
    fechaPedido: { type: String },
    fechaEntrega: { type: String },
+   sucursal: {type: String},
    producto: { type: String },
    um: { type: String },
    cantidadPedida: { type: String },

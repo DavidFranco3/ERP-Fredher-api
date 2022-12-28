@@ -7,6 +7,7 @@ const verificacionEmbarques = new Schema({
     remisionFactura: { type: String },
     fecha: { type: String },
     comentarios: { type: String },
+    sucursal: {type: String},
     encargadoEmbarque: { type: String },
     vbCalidad: { type: String },
     productos: { type: Array, default: [] }

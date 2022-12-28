@@ -6,6 +6,7 @@ const ordenProduccion = new Schema({
     nombreProducto: { type: String },
     noParte: { type: String },
     cliente: { type: String },
+    sucursal: {type: String},
     planeacion: {
         op: { type: String },
         fecha: { type: String },

@@ -6,6 +6,7 @@ const existenciasAlmacen = new Schema({
     descripcion: { type: String },
     um: { type: String },
     inventarioInicial: { type: String },
+    sucursal: {type: String},
     movimientos: { type: Array, default: [] }
 }, {
     timestamps: true

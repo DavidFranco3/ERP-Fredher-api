@@ -6,6 +6,7 @@ const almacenPT = new Schema({
     folioAlmacen: { type: String },
     folioMP: { type: String },
     nombre: { type: String },
+    sucursal: {type: String},
     descripcion: { type: String },
     um: { type: String },
     movimientos: { type: Array, default: [] },

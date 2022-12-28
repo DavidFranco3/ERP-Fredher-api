@@ -7,6 +7,7 @@ const insumos = new Schema({
     descripcion: {type: String},
     um: {type: String},
     precio: {type: String},
+    sucursal: {type: String},
     proveedor: {type: String}
 }, {
     timestamps: true

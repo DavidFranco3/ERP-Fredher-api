@@ -5,6 +5,7 @@ const empaques = new Schema({
     folio: { type: String },
     nombre: {type: String},
     um: {type: String},
+    sucursal: {type: String},
     precio: {type: String},
 }, {
     timestamps: true

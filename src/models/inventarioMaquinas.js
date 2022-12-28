@@ -12,6 +12,7 @@ const inventarioMaquinas = new Schema({
     marca: {type: String},
     modelo: {type: String},
     noSerie: {type: String},
+    sucursal: {type: String},
     fechaAdquisicion: {type: String},
 }, {
     timestamps: true

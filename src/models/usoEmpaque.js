@@ -6,6 +6,7 @@ const usoEmpaque = new Schema({
     descripcion: { type: String },
     inventarioInicial: { type: String },
     productos: { type: Array, default: [] },
+    sucursal: {type: String},
     cantidadxUM: { type: Array, default: [] }
 }, {
     timestamps: true

@@ -7,6 +7,7 @@ const estudiosFactibilidad = new Schema({
     fechaCreacion: { type: String },
     noParte: { type: String },
     nombreProducto: { type: String },
+    sucursal: {type: String},
     seccion1: {
         precioProducto: { type: String },
         utilidadProducto: { type: String },

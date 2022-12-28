@@ -6,6 +6,7 @@ const carpetasProceso = new Schema({
     folio: {type: String},
     fecha: {type: String},
     nombre: {type: String},
+    sucursal: {type: String},
     descripcion: {type: String},
     generalidades: {
         cliente: {type: String},

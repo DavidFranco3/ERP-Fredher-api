@@ -8,6 +8,7 @@ const reporteDevoluciones = new Schema({
     empresa: { type: String },
     factura: { type: String },
     devoluciones: { type: Array, default: [] },
+    sucursal: {type: String},
     pdf: { type: String }
 }, {
     timestamps: true

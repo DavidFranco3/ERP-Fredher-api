@@ -5,6 +5,7 @@ const MatrizProductos = new Schema({
     noInterno: { type: String },
     cliente: { type: String },
     nombreCliente: { type: String },
+    sucursal: {type: String},
     datosMolde: {
         noMolde: { type: String },
         cavMolde: { type: String },

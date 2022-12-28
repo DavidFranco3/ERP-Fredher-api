@@ -10,6 +10,7 @@ const recepcionMaterialInsumos = new Schema({
     precio: {type: String},
     cantidad: {type: String},
     valorTotal: {type: String},
+    sucursal: {type: String},
     productos: { type: Array, default: [] }
 }, {
     timestamps: true

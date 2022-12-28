@@ -6,6 +6,7 @@ const mes = new Schema({
     mes: {type: String},
     dias: {type: String},
     noMaquinas: {type: String},
+    sucursal: {type: String},
 }, {
     timestamps: true
 });

@@ -7,6 +7,7 @@ const calidad = new Schema({
     noParte: { type: String },
     noOrden: { type: String },
     cantidad: { type: String },
+    sucursal: {type: String},
     turno: { type: String },
     operador: { type: String },
     supervisor: { type: String },

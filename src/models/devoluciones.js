@@ -8,6 +8,7 @@ const devoluciones = new Schema({
     cliente: { type: String },
     rfc: { type: String },
     almacen: { type: String },
+    sucursal: {type: String},
     razonSocial: { type: String },
     comentario: { type: String },
     vendedor: { type: String },

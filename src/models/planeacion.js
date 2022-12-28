@@ -6,6 +6,7 @@ const planeacion = new Schema({
     ordenVenta: { type: String },
     productos: { type: Array, default: [] },
     detalles: { type: Array, default: [] },
+    sucursal: {type: String},
     estado: { type: String }
 }, {
     timestamps: true

@@ -8,6 +8,7 @@ const notificaciones = new Schema({
     departamentoEmite: { type: String },
     departamentoDestino: { type: String },
     estadoNotificacion: { type: String },
+    sucursal: {type: String},
     status: { type: String }
 }, {
     timestamps: true

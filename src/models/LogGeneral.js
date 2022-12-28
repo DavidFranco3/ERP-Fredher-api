@@ -8,6 +8,7 @@ const logSistema = new Schema({
     dispositivo: { type: String },
     ip: { type: String },
     descripcion: { type: String },
+    sucursal: {type: String},
     detalles: {
         mensaje: { type: String },
         datos: { type: Array, default: [] }

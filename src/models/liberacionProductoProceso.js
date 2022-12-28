@@ -14,6 +14,7 @@ const liberacionProductoProceso = new Schema({
     hojaLiberacion: {type: String},
     elaboro: {type: String},
     turno: {type: String},
+    sucursal: {type: String},
     proceso: {type: Array, default: []},
     producto: {type: Array, default: []},
     observaciones: {type: String},

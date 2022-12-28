@@ -6,6 +6,7 @@ const etiquetasMolido = new Schema({
     folio: {type: String},
     fecha: {type: String},
     turno: {type: String},
+    sucursal: {type: String},
     descripcion: {type: String},
     color: {type: String},
     peso: {type: String},

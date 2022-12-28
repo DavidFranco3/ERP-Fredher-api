@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const ordenMantenimiento = new Schema({
     item: {type: String},
     folio: {type: String},
+    sucursal: {type: String},
     solicitud: {
         fecha: {type: String},
         hora: {type: String},

@@ -8,6 +8,7 @@ const tracking = new Schema({
     fechaElaboracion: { type: String },
     fechaEntrega: { type: String },
     status: { type: String },
+    sucursal: {type: String},
     indicador: { type: String }
 }, {
     timestamps: true
