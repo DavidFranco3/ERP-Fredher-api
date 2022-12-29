@@ -9,15 +9,16 @@ router.post("/registro", async (req, res) => {
     // Inicia validacion para no registrar usuarios con el mismo correo electronico
     const busqueda = await cotizacion.findOne({ folio });
 
-    if(busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe una cotización con este folio"});
-    } else  {
+    if (busqueda && busqueda.folio === folio) {
+        return res.status(401).json({ mensaje: "Ya existe una cotización con este folio" });
+    } else {
         const cotizacionRegistrar = cotizacion(req.body);
         await cotizacionRegistrar
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Registro exitoso de la cotizacion", datos: data
+                    {
+                        mensaje: "Registro exitoso de la cotizacion", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -30,16 +31,18 @@ router.get("/total", async (req, res) => {
     await cotizacion
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Obtener todas las cotizaciones
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await cotizacion
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -47,26 +50,26 @@ router.get("/listar", async (req, res) => {
 // Obtener el actual de folio de cotizacion
 router.get("/obtenerNoCotizacion", async (req, res) => {
     const registroCotizaciones = await cotizacion.find().count();
-    if(registroCotizaciones === 0){
-        res.status(200).json({ folioCotizacion: "FD-1"})
+    if (registroCotizaciones === 0) {
+        res.status(200).json({ folioCotizacion: "FD-1" })
     } else {
-        const ultimaCotizacion = await cotizacion.findOne().sort( { _id: -1 } );
+        const ultimaCotizacion = await cotizacion.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaCotizacion.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ folioCotizacion: "FD-" + tempFolio.toString().padStart(1, 0)})
+        res.status(200).json({ folioCotizacion: "FD-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
 // Listar paginando las cotizaciones
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await cotizacion
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -88,7 +91,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await cotizacion
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Cotización eliminada"}))
+        .then((data) => res.status(200).json({ mensaje: "Cotización eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -99,7 +102,7 @@ router.put("/cambiarStatus/:id", async (req, res) => {
 
     await cotizacion
         .updateOne({ _id: id }, { $set: { status } })
-        .then((data) => res.status(200).json({ mensaje: "Cotización actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Cotización actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -110,7 +113,7 @@ router.put("/actualizar/:id", async (req, res) => {
 
     await cotizacion
         .updateOne({ _id: id }, { $set: { folio, vendedor, referencia, cliente, comentarios, correoAtencion, partida, status } })
-        .then((data) => res.status(200).json({ mensaje: "Datos de la cotización actualizados"}))
+        .then((data) => res.status(200).json({ mensaje: "Datos de la cotización actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
 

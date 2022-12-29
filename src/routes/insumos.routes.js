@@ -25,8 +25,10 @@ router.post("/registro", async (req, res) => {
 
 // Para obtener el listado de insumos primas
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await insumo
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));

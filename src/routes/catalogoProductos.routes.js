@@ -12,7 +12,7 @@ router.post("/registro", async (req, res) => {
     const busqueda = await productos.findOne({ noInterno });
 
     if (busqueda && busqueda.noInterno === noInterno) {
-        return res.status(401).json({mensaje: "Ya existe un producto con este número interno"});
+        return res.status(401).json({ mensaje: "Ya existe un producto con este número interno" });
     } else {
         const productoRegistrar = productos(req.body);
         await productoRegistrar
@@ -27,9 +27,11 @@ router.post("/registro", async (req, res) => {
 
 // Para obtener el listado de productos
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await productos
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -38,11 +40,11 @@ router.get("/listar", async (req, res) => {
 router.get("/listarActivos", async (req, res) => {
     await productos
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => {
             const tempdata = []
             map(data, (producto, index) => {
-                if(producto.estado === "true") {
+                if (producto.estado === "true") {
                     tempdata.push(producto)
                 }
             })
@@ -55,11 +57,11 @@ router.get("/listarActivos", async (req, res) => {
 router.get("/listarObsoletos", async (req, res) => {
     await productos
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => {
             const tempdata = []
             map(data, (producto, index) => {
-                if(producto.estado === "false") {
+                if (producto.estado === "false") {
                     tempdata.push(producto)
                 }
             })
@@ -69,15 +71,15 @@ router.get("/listarObsoletos", async (req, res) => {
 });
 
 // Para listar los productos paginando
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await productos
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -89,7 +91,7 @@ router.get("/total", async (req, res) => {
     await productos
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -129,7 +131,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await productos
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Producto eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Producto eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -139,7 +141,7 @@ router.put("/actualizarestado/:id", async (req, res) => {
     const { estado } = req.body;
     await productos
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -149,7 +151,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { noInterno, cliente, datosMolde, noParte, descripcion, datosPieza, materiaPrima, estado } = req.body;
     await productos
         .updateOne({ _id: id }, { $set: { noInterno, cliente, datosMolde, noParte, descripcion, datosPieza, materiaPrima, estado } })
-        .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

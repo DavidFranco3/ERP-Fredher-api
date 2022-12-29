@@ -3,7 +3,7 @@ const router = express.Router();
 const logs = require("../models/LogGeneral");
 
 // Registro de logs
-router.post("/registro",  async (req, res) => {
+router.post("/registro", async (req, res) => {
     const { folio } = req.body;
     //console.log(folio)
 
@@ -11,14 +11,15 @@ router.post("/registro",  async (req, res) => {
     const busqueda = await logs.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe un log con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe un log con este folio" });
     } else {
         const logRegistrar = logs(req.body);
         await logRegistrar
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Seguimiento del usuario iniciado ...."
+                    {
+                        mensaje: "Seguimiento del usuario iniciado ...."
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,9 +28,11 @@ router.post("/registro",  async (req, res) => {
 
 // Obtener todos los logs
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await logs
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -37,25 +40,25 @@ router.get("/listar", async (req, res) => {
 // Obtener el numero de log
 router.get("/obtenerNoLog", async (req, res) => {
     const registroLogs = await logs.find().count();
-    if(registroLogs === 0){
-        res.status(200).json({ noLog: "1"})
+    if (registroLogs === 0) {
+        res.status(200).json({ noLog: "1" })
     } else {
-        const ultimoLog = await logs.findOne().sort( { _id: -1 } );
+        const ultimoLog = await logs.findOne().sort({ _id: -1 });
         const tempFolio = parseInt(ultimoLog.folio) + 1
-        res.status(200).json({ noLog: tempFolio.toString()})
+        res.status(200).json({ noLog: tempFolio.toString() })
     }
 });
 
 // Listar los logs paginando
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await logs
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -67,7 +70,7 @@ router.get("/total", async (req, res) => {
     await logs
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -87,7 +90,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await logs
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Log eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Log eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -97,7 +100,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { usuario, correo, dispositivo, descripcion, detalles } = req.body;
     await logs
         .updateOne({ _id: id }, { $set: { usuario, correo, dispositivo, descripcion, detalles } })
-        .then((data) => res.status(200).json({ mensaje: "Seguimiento del log actualizado ...."}))
+        .then((data) => res.status(200).json({ mensaje: "Seguimiento del log actualizado ...." }))
         .catch((error) => res.json({ message: error }));
 });
 

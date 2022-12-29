@@ -28,8 +28,10 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todos los clientes
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await clientes
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -101,9 +103,9 @@ router.put("/actualizar/:id", async (req, res) => {
         return res.status(401).json({ mensaje: "Ya existe un cliente con este RFC" });
     } else {
         await clientes
-        .updateOne({ _id: id }, { $set: { nombre, apellidos, razonSocial, rfc, regimenFiscal, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, tipo, correo, telefonoCelular, telefonoFijo, foto } })
-        .then((data) => res.status(200).json({ mensaje: "Datos actualizados" }))
-        .catch((error) => res.json({ message: error }));
+            .updateOne({ _id: id }, { $set: { nombre, apellidos, razonSocial, rfc, regimenFiscal, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, tipo, correo, telefonoCelular, telefonoFijo, foto } })
+            .then((data) => res.status(200).json({ mensaje: "Datos actualizados" }))
+            .catch((error) => res.json({ message: error }));
     }
 });
 

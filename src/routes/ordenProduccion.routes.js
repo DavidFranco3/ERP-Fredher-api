@@ -11,14 +11,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await ordenProduccion.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe una orden de producción con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe una orden de producción con este folio" });
     } else {
         const produccion = ordenProduccion(req.body);
         await produccion
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado una orden de producción", datos: data
+                    {
+                        mensaje: "Se ha registrado una orden de producción", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,9 +28,11 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todas las ordenes de producción
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await ordenProduccion
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -37,26 +40,26 @@ router.get("/listar", async (req, res) => {
 // Obtener el folio actual
 router.get("/obtenerFolioActual", async (req, res) => {
     const registroOrdenesProduccion = await ordenProduccion.find().count();
-    if(registroOrdenesProduccion === 0){
-        res.status(200).json({ noInterno: "1"})
+    if (registroOrdenesProduccion === 0) {
+        res.status(200).json({ noInterno: "1" })
     } else {
-        const ultimaOrden = await ordenProduccion.findOne().sort( { _id: -1 } );
+        const ultimaOrden = await ordenProduccion.findOne().sort({ _id: -1 });
         //console.log(ultimaOrden)
         const tempFolio = parseInt(ultimaOrden.folio) + 1
-        res.status(200).json({ noInterno: tempFolio.toString()})
+        res.status(200).json({ noInterno: tempFolio.toString() })
     }
 });
 
 // Listar paginando las ordenes de producción registradas
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await ordenProduccion
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -68,7 +71,7 @@ router.get("/total", async (req, res) => {
     await ordenProduccion
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -98,7 +101,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await ordenProduccion
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Orden de producción eliminada"}))
+        .then((data) => res.status(200).json({ mensaje: "Orden de producción eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -108,7 +111,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { noInterno, nombreProducto, noParte, cliente, planeacion, BOM, piezas, materiaPrima, notasImportantes, elaboro } = req.body;
     await ordenProduccion
         .updateOne({ _id: id }, { $set: { noInterno, nombreProducto, noParte, cliente, planeacion, BOM, piezas, materiaPrima, notasImportantes, elaboro } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la orden de producción actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Información de la orden de producción actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

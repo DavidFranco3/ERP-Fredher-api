@@ -30,8 +30,10 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todos las compras
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await compras
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));

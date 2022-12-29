@@ -11,14 +11,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await salidaPlanta.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe una salida de planta con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe una salida de planta con este folio" });
     } else {
         const salida = salidaPlanta(req.body);
         await salida
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado una salida de planta", datos: data
+                    {
+                        mensaje: "Se ha registrado una salida de planta", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,9 +28,11 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todas las salidas de planta registradas
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await salidaPlanta
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -37,26 +40,26 @@ router.get("/listar", async (req, res) => {
 // Obtener el folio actual
 router.get("/obtenerFolioActual", async (req, res) => {
     const registroSalidasPlanta = await salidaPlanta.find().count();
-    if(registroSalidasPlanta === 0){
-        res.status(200).json({ noSalida: "1"})
+    if (registroSalidasPlanta === 0) {
+        res.status(200).json({ noSalida: "1" })
     } else {
-        const ultimaSalidaPlanta = await salidaPlanta.findOne().sort( { _id: -1 } );
+        const ultimaSalidaPlanta = await salidaPlanta.findOne().sort({ _id: -1 });
         //console.log(ultimaSalidaPlanta)
         const tempFolio = parseInt(ultimaSalidaPlanta.folio) + 1
-        res.status(200).json({ noSalida: tempFolio.toString()})
+        res.status(200).json({ noSalida: tempFolio.toString() })
     }
 });
 
 // Listar paginando las salidas de planta registradas
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await salidaPlanta
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -68,7 +71,7 @@ router.get("/total", async (req, res) => {
     await salidaPlanta
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -98,7 +101,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await salidaPlanta
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Salida de planta eliminada"}))
+        .then((data) => res.status(200).json({ mensaje: "Salida de planta eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -108,7 +111,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { sp, fechaSalida, destino, autoriza, fechaEntrega, articulos } = req.body;
     await salidaPlanta
         .updateOne({ _id: id }, { $set: { sp, fechaSalida, destino, autoriza, fechaEntrega, articulos } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la salida de planta actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Información de la salida de planta actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -11,14 +11,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await existenciasAlmacen.findOne({ clave });
 
     if (busqueda && busqueda.clave === clave) {
-        return res.status(401).json({mensaje: "Ya existe una existencia en almacen con esta clave"});
+        return res.status(401).json({ mensaje: "Ya existe una existencia en almacen con esta clave" });
     } else {
         const salida = existenciasAlmacen(req.body);
         await salida
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado una existencia en almacen", datos: data
+                    {
+                        mensaje: "Se ha registrado una existencia en almacen", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,23 +28,25 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todas las existencias de almacen
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await existenciasAlmacen
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Listar paginando las existencias de almacen
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await existenciasAlmacen
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -55,7 +58,7 @@ router.get("/total", async (req, res) => {
     await existenciasAlmacen
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -85,7 +88,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await existenciasAlmacen
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Existencia de almacen eliminada"}))
+        .then((data) => res.status(200).json({ mensaje: "Existencia de almacen eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -95,7 +98,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { movimientos } = req.body;
     await existenciasAlmacen
         .updateOne({ _id: id }, { $set: { movimientos } })
-        .then((data) => res.status(200).json({ mensaje: "Información de existencias actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Información de existencias actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

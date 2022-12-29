@@ -3,7 +3,7 @@ const router = express.Router();
 const almacenPT = require("../models/almacenPT");
 
 // Registro inicial de PT en almacen
-router.post("/registroInicial",  async (req, res) => {
+router.post("/registroInicial", async (req, res) => {
     const { folioAlmacen } = req.body;
 
     // Inicia validacion para no registrar datos con el mismo folio
@@ -25,35 +25,37 @@ router.post("/registroInicial",  async (req, res) => {
 
 // Obtener todos los registros de PT del almacen
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await almacenPT
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 router.get("/obtenerFolio", async (req, res) => {
     const registroAlmacenPT = await almacenPT.find().count();
-    if(registroAlmacenPT === 0){
-        res.status(200).json({ noAlmacen: "APT-1"})
+    if (registroAlmacenPT === 0) {
+        res.status(200).json({ noAlmacen: "APT-1" })
     } else {
-        const ultimaAlmacen = await almacenPT.findOne().sort( { _id: -1 } );
+        const ultimaAlmacen = await almacenPT.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaAlmacen.folioAlmacen.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noAlmacen: "APT-" + tempFolio.toString().padStart(1, 0)})
+        res.status(200).json({ noAlmacen: "APT-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
 // Listar paginando el PT del almacen
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await almacenPT
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -65,7 +67,7 @@ router.get("/total", async (req, res) => {
     await almacenPT
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -107,7 +109,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await almacenPT
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Atención!, Materia PT eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Atención!, Materia PT eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -117,7 +119,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { descripcion, um, estado } = req.body;
     await almacenPT
         .updateOne({ _id: id }, { $set: { descripcion, um, estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del PT actualizado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado del PT actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -127,7 +129,7 @@ router.put("/registraMovimientos/:id", async (req, res) => {
     const { movimientos, existenciasOV, existenciasStock, existenciasTotales } = req.body;
     await almacenPT
         .updateOne({ _id: id }, { $set: { movimientos, existenciasOV, existenciasStock, existenciasTotales } })
-        .then((data) => res.status(200).json({ mensaje: "Se ha registrado un movimiento de PT del almacén", datos: data}))
+        .then((data) => res.status(200).json({ mensaje: "Se ha registrado un movimiento de PT del almacén", datos: data }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -137,7 +139,7 @@ router.put("/modificaExistencias/:id", async (req, res) => {
     const { existenciasOV, existenciasStock, existenciasTotales } = req.body;
     await almacenPT
         .updateOne({ _id: id }, { $set: { existenciasOV, existenciasStock, existenciasTotales } })
-        .then((data) => res.status(200).json({ mensaje: "Existencias de PT del almacén actualizadas"}))
+        .then((data) => res.status(200).json({ mensaje: "Existencias de PT del almacén actualizadas" }))
         .catch((error) => res.json({ message: error }));
 });
 

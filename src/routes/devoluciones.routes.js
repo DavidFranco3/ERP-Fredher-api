@@ -11,14 +11,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await devoluciones.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe una devolución con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe una devolución con este folio" });
     } else {
         const datosDevolucion = devoluciones(req.body);
         await datosDevolucion
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado la devolución", datos: data
+                    {
+                        mensaje: "Se ha registrado la devolución", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,9 +28,11 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todas las devoluciones
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await devoluciones
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -37,26 +40,26 @@ router.get("/listar", async (req, res) => {
 // Obtener el numero de devolución actual
 router.get("/obtenerNoDevolucion", async (req, res) => {
     const registrodevoluciones = await devoluciones.find().count();
-    if(registrodevoluciones === 0){
-        res.status(200).json({ noDevolucion: "D-1"})
+    if (registrodevoluciones === 0) {
+        res.status(200).json({ noDevolucion: "D-1" })
     } else {
-        const ultimaDevolucion = await devoluciones.findOne().sort( { _id: -1 } );
+        const ultimaDevolucion = await devoluciones.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaCotizacion.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noDevolucion: "D-" + tempFolio.toString().padStart(1, 0)})
+        res.status(200).json({ noDevolucion: "D-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
 // Listar las devoluciones paginandolos
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await devoluciones
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -68,7 +71,7 @@ router.get("/total", async (req, res) => {
     await devoluciones
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -88,7 +91,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await devoluciones
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Decolución eliminada"}))
+        .then((data) => res.status(200).json({ mensaje: "Decolución eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -98,7 +101,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { factura, empresa, cliente, rfc, almacen, razonSocial, comentario, vendedor, domicilio, productos, totales } = req.body;
     await devoluciones
         .updateOne({ _id: id }, { $set: { factura, empresa, cliente, rfc, almacen, razonSocial, comentario, vendedor, domicilio, productos, totales } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la devolución actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Información de la devolución actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -11,14 +11,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await usoEmpaques.findOne({ clave });
 
     if (busqueda && busqueda.clave === clave) {
-        return res.status(401).json({mensaje: "Ya existe un uso de empaque con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe un uso de empaque con este folio" });
     } else {
         const empaque = usoEmpaques(req.body);
         await empaque
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado un uso de empaque", datos: data
+                    {
+                        mensaje: "Se ha registrado un uso de empaque", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,23 +28,25 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todos los usos de empaque registrados
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await usoEmpaques
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Listar paginando los usos de empaque registrados
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await usoEmpaques
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -55,7 +58,7 @@ router.get("/total", async (req, res) => {
     await usoEmpaques
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -85,7 +88,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await usoEmpaques
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Uso de empaque eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Uso de empaque eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -95,7 +98,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { descripcion, inventarioInicial, productos, cantidadxUM } = req.body;
     await usoEmpaques
         .updateOne({ _id: id }, { $set: { descripcion, inventarioInicial, productos, cantidadxUM } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la salida de planta actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Información de la salida de planta actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

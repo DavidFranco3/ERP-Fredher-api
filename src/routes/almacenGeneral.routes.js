@@ -46,8 +46,10 @@ router.post("/registroGestion", async (req, res) => {
 
 // Obtener todos los registros del almacén general
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await almacenGeneral
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));

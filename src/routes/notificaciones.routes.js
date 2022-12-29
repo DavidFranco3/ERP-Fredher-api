@@ -9,7 +9,8 @@ router.post("/registro", async (req, res) => {
         .save()
         .then((data) =>
             res.status(200).json(
-                { mensaje: "Registro exitoso de la notificación"
+                {
+                    mensaje: "Registro exitoso de la notificación"
                 }
             ))
         .catch((error) => res.json({ message: error }));
@@ -18,23 +19,25 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todos los notificaciones
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await notificaciones
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Listar paginando las notificaciones
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await notificaciones
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -47,7 +50,7 @@ router.get("/listarPorDepartamento", async (req, res) => {
 
     await notificaciones
         .find({ departamentoDestino: departamento })
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -67,7 +70,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await notificaciones
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Notificación eliminada"}))
+        .then((data) => res.status(200).json({ mensaje: "Notificación eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -77,7 +80,7 @@ router.put("/cambiarEstado/:id", async (req, res) => {
     const { estadoNotificacion } = req.body;
     await notificaciones
         .updateOne({ _id: id }, { $set: { estadoNotificacion } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la notificación actualizado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado de la notificación actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -86,7 +89,7 @@ router.put("/eliminaVista/:id", async (req, res) => {
     const { status } = req.body;
     await notificaciones
         .updateOne({ _id: id }, { $set: { status } })
-        .then((data) => res.status(200).json({ mensaje: "Notificación eliminada de la vista"}))
+        .then((data) => res.status(200).json({ mensaje: "Notificación eliminada de la vista" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -97,7 +100,7 @@ router.put("/actualizar/:id", async (req, res) => {
 
     await notificaciones
         .updateOne({ _id: id }, { $set: { titulo, url, detalles, departamentoEmite, departamentoDestino } })
-        .then((data) => res.status(200).json({ mensaje: "Datos de la notificación actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Datos de la notificación actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

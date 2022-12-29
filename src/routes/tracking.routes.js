@@ -3,7 +3,7 @@ const router = express.Router();
 const tracking = require("../models/tracking");
 
 // Registro de nuevo tracking
-router.post("/registro",  async (req, res) => {
+router.post("/registro", async (req, res) => {
     const { folio } = req.body;
     //console.log(folio)
 
@@ -11,14 +11,15 @@ router.post("/registro",  async (req, res) => {
     const busqueda = await tracking.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe un tracking con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe un tracking con este folio" });
     } else {
         const pedidos = tracking(req.body);
         await pedidos
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado el tracking", datos: data
+                    {
+                        mensaje: "Se ha registrado el tracking", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,9 +28,11 @@ router.post("/registro",  async (req, res) => {
 
 // Obtener todos los tracking
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await tracking
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -37,13 +40,13 @@ router.get("/listar", async (req, res) => {
 // Obtener el numero de tracking actual
 router.get("/obtenerNoTracking", async (req, res) => {
     const registroTracking = await tracking.find().count();
-    if(registroTracking === 0){
-        res.status(200).json({ noTracking: "1"})
+    if (registroTracking === 0) {
+        res.status(200).json({ noTracking: "1" })
     } else {
-        const ultimoTracking = await tracking.findOne().sort( { _id: -1 } );
+        const ultimoTracking = await tracking.findOne().sort({ _id: -1 });
         console.log(ultimoTracking)
         const tempFolio = parseInt(ultimoTracking.folio) + 1
-        res.status(200).json({ noTracking: tempFolio.toString()})
+        res.status(200).json({ noTracking: tempFolio.toString() })
     }
 });
 
@@ -52,21 +55,21 @@ router.get("/total", async (req, res) => {
     await tracking
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Listar los tracking paginandolos
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await tracking
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -98,7 +101,7 @@ router.delete("/eliminar/:ordenVenta", async (req, res) => {
     const { ordenVenta } = req.params;
     await tracking
         .remove({ ordenVenta: ordenVenta })
-        .then((data) => res.status(200).json({ status: "Tracking eliminado"}))
+        .then((data) => res.status(200).json({ status: "Tracking eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -108,7 +111,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { status, indicador } = req.body;
     await tracking
         .updateOne({ _id: id }, { $set: { status, indicador } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del tracking actualizado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado del tracking actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -118,7 +121,7 @@ router.put("/actualizar/:ordenVenta", async (req, res) => {
     const { status, indicador } = req.body;
     await tracking
         .updateOne({ ordenVenta: ordenVenta }, { $set: { status, indicador } })
-        .then((data) => res.status(200).json({ mensaje: "Información del tracking"}))
+        .then((data) => res.status(200).json({ mensaje: "Información del tracking" }))
         .catch((error) => res.json({ message: error }));
 });
 

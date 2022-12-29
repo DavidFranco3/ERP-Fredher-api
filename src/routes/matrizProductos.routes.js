@@ -27,8 +27,10 @@ router.post("/registro", async (req, res) => {
 
 // Para obtener el listado de productos
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await productos
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -135,8 +137,8 @@ router.put("/actualizarestado/:id", async (req, res) => {
 
 // Para actualizar los datos de los productos
 router.put("/actualizar/:id", async (req, res) => {
-        const { id } = req.params;
-        const { noInterno, cliente, nombreCliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } = req.body;
+    const { id } = req.params;
+    const { noInterno, cliente, nombreCliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } = req.body;
 
     const busqueda = await productos.findOne({ noInterno });
 
@@ -144,9 +146,9 @@ router.put("/actualizar/:id", async (req, res) => {
         return res.status(401).json({ mensaje: "Ya existe un producto con este número interno" });
     } else {
         await productos
-        .updateOne({ _id: id }, { $set: { noInterno, cliente, nombreCliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } })
-        .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada" }))
-        .catch((error) => res.json({ message: error }));
+            .updateOne({ _id: id }, { $set: { noInterno, cliente, nombreCliente, datosMolde, noParte, descripcion, precioVenta, datosPieza, materiaPrima, pigmentoMasterBach, tiempoCiclo, noOperadores, piezasxHora, piezasxTurno, materialEmpaque, opcionMaquinaria, estado } })
+            .then((data) => res.status(200).json({ mensaje: "Informacion del producto actualizada" }))
+            .catch((error) => res.json({ message: error }));
     }
 });
 

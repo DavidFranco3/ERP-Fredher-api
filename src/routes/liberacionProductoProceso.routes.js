@@ -3,7 +3,7 @@ const router = express.Router();
 const liberacionProductoProceso = require("../models/liberacionProductoProceso");
 
 // Registro de pedidos
-router.post("/registro",  async (req, res) => {
+router.post("/registro", async (req, res) => {
     const { folio } = req.body;
     //console.log(folio)
 
@@ -11,14 +11,15 @@ router.post("/registro",  async (req, res) => {
     const busqueda = await liberacionProductoProceso.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe una liberacion con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe una liberacion con este folio" });
     } else {
         const liberacion = liberacionProductoProceso(req.body);
         await liberacion
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado la liberacion", datos: data
+                    {
+                        mensaje: "Se ha registrado la liberacion", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,9 +28,11 @@ router.post("/registro",  async (req, res) => {
 
 // Obtener todos los pedidos
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await liberacionProductoProceso
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -37,13 +40,13 @@ router.get("/listar", async (req, res) => {
 // Obtener el numero de liberacion
 router.get("/obtenerNoLiberacion", async (req, res) => {
     const RegistroStatus = await liberacionProductoProceso.find().count();
-    if(RegistroStatus === 0){
-        res.status(200).json({ noLiberacion: "HLP-1"})
+    if (RegistroStatus === 0) {
+        res.status(200).json({ noLiberacion: "HLP-1" })
     } else {
-        const ultimaLiberacion = await liberacionProductoProceso.findOne().sort( { _id: -1 } );
+        const ultimaLiberacion = await liberacionProductoProceso.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaLiberacion.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noLiberacion: "HLP-" + tempFolio.toString().padStart(1, 0)})
+        res.status(200).json({ noLiberacion: "HLP-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
@@ -62,15 +65,15 @@ router.get("/obtenerItem", async (req, res) => {
     }
 });
 // Listar las liberaciones registradas
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await liberacionProductoProceso
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -92,7 +95,7 @@ router.get("/total", async (req, res) => {
     await liberacionProductoProceso
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -112,7 +115,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await liberacionProductoProceso
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -122,7 +125,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { status } = req.body;
     await liberacionProductoProceso
         .updateOne({ _id: id }, { $set: { status } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del status de la liberacion actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado del status de la liberacion actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -132,7 +135,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { cliente, descripcionPieza, noParteMolde, procesoRealizado, fechaElaboracion, fechaArranqueMolde, noMaquina, hojaLiberacion, elaboro, turno, proceso, producto, observaciones } = req.body;
     await liberacionProductoProceso
         .updateOne({ _id: id }, { $set: { cliente, descripcionPieza, noParteMolde, procesoRealizado, fechaElaboracion, fechaArranqueMolde, noMaquina, hojaLiberacion, elaboro, turno, proceso, producto, observaciones } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la liberacion actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Información de la liberacion actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

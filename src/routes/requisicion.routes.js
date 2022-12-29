@@ -28,8 +28,10 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todas las requisiciones
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await requisicion
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -96,13 +98,13 @@ router.get("/obtenerDatos/:folio", async (req, res) => {
 // Obtener el numero de folio de la compra actual
 router.get("/obtenerNoRequisicion", async (req, res) => {
     const registroRequisicion = await requisicion.find().count();
-    if(registroRequisicion === 0){
-        res.status(200).json({ noRequisicion: "REQ-1"})
+    if (registroRequisicion === 0) {
+        res.status(200).json({ noRequisicion: "REQ-1" })
     } else {
-        const ultimaRequisicion = await requisicion.findOne().sort( { _id: -1 } );
+        const ultimaRequisicion = await requisicion.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaRequisicion.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noRequisicion: "REQ-" + tempFolio.toString().padStart(1, 0)})
+        res.status(200).json({ noRequisicion: "REQ-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 

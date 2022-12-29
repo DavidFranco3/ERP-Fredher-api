@@ -11,14 +11,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await estudioFactibilidad.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe un estudio de factibilidad con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe un estudio de factibilidad con este folio" });
     } else {
         const pedidos = estudioFactibilidad(req.body);
         await pedidos
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado el estudio de factibilidad", datos: data
+                    {
+                        mensaje: "Se ha registrado el estudio de factibilidad", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,9 +28,11 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todos los estudios de factibilidad
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await estudioFactibilidad
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -37,26 +40,26 @@ router.get("/listar", async (req, res) => {
 // Obtener el folio actual
 router.get("/obtenerFolioActual", async (req, res) => {
     const registroEstudiosFactibilidad = await estudioFactibilidad.find().count();
-    if(registroEstudiosFactibilidad === 0){
-        res.status(200).json({ noEstudio: "1"})
+    if (registroEstudiosFactibilidad === 0) {
+        res.status(200).json({ noEstudio: "1" })
     } else {
-        const ultimoEstudio = await estudioFactibilidad.findOne().sort( { _id: -1 } );
+        const ultimoEstudio = await estudioFactibilidad.findOne().sort({ _id: -1 });
         //console.log(ultimaEstudio)
         const tempFolio = parseInt(ultimoEstudio.folio) + 1
-        res.status(200).json({ noEstudio: tempFolio.toString()})
+        res.status(200).json({ noEstudio: tempFolio.toString() })
     }
 });
 
 // Listar paginando los estudios registrados
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await estudioFactibilidad
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -68,7 +71,7 @@ router.get("/total", async (req, res) => {
     await estudioFactibilidad
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -98,7 +101,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await estudioFactibilidad
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Estudio de factibilidad eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estudio de factibilidad eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -108,7 +111,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { folio, cliente, fechaCreacion, noParte, nombreProducto, seccion1, seccion2, seccion3, seccion4, seccion5, resultados } = req.body;
     await estudioFactibilidad
         .updateOne({ _id: id }, { $set: { folio, cliente, fechaCreacion, noParte, nombreProducto, seccion1, seccion2, seccion3, seccion4, seccion5, resultados } })
-        .then((data) => res.status(200).json({ mensaje: "Información del estudio de factibilidad actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Información del estudio de factibilidad actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

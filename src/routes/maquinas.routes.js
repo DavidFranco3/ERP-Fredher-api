@@ -10,7 +10,7 @@ router.post("/registro", async (req, res) => {
     const busqueda = await maquina.findOne({ numeroMaquina });
 
     if (busqueda && busqueda.item === item) {
-        return res.status(401).json({mensaje: "Ya existe registros de la maquina"});
+        return res.status(401).json({ mensaje: "Ya existe registros de la maquina" });
     } else {
         const maquinaRegistrar = maquina(req.body);
         await maquinaRegistrar
@@ -25,23 +25,25 @@ router.post("/registro", async (req, res) => {
 
 // Para obtener el listado de maquinas
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await maquina
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Para listar paginando de las maquinas
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await maquina
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -53,7 +55,7 @@ router.get("/total", async (req, res) => {
     await maquina
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -83,7 +85,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await maquina
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Maquina eliminada"}))
+        .then((data) => res.status(200).json({ mensaje: "Maquina eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -93,7 +95,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { status } = req.body;
     await maquina
         .updateOne({ _id: id }, { $set: { status } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la maquina actualizado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado de la maquina actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -103,7 +105,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { numeroMaquina, marca, tonelaje, lugar } = req.body;
     await maquina
         .updateOne({ _id: id }, { $set: { numeroMaquina, marca, tonelaje, lugar } })
-        .then((data) => res.status(200).json({ mensaje: "Maquina actualizada"}))
+        .then((data) => res.status(200).json({ mensaje: "Maquina actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

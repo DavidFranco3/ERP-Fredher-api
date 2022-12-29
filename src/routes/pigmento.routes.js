@@ -25,8 +25,10 @@ router.post("/registro", async (req, res) => {
 
 // Para obtener el listado de pigmento
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await pigmento
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));

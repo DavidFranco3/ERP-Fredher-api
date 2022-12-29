@@ -3,13 +3,14 @@ const router = express.Router();
 const departamentos = require("../models/departamentos");
 
 // Registro de departamentos
-router.post("/registro",  async (req, res) => {
+router.post("/registro", async (req, res) => {
     const departamento = departamentos(req.body);
     await departamento
         .save()
         .then((data) =>
             res.status(200).json(
-                { mensaje: "Registro exitoso del departamento"
+                {
+                    mensaje: "Registro exitoso del departamento"
                 }
             ))
         .catch((error) => res.json({ message: error }));
@@ -17,9 +18,11 @@ router.post("/registro",  async (req, res) => {
 
 // Obtener todos los departamentos
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await departamentos
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -28,21 +31,21 @@ router.get("/total", async (req, res) => {
     await departamentos
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Listar paginando los departamentos registrados
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await departamentos
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -64,7 +67,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await departamentos
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ status: "Departamento eliminado"}))
+        .then((data) => res.status(200).json({ status: "Departamento eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -74,7 +77,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { nombre } = req.body;
     await departamentos
         .updateOne({ _id: id }, { $set: { nombre } })
-        .then((data) => res.status(200).json({ status: "Departamento actualizado"}))
+        .then((data) => res.status(200).json({ status: "Departamento actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 

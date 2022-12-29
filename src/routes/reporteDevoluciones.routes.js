@@ -11,14 +11,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await reporteDevoluciones.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya existe un reporte con este folio"});
+        return res.status(401).json({ mensaje: "Ya existe un reporte con este folio" });
     } else {
         const datosReporteDevolucion = reporteDevoluciones(req.body);
         await datosReporteDevolucion
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Se ha registrado el reporte", datos: data
+                    {
+                        mensaje: "Se ha registrado el reporte", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -46,9 +47,11 @@ router.post("/generaPDF", async (req, res) => {
 
 // Obtener todos los reportes de devolución
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await reporteDevoluciones
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -56,13 +59,13 @@ router.get("/listar", async (req, res) => {
 // Obtener el numero de reporte de devolución actual
 router.get("/obtenerNoReporte", async (req, res) => {
     const registroreporteDevoluciones = await reporteDevoluciones.find().count();
-    if(registroreporteDevoluciones === 0){
-        res.status(200).json({ noReporte: "1"})
+    if (registroreporteDevoluciones === 0) {
+        res.status(200).json({ noReporte: "1" })
     } else {
-        const ultimoReporte = await reporteDevoluciones.findOne().sort( { _id: -1 } );
+        const ultimoReporte = await reporteDevoluciones.findOne().sort({ _id: -1 });
 
         const tempFolio = parseInt(ultimoReporte.folio) + 1
-        res.status(200).json({ noReporte: tempFolio.toString()})
+        res.status(200).json({ noReporte: tempFolio.toString() })
     }
 });
 
@@ -71,11 +74,11 @@ router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await reporteDevoluciones
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -87,7 +90,7 @@ router.get("/total", async (req, res) => {
     await reporteDevoluciones
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -107,7 +110,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await reporteDevoluciones
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Reporte eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Reporte eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 

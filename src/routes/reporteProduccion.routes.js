@@ -10,14 +10,15 @@ router.post("/registro", async (req, res) => {
     const busqueda = await reportesProduccion.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({mensaje: "Ya se ha registrado un reporte de producción con ese folio"});
-    } else  {
+        return res.status(401).json({ mensaje: "Ya se ha registrado un reporte de producción con ese folio" });
+    } else {
         const datosReporteProduccion = reportesProduccion(req.body);
         await datosReporteProduccion
             .save()
             .then((data) =>
                 res.status(200).json(
-                    { mensaje: "Registro exitoso del reporte de producción"
+                    {
+                        mensaje: "Registro exitoso del reporte de producción"
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -27,23 +28,25 @@ router.post("/registro", async (req, res) => {
 
 // Obtener todos los reportes de producción
 router.get("/listar", async (req, res) => {
+    const { sucursal } = req.query;
+
     await reportesProduccion
-        .find()
-        .sort( { _id: -1 } )
+        .find({ sucursal })
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Listar paginando los reportes de producción
-router.get("/listarPaginando" , async (req, res) => {
+router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
-    const skip = ( pagina - 1) * limite;
+    const skip = (pagina - 1) * limite;
 
     await reportesProduccion
         .find()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
         .then((data) => res.json(data))
@@ -55,7 +58,7 @@ router.get("/total", async (req, res) => {
     await reportesProduccion
         .find()
         .count()
-        .sort( { _id: -1 } )
+        .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -73,12 +76,12 @@ router.get("/obtener/:id", async (req, res) => {
 // Obtener el actual de folio del reporte de producción
 router.get("/obtenerNoReporte", async (req, res) => {
     const registroReportesProduccion = await reportesProduccion.find().count();
-    if(registroReportesProduccion === 0){
-        res.status(200).json({ folio: "1"})
+    if (registroReportesProduccion === 0) {
+        res.status(200).json({ folio: "1" })
     } else {
-        const ultimoReporte = await reportesProduccion.findOne().sort( { _id: -1 } );
+        const ultimoReporte = await reportesProduccion.findOne().sort({ _id: -1 });
         const tempFolio = parseInt(ultimoReporte.folio) + 1
-        res.status(200).json({ folio: tempFolio.toString()})
+        res.status(200).json({ folio: tempFolio.toString() })
     }
 });
 
@@ -87,7 +90,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await reportesProduccion
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Reporte eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Reporte eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -97,8 +100,8 @@ router.put("/actualizar/:id", async (req, res) => {
     const { supervisor, turno, asistencias, faltas, fecha, registros, eficienciaGeneralMaquinas, observacionesTurno } = req.body;
 
     await reportesProduccion
-        .updateOne({ _id: id }, { $set: {  supervisor, turno, asistencias, faltas, fecha, registros, eficienciaGeneralMaquinas, observacionesTurno } })
-        .then((data) => res.status(200).json({ mensaje: "Datos del reporte de producción actualizados"}))
+        .updateOne({ _id: id }, { $set: { supervisor, turno, asistencias, faltas, fecha, registros, eficienciaGeneralMaquinas, observacionesTurno } })
+        .then((data) => res.status(200).json({ mensaje: "Datos del reporte de producción actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
 
