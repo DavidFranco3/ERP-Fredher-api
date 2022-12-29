@@ -38,8 +38,10 @@ router.get("/listar", async (req, res) => {
 
 // Para obtener el listado de productos activos
 router.get("/listarActivos", async (req, res) => {
+    const { sucursal } = req.query;
+    
     await productos
-        .find()
+        .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => {
             const tempdata = []

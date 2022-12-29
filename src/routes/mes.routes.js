@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mes = require("../models/mes");
+const meses = require("../models/mes");
 
 // Registro de pedidos
 router.post("/registro", async (req, res) => {
@@ -8,12 +8,12 @@ router.post("/registro", async (req, res) => {
     //console.log(folio)
 
     // Inicia validacion para no registrar meses con el mismo folio
-    const busqueda = await mes.findOne({ folio });
+    const busqueda = await meses.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
         return res.status(401).json({ mensaje: "Ya existe un mes con este folio" });
     } else {
-        const pedidos = mes(req.body);
+        const pedidos = meses(req.body);
         await pedidos
             .save()
             .then((data) =>
@@ -30,7 +30,7 @@ router.post("/registro", async (req, res) => {
 router.get("/listar", async (req, res) => {
     const { sucursal } = req.query;
 
-    await mes
+    await meses
         .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -39,11 +39,11 @@ router.get("/listar", async (req, res) => {
 
 // Obtener el numero de mes
 router.get("/obtenerNoMes", async (req, res) => {
-    const registroMeses = await mes.find().count();
+    const registroMeses = await meses.find().count();
     if (registroMeses === 0) {
         res.status(200).json({ noMes: "PRD-1" })
     } else {
-        const ultimoMes = await mes.findOne().sort({ _id: -1 });
+        const ultimoMes = await meses.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimoMes.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
         res.status(200).json({ noMes: "PRD-" + tempFolio.toString().padStart(1, 0) })
@@ -57,7 +57,7 @@ router.get("/listarPaginando", async (req, res) => {
 
     const skip = (pagina - 1) * limite;
 
-    await mes
+    await meses
         .find()
         .sort({ _id: -1 })
         .skip(skip)
@@ -70,7 +70,7 @@ router.get("/listarPaginando", async (req, res) => {
 router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
-    await mes
+    await meses
         .findById(id)
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -78,7 +78,7 @@ router.get("/obtener/:id", async (req, res) => {
 
 // Obtener el total de registros de la colección
 router.get("/total", async (req, res) => {
-    await mes
+    await meses
         .find()
         .count()
         .sort({ _id: -1 })
@@ -90,7 +90,7 @@ router.get("/total", async (req, res) => {
 router.get("/obtenerDatosPedido/:folio", async (req, res) => {
     const { folio } = req.params;
 
-    await mes
+    await meses
         .findOne({ folio })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -99,7 +99,7 @@ router.get("/obtenerDatosPedido/:folio", async (req, res) => {
 // Borrar un pedido
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
-    await mes
+    await meses
         .remove({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
         .catch((error) => res.json({ message: error }));
@@ -109,7 +109,7 @@ router.delete("/eliminar/:id", async (req, res) => {
 router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
-    await mes
+    await meses
         .updateOne({ _id: id }, { $set: { status } })
         .then((data) => res.status(200).json({ mensaje: "Estado del mes actualizado" }))
         .catch((error) => res.json({ message: error }));
@@ -119,7 +119,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { mes, dias, noMaquinas } = req.body;
-    await mes
+    await meses
         .updateOne({ _id: id }, { $set: { mes, dias, noMaquinas } })
         .then((data) => res.status(200).json({ mensaje: "Información del pedido de venta actualizada" }))
         .catch((error) => res.json({ message: error }));

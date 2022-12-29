@@ -10,7 +10,7 @@ router.post("/registro", async (req, res) => {
     const busqueda = await maquina.findOne({ numeroMaquina });
 
     if (busqueda && busqueda.item === item) {
-        return res.status(401).json({ mensaje: "Ya existe registros de la maquina" });
+        return res.status(401).json({ mensaje: "Ya existe una maquina con este numero" });
     } else {
         const maquinaRegistrar = maquina(req.body);
         await maquinaRegistrar
