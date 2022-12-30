@@ -74,7 +74,6 @@ app.use(require("./src/routes/login.routes"))
 app.use("/usuarios/", verifyToken, require("./src/routes/usuarios.routes"));
 app.use("/departamentos/", verifyToken, require("./src/routes/departamentos.routes"));
 app.use("/clientes", verifyToken, require("./src/routes/clientes.routes"));
-app.use("/almacen", verifyToken, require("./src/routes/almacen.routes"));
 app.use("/ventas", verifyToken, require("./src/routes/pedidoVenta.routes"));
 app.use("/materiasPrimas", verifyToken, require("./src/routes/materiaPrima.routes"));
 app.use("/catalogoProductos", verifyToken, require("./src/routes/catalogoProductos.routes"));
@@ -125,6 +124,7 @@ app.use("/pigmento/", verifyToken, require("./src/routes/pigmento.routes"));
 app.use("/empaques/", verifyToken, require("./src/routes/empaques.routes"));
 app.use("/recepcionMaterialInsumos/", verifyToken, require("./src/routes/recepcionMaterialInsumos.routes"));
 app.use("/sucursales/", verifyToken, require("./src/routes/sucursales.routes"));
+app.use("/gestionAlmacen/", verifyToken, require("./src/routes/gestionAlmacen.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
