@@ -125,6 +125,7 @@ app.use("/empaques/", verifyToken, require("./src/routes/empaques.routes"));
 app.use("/recepcionMaterialInsumos/", verifyToken, require("./src/routes/recepcionMaterialInsumos.routes"));
 app.use("/sucursales/", verifyToken, require("./src/routes/sucursales.routes"));
 app.use("/gestionAlmacen/", verifyToken, require("./src/routes/gestionAlmacen.routes"));
+app.use("/almecenes/", verifyToken, require("./src/routes/almacenes.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
