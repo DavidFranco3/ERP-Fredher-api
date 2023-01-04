@@ -175,9 +175,9 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 // Registro de entrada y salida de almacen de materias primas
 router.put("/registraMovimientos/:id", async (req, res) => {
     const { id } = req.params;
-    const { movimientos, cantidadExistencia } = req.body;
+    const { fecha, movimientos, cantidadExistencia } = req.body;
     await almacenes
-        .updateOne({ _id: id }, { $set: { movimientos, cantidadExistencia } })
+        .updateOne({ _id: id }, { $set: { fecha, movimientos, cantidadExistencia } })
         .then((data) => res.status(200).json({ mensaje: "Se ha registrado un movimiento del articulo", datos: data }))
         .catch((error) => res.json({ message: error }));
 });
