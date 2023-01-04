@@ -7,6 +7,7 @@ const almacenes = new Schema({
     idArticulo: { type: String },
     folioArticulo: { type: String },
     nombreArticulo: { type: String },
+    tipo: {type: String},
     sucursal: { type: String },
     almacen: { type: String },
     um: { type: String },

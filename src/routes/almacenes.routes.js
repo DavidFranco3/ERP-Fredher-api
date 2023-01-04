@@ -46,10 +46,12 @@ router.post("/registroGestion", async (req, res) => {
 
 // Obtener todas las materias primas del almacen
 router.get("/listar", async (req, res) => {
-    const { sucursal } = req.query;
+    const { sucursal, almacen } = req.query;
+
+    console.log(sucursal, almacen)
 
     await almacenes
-        .find({ sucursal })
+        .find({ sucursal, almacen })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
