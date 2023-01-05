@@ -208,10 +208,10 @@ router.put("/registraMovimientos/:id", async (req, res) => {
 // Modifica existencias de materia prima
 router.put("/modificaExistencias/:id", async (req, res) => {
     const { id } = req.params;
-    const { nombreArticulo, um } = req.body;
+    const { idArticulo, folioArticulo, nombreArticulo, tipo, fecha, descripcion, um, cantidadExistencia } = req.body;
     await almacenes
-        .updateOne({ _id: id }, { $set: { nombreMP, um } })
-        .then((data) => res.status(200).json({ mensaje: "Existencias del articulo actualizados" }))
+        .updateOne({ _id: id }, { $set: { idArticulo, folioArticulo, nombreArticulo, tipo, fecha, descripcion, um, cantidadExistencia } })
+        .then((data) => res.status(200).json({ mensaje: "Articulo actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
