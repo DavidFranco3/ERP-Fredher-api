@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const almacenes = require("../models/almacenes");
+const { map } = require("lodash");
 
 // Registro inicial de MP en almacen
 router.post("/registroInicial", async (req, res) => {
@@ -47,8 +48,6 @@ router.post("/registroGestion", async (req, res) => {
 // Obtener todas las materias primas del almacen
 router.get("/listar", async (req, res) => {
     const { sucursal, almacen } = req.query;
-
-    console.log(sucursal, almacen)
 
     await almacenes
         .find({ sucursal, almacen })
@@ -149,6 +148,30 @@ router.get("/listarMovimientosArticulos/:folio", async (req, res) => {
         .findOne({ folio })
         .then((data) => {
             res.status(200).json(data.movimientos.reverse())
+        })
+        .catch((error) => res.json({ message: error }));
+});
+
+router.get("/listarMovimientos", async (req, res) => {
+    const { sucursal, almacen } = req.query;
+    
+    await almacenes
+        .find({ sucursal, almacen })
+        .sort({ _id: -1 })
+        .then((data) => {
+            // res.json(data)
+            let datosMovimientos = []
+
+            map(data, (articulo, indexPrincipal) => {
+                //console.log(data)
+                map(articulo.movimientos, (movimientos, index) => {
+                    const { fecha, articulo, sucursal, um, tipo, almacen, descripcion, cantidadExistencia } = movimientos;
+                    console.log(movimientos)
+                    datosMovimientos.push({ fecha: fecha, articulo: articulo, sucursal: sucursal, um: um, tipo: tipo, almacen: almacen, descripcion: descripcion, cantidadExistencia: cantidadExistencia })
+                    console.log(datosMovimientos)
+                })
+            })
+            res.status(200).json(datosMovimientos)
         })
         .catch((error) => res.json({ message: error }));
 });
