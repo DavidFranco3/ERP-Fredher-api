@@ -12,6 +12,7 @@ const almacenes = new Schema({
     almacen: { type: String },
     fecha: { type: String },
     um: { type: String },
+    descripcion: { type: String },
     movimientos: { type: Array, default: [] },
     cantidadExistencia: { type: String },
     estado: { type: String }
