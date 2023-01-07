@@ -129,6 +129,7 @@ app.use("/almacenes/", verifyToken, require("./src/routes/almacenes.routes"));
 app.use("/programaProduccion/", verifyToken, require("./src/routes/programaProduccion.routes"));
 app.use("/razonesSociales/", verifyToken, require("./src/routes/razonesSociales.routes"));
 app.use("/unidadesMedida/", verifyToken, require("./src/routes/unidadesMedida.routes"));
+app.use("/clasificacionMateriales/", verifyToken, require("./src/routes/clasificacionMateriales.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
