@@ -15,8 +15,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-      "@sentry/node": "7.28.1",
-      "@sentry/tracing": "7.28.1",
+      "@sentry/node": "7.29.0",
+      "@sentry/tracing": "7.29.0",
       "atob": "^2.1.2",
       "base64-stream": "1.0.0",
       "cors": "2.8.5",

@@ -126,6 +126,8 @@ app.use("/recepcionMaterialInsumos/", verifyToken, require("./src/routes/recepci
 app.use("/sucursales/", verifyToken, require("./src/routes/sucursales.routes"));
 app.use("/gestionAlmacen/", verifyToken, require("./src/routes/gestionAlmacen.routes"));
 app.use("/almacenes/", verifyToken, require("./src/routes/almacenes.routes"));
+app.use("/programaProduccion/", verifyToken, require("./src/routes/programaProduccion.routes"));
+app.use("/razonesSociales/", verifyToken, require("./src/routes/razonesSociales.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());

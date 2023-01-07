@@ -7,12 +7,11 @@ const sucursales = new Schema({
         calle: { type: String },
         numeroExterior: { type: String },
         numeroInterior: { type: String },
-        colonia: { type: String },
         municipio: { type: String },
         estado: { type: String },
-        otro: {type: String},
-        pais: {type: String},
+        codigoPostal: { type: String },
     },
+    sucursal: {type: String},
     estadoSucursal: { type: String }
 }, {
     timestamps: true
