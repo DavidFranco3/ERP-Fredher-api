@@ -99,12 +99,12 @@ router.get("/obtenerPorFolio/:folio", async (req, res) => {
 router.get("/obtenerFolio", async (req, res) => {
     const registroAlmacenMP = await materiaPrima.find().count();
     if (registroAlmacenMP === 0) {
-        res.status(200).json({ noMP: "MP-1" })
+        res.status(200).json({ noMP: "MAT-1" })
     } else {
         const ultimaMP = await materiaPrima.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaMP.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noMP: "MP-" + tempFolio.toString().padStart(1, 0) })
+        res.status(200).json({ noMP: "MAT-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
@@ -120,9 +120,9 @@ router.delete("/eliminar/:id", async (req, res) => {
 // Para actualizar los datos de los materias primas
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { descripcion, precio, um, proveedor } = req.body;
+    const { descripcion, precio, um, tipoMaterial, proveedor } = req.body;
     await materiaPrima
-        .updateOne({ _id: id }, { $set: { descripcion, precio, um, proveedor } })
+        .updateOne({ _id: id }, { $set: { descripcion, precio, um, tipoMaterial, proveedor } })
         .then((data) => res.status(200).json({ mensaje: "Material actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
