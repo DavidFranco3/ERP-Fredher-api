@@ -7,6 +7,7 @@ const clientes = new Schema({
     tipoPersona: { type: String },
     regimenFiscal: { type: String },
     sucursal: { type: String },
+    count: { type: String },
     direccion: {
         calle: { type: String },
         numeroExterior: { type: String },
@@ -20,6 +21,7 @@ const clientes = new Schema({
     correo: { type: String },
     telefonoCelular: { type: String },
     telefonoFijo: { type: String },
+    domiciliosEntrega: { type: Array, default: [] },
     estadoCliente: { type: String }
 }, {
     timestamps: true
