@@ -4,12 +4,12 @@ const clasificacionMateriales = require("../models/clasificacionMateriales");
 
 // Registro de administradores
 router.post("/registro", async (req, res) => {
-    const { nombre } = req.body;
+    const { nombre, sucursal } = req.body;
 
     // Inicia validacion para no registrar materiales con el mismo nombre
     const busqueda = await clasificacionMateriales.findOne({ nombre });
 
-    if (busqueda && busqueda.nombre === nombre) {
+    if (busqueda && busqueda.nombre === nombre && busqueda.sucursal === sucursal) {
         return res.status(401).json({mensaje: "Ya existe un material con este nombre"});
     } else  {
         const materialRegistrar = clasificacionMateriales(req.body);

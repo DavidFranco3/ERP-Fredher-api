@@ -4,12 +4,12 @@ const sucursales = require("../models/sucursales");
 
 // Registro de administradores
 router.post("/registro", async (req, res) => {
-    const { nombre } = req.body;
+    const { nombre, sucursal } = req.body;
 
     // Inicia validacion para no registrar sucursales con el mismo nombre
     const busqueda = await sucursales.findOne({ nombre });
 
-    if (busqueda && busqueda.nombre === nombre) {
+    if (busqueda && busqueda.nombre === nombre && busqueda.sucursal === sucursal) {
         return res.status(401).json({mensaje: "Ya existe una sucursal con este nombre"});
     } else  {
         const sucursalRegistrar = sucursales(req.body);

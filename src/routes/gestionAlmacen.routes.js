@@ -4,12 +4,12 @@ const gestionAlmacen = require("../models/gestionAlmacen");
 
 // Registro de administradores
 router.post("/registro", async (req, res) => {
-    const { nombre } = req.body;
+    const { nombre, sucursal } = req.body;
 
     // Inicia validacion para no registrar almacenes con el mismo nombre
     const busqueda = await gestionAlmacen.findOne({ nombre });
 
-    if (busqueda && busqueda.nombre === nombre) {
+    if (busqueda && busqueda.nombre === nombre && busqueda.sucursal === sucursal) {
         return res.status(401).json({ mensaje: "Ya existe un almacen con este nombre" });
     } else {
         const almacenRegistrar = gestionAlmacen(req.body);

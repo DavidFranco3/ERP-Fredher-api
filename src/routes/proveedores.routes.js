@@ -4,13 +4,13 @@ const proveedor = require("../models/proveedores");
 
 // Registro de proveedores
 router.post("/registro", async (req, res) => {
-    const { rfc } = req.body;
+    const { rfc, sucursal } = req.body;
     //console.log(folio)
 
     // Inicia validacion para no registrar acuses de recibo con el mismo folio
     const busqueda = await proveedor .findOne({ rfc });
 
-    if (busqueda && busqueda.rfc === rfc) {
+    if (busqueda && busqueda.rfc === rfc && busqueda.sucursal === sucursal) {
         return res.status(401).json({ mensaje: "Ya existe un proveedor con este RFC" });
     } else {
         const proveedoresRegistrados = proveedor (req.body);

@@ -4,12 +4,12 @@ const clasificacionMaquinaria = require("../models/clasificacionMaquinaria");
 
 // Registro de administradores
 router.post("/registro", async (req, res) => {
-    const { nombre } = req.body;
+    const { nombre, sucursal } = req.body;
 
     // Inicia validacion para no registrar maquinarias con el mismo nombre
     const busqueda = await clasificacionMaquinaria.findOne({ nombre });
 
-    if (busqueda && busqueda.nombre === nombre) {
+    if (busqueda && busqueda.nombre === nombre && busqueda.sucursal === sucursal) {
         return res.status(401).json({mensaje: "Ya existe una maquina con este nombre"});
     } else  {
         const maquinariaRegistrar = clasificacionMaquinaria(req.body);

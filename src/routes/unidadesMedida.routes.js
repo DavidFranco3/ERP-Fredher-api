@@ -4,12 +4,12 @@ const unidadesMedida = require("../models/unidadesMedida");
 
 // Registro de administradores
 router.post("/registro", async (req, res) => {
-    const { nombre } = req.body;
+    const { nombre, sucursal } = req.body;
 
     // Inicia validacion para no registrar UM con el mismo nombre
     const busqueda = await unidadesMedida.findOne({ nombre });
 
-    if (busqueda && busqueda.nombre === nombre) {
+    if (busqueda && busqueda.nombre === nombre && busqueda.sucursal === sucursal) {
         return res.status(401).json({mensaje: "Ya existe una UM con este nombre"});
     } else  {
         const umRegistrar = unidadesMedida(req.body);

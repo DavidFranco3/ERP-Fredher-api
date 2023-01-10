@@ -4,12 +4,12 @@ const maquina = require("../models/maquinas");
 
 // Para registrar maquinas
 router.post("/registro", async (req, res) => {
-    const { numeroMaquina } = req.body;
+    const { numeroMaquina, sucursal } = req.body;
     //console.log(folio)
     // Inicia validacion para no registrar productos con el mismo numero interno
     const busqueda = await maquina.findOne({ numeroMaquina });
 
-    if (busqueda && busqueda.item === item) {
+    if (busqueda && busqueda.numeroMaquina === numeroMaquina && busqueda.sucursal === sucursal) {
         return res.status(401).json({ mensaje: "Ya existe una maquina con este numero" });
     } else {
         const maquinaRegistrar = maquina(req.body);
@@ -102,9 +102,9 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 // Para actualizar los datos de las maquinas
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { numeroMaquina, marca, tonelaje, lugar } = req.body;
+    const {  numeroMaquina, tipoMaquina, nombre, marca, modelo, noSerie,lugar, fechaAdquisicion } = req.body;
     await maquina
-        .updateOne({ _id: id }, { $set: { numeroMaquina, marca, tonelaje, lugar } })
+        .updateOne({ _id: id }, { $set: {  numeroMaquina, tipoMaquina, nombre, marca, modelo, noSerie,lugar, fechaAdquisicion } })
         .then((data) => res.status(200).json({ mensaje: "Maquina actualizada" }))
         .catch((error) => res.json({ message: error }));
 });

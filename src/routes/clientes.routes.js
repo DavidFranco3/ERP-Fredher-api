@@ -4,13 +4,13 @@ const clientes = require("../models/clientes");
 
 // Registro de clientes
 router.post("/registro", async (req, res) => {
-    const { rfc } = req.body;
+    const { rfc, sucursal } = req.body;
     //console.log(folio)
 
     // Inicia validacion para no registrar acuses de recibo con el mismo folio
     const busqueda = await clientes.findOne({ rfc });
 
-    if (busqueda && busqueda.rfc === rfc) {
+    if (busqueda && busqueda.rfc === rfc && busqueda.sucursal === sucursal) {
         return res.status(401).json({ mensaje: "Ya existe un cliente con este RFC" });
     } else {
         const clientesRegistrados = clientes(req.body);

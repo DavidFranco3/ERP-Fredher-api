@@ -5,13 +5,13 @@ const { map } = require("lodash")
 
 // Para registrar productos
 router.post("/registro", async (req, res) => {
-    const { noInterno } = req.body;
+    const { noInterno, sucursal } = req.body;
     //console.log(folio)
 
     // Inicia validacion para no registrar productos con el mismo numero interno
     const busqueda = await productos.findOne({ noInterno });
 
-    if (busqueda && busqueda.noInterno === noInterno) {
+    if (busqueda && busqueda.noInterno === noInterno && busqueda.sucursal === sucursal) {
         return res.status(401).json({ mensaje: "Ya existe un producto con este número interno" });
     } else {
         const productoRegistrar = productos(req.body);
