@@ -74,13 +74,14 @@ app.use(require("./src/routes/login.routes"))
 app.use("/usuarios/", verifyToken, require("./src/routes/usuarios.routes"));
 app.use("/departamentos/", verifyToken, require("./src/routes/departamentos.routes"));
 app.use("/clientes", verifyToken, require("./src/routes/clientes.routes"));
+app.use("/proveedores", verifyToken, require("./src/routes/proveedores.routes"));
 app.use("/ventas", verifyToken, require("./src/routes/pedidoVenta.routes"));
 app.use("/materiasPrimas", verifyToken, require("./src/routes/materiaPrima.routes"));
 app.use("/catalogoProductos", verifyToken, require("./src/routes/catalogoProductos.routes"));
 app.use("/matrizProductos", verifyToken, require("./src/routes/matrizProductos.routes"));
 app.use("/correos/", verifyToken, require("./src/routes/correos.routes"));
 app.use("/cotizacion/", verifyToken, require("./src/routes/cotizacion.routes"));
-app.use("/proveedores/", verifyToken, require("./src/routes/proveedores.routes"));
+app.use("/evaluacionProveedores/", verifyToken, require("./src/routes/evaluacionProveedores.routes"));
 app.use("/requisicion/", verifyToken, require("./src/routes/requisicion.routes"));
 app.use("/reportesCalidad/", verifyToken, require("./src/routes/reportesCalidad.routes"));
 app.use("/logs/", verifyToken, require("./src/routes/logSistema.routes"));
