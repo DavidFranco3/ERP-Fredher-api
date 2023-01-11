@@ -5,15 +5,15 @@ const MatrizProductos = new Schema({
     noInterno: { type: String },
     cliente: { type: String },
     nombreCliente: { type: String },
-    sucursal: {type: String},
+    sucursal: { type: String },
     datosMolde: {
         noMolde: { type: String },
         cavMolde: { type: String },
     },
     noParte: { type: String },
     descripcion: { type: String },
-    precioVenta: {type: String},
-    um: {type: String},
+    precioVenta: { type: String },
+    um: { type: String },
     datosPieza: {
         pesoPiezas: { type: String },
         pesoColada: { type: String },
@@ -22,23 +22,29 @@ const MatrizProductos = new Schema({
         porcentajeMolido: { type: String }
     },
     materiaPrima: {
-        idMaterial: {type: String},
-        folioMaterial: {type: String},
+        idMaterial: { type: String },
+        folioMaterial: { type: String },
         descripcion: { type: String },
-        precioMaterial: {type: String}
+        precioMaterial: { type: String }
     },
     pigmentoMasterBach: {
+        idPigmento: { type: String },
+        folioPigmento: { type: String },
         descripcion: { type: String },
+        precioPigmento: { type: String },
         aplicacionGxKG: { type: String },
         proveedor: { type: String },
-        nombreProveedor: {type: String},
+        nombreProveedor: { type: String },
     },
     tiempoCiclo: { type: String },
     noOperadores: { type: String },
     piezasxHora: { type: String },
     piezasxTurno: { type: String },
     materialEmpaque: {
+        idEmpaque: { type: String },
+        folioEmpaque: { type: String },
         descripcionBolsa: { type: String },
+        precioEmpaque: { type: String },
         noPiezasxEmpaque: { type: String }
     },
     opcionMaquinaria: { type: Array, default: [] },
