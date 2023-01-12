@@ -131,11 +131,11 @@ router.get("/obtenerDatosFolio/:folio", async (req, res) => {
 });
 
 // Para obtener una materia prima segun el folio de la materia prima
-router.get("/obtenerDatosArticulo/:folioArticulo", async (req, res) => {
-    const { folioArticulo } = req.params;
+router.get("/obtenerDatosArticulo/:idArticulo", async (req, res) => {
+    const { idArticulo } = req.params;
 
     await almacenes
-        .findOne({ folioArticulo })
+        .find({ idArticulo })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
