@@ -137,7 +137,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { folioOP, ordenProduccion, programa } = req.body;
-    await programa
+    await programaProduccion
         .updateOne({ _id: id }, { $set: { folioOP, ordenProduccion, programa } })
         .then((data) => res.status(200).json({ mensaje: "Informacion del programa de producción actualizada", datos: data }))
         .catch((error) => res.json({ message: error }));
