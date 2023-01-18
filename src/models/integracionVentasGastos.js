@@ -10,6 +10,7 @@ const integracionVentasGastos = new Schema({
     iva: {type: String},
     total: {type: String},
     sucursal: {type: String},
+    estado: {type: String},
     observaciones: {type: String},
 }, {
     timestamps: true

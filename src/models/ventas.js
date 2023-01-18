@@ -18,7 +18,7 @@ const ventas = new Schema({
     sucursal: {type: String},
     total: {type: String},
     productos: { type: Array, default: [] },
-    status: { type: String }
+    estado: { type: String }
 }, {
     timestamps: true
 });

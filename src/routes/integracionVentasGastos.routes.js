@@ -125,9 +125,9 @@ router.delete("/eliminar/:id", async (req, res) => {
 // Para actualizar el estado del pedido de venta
 router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { estado } = req.body;
     await integracionVentasGastos
-        .updateOne({ _id: id }, { $set: { status } })
+        .updateOne({ _id: id }, { $set: { estado } })
         .then((data) => res.status(200).json({ mensaje: "Estado del pedido de la integracion actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
