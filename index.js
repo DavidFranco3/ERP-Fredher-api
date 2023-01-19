@@ -132,6 +132,7 @@ app.use("/razonesSociales/", verifyToken, require("./src/routes/razonesSociales.
 app.use("/unidadesMedida/", verifyToken, require("./src/routes/unidadesMedida.routes"));
 app.use("/clasificacionMateriales/", verifyToken, require("./src/routes/clasificacionMateriales.routes"));
 app.use("/clasificacionMaquinaria/", verifyToken, require("./src/routes/clasificacionMaquinaria.routes"));
+app.use("/fichasTecnicas/", verifyToken, require("./src/routes/fichasTecnicas.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());

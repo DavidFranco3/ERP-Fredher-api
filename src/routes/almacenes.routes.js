@@ -176,9 +176,9 @@ router.get("/listarMovimientos", async (req, res) => {
             map(data, (articulo, indexPrincipal) => {
                 //console.log(data)
                 map(articulo.movimientos, (movimientos, index) => {
-                    const { fecha, articulo, sucursal, um, tipo, almacen, descripcion, cantidadExistencia } = movimientos;
+                    const { fecha, articulo, sucursal, um, tipo, almacen, descripcion, lote, cantidadExistencia } = movimientos;
                     console.log(movimientos)
-                    datosMovimientos.push({ fecha: fecha, articulo: articulo, sucursal: sucursal, um: um, tipo: tipo, almacen: almacen, descripcion: descripcion, cantidadExistencia: cantidadExistencia })
+                    datosMovimientos.push({ fecha: fecha, articulo: articulo, sucursal: sucursal, um: um, tipo: tipo, almacen: almacen, descripcion: descripcion, lote, cantidadExistencia: cantidadExistencia })
                     console.log(datosMovimientos)
                 })
             })
