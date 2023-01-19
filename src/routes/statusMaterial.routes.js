@@ -123,9 +123,9 @@ router.delete("/eliminar/:id", async (req, res) => {
 // Para actualizar el estado del status de material
 router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { estado } = req.body;
     await statusMaterial
-        .updateOne({ _id: id }, { $set: { status } })
+        .updateOne({ _id: id }, { $set: { estado } })
         .then((data) => res.status(200).json({ mensaje: "Estado del status de material actualizado" }))
         .catch((error) => res.json({ message: error }));
 });

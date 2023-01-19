@@ -85,6 +85,16 @@ router.get("/obtenerNoReporte", async (req, res) => {
     }
 });
 
+// Para actualizar el estado del pedido de venta
+router.put("/actualizarEstado/:id", async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    await reportesProduccion
+        .updateOne({ _id: id }, { $set: { estado } })
+        .then((data) => res.status(200).json({ mensaje: "Estado del reporte de produccion actualizado" }))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Borrar un reporte de producción
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;

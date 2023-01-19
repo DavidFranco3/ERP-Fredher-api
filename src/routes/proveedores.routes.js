@@ -88,7 +88,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estadoProveedor } = req.body;
     await proveedor 
         .updateOne({ _id: id }, { $set: { estadoProveedor } })
-        .then((data) => res.status(200).json({ mensaje: "Proveedor " }))
+        .then((data) => res.status(200).json({ mensaje: "Estado del proveedor actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 

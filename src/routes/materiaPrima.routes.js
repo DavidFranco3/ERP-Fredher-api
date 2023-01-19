@@ -108,6 +108,16 @@ router.get("/obtenerFolio", async (req, res) => {
     }
 });
 
+// Para actualizar el estado del pedido de venta
+router.put("/actualizarEstado/:id", async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    await materiaPrima
+        .updateOne({ _id: id }, { $set: { estado } })
+        .then((data) => res.status(200).json({ mensaje: "Estado del material actualizado" }))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Para eliminar materias primas
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;

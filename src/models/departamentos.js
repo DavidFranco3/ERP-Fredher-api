@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const departamentos = new Schema({
     nombre: { type: String },
     sucursal: {type: String},
+    estado: {type: String},
 }, {
     timestamps: true
 });

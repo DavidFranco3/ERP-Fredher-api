@@ -14,7 +14,7 @@ const requisicion = new Schema({
     tipoAplicacion: {type: String},
     sucursal: {type: String},
     productosSolicitados: { type: Array, default: [] },
-    status: { type: String }
+    estado: { type: String }
 }, {
     timestamps: true
 });

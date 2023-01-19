@@ -86,7 +86,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estadoSucursal } = req.body;
     await sucursales
         .updateOne({ _id: id }, { $set: { estadoSucursal } })
-        .then((data) => res.status(200).json({ mensaje: "Sucursal deshabilitado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado de la sucursal actualizado"}))
         .catch((error) => res.json({ message: error }));
 });
 

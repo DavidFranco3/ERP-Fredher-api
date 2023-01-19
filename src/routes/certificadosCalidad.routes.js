@@ -128,7 +128,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await certificadosCalidad
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del certificado actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Estado del certificado de calidad actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 

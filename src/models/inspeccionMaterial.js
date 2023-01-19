@@ -21,6 +21,7 @@ const InspeccionMaterial = new Schema({
     resultadoFinalInspeccion: { type: String },
     etiqueta: { type: String },
     sucursal: { type: String },
+    estado: {type: String},
     observaciones: { type: String }
 }, {
     timestamps: true

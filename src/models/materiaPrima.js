@@ -9,7 +9,8 @@ const materiaPrima = new Schema({
     um: { type: String },
     tipoMaterial: { type: String },
     sucursal: { type: String },
-    proveedor: { type: String }
+    proveedor: { type: String },
+    estado: {type: String},
 }, {
     timestamps: true
 });

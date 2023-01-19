@@ -84,7 +84,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estadoUsuario } = req.body;
     await usuarios
         .updateOne({ _id: id }, { $set: { estadoUsuario } })
-        .then((data) => res.status(200).json({ status: "Usuario deshabilitado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado del usuario actualizado"}))
         .catch((error) => res.json({ message: error }));
 });
 

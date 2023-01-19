@@ -108,10 +108,10 @@ router.delete("/eliminar/:id", async (req, res) => {
 // Para actualizar el estado del requerimiento
 router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { estado } = req.body;
     await requerimiento
-        .updateOne({ _id: id }, { $set: { status } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del requerimiento actualizado" }))
+        .updateOne({ _id: id }, { $set: { estado } })
+        .then((data) => res.status(200).json({ mensaje: "Estado de la recepcion actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -12,7 +12,8 @@ const etiquetasPrimeraPieza = new Schema({
     noCavidades: {type: String},
     turno: {type: String},
     inspector: {type: String},
-    supervisor: {type: String}
+    supervisor: {type: String},
+    estado: {type: String}
 }, {
     timestamps: true
 });

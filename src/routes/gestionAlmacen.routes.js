@@ -87,7 +87,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { status } = req.body;
     await gestionAlmacen
         .updateOne({ _id: id }, { $set: { status } })
-        .then((data) => res.status(200).json({ mensaje: "Almacen deshabilitado" }))
+        .then((data) => res.status(200).json({ mensaje: "Estado del almacen actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -88,7 +88,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estadoCliente } = req.body;
     await clientes
         .updateOne({ _id: id }, { $set: { estadoCliente } })
-        .then((data) => res.status(200).json({ mensaje: "Cliente " }))
+        .then((data) => res.status(200).json({ mensaje: "Estado del cliente actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -71,6 +71,16 @@ router.delete("/eliminar/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Para actualizar el estado del pedido de venta
+router.put("/actualizarEstado/:id", async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    await departamentos
+        .updateOne({ _id: id }, { $set: { estado } })
+        .then((data) => res.status(200).json({ mensaje: "Estado del departamento actualizado" }))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Actualizar datos del departamentos
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;

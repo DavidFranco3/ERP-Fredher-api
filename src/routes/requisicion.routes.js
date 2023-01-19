@@ -135,9 +135,9 @@ router.delete("/eliminar/:id", async (req, res) => {
 // Cambiar status de una requisicion
 router.put("/cambiarStatus/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { estado } = req.body;
     await requisicion
-        .updateOne({ _id: id }, { $set: { status } })
+        .updateOne({ _id: id }, { $set: { estado } })
         .then((data) => res.status(200).json({ mensaje: "Estado de la requisicion actualizado" }))
         .catch((error) => res.json({ message: error }));
 });

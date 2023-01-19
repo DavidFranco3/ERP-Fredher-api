@@ -56,6 +56,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todas las materias primas del almacen
+router.get("/listarGeneral", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await almacenes
+        .find({ sucursal })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el folio actual de las materis primas
 router.get("/obtenerFolio", async (req, res) => {
     const registroAlmacenMP = await almacenes.find().count();

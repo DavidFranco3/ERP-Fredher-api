@@ -41,7 +41,7 @@ const produccion = new Schema({
     resultados: { type: Array, default: [] },
     materiaPrima: { type: Array, default: [] },
     observaciones: { type: String },
-    status: { type: String },
+    estado: { type: String },
 }, {
     timestamps: true
 });

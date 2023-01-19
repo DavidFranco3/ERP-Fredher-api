@@ -86,7 +86,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estado } = req.body;
     await clasificacionMateriales
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Material deshabilitado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado del material actualizado"}))
         .catch((error) => res.json({ message: error }));
 });
 

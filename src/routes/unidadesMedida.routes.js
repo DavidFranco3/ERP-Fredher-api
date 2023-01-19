@@ -86,7 +86,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estadoUM } = req.body;
     await unidadesMedida
         .updateOne({ _id: id }, { $set: { estadoUM } })
-        .then((data) => res.status(200).json({ mensaje: "UM deshabilitado"}))
+        .then((data) => res.status(200).json({ mensaje: "Estado de la UM actualizado"}))
         .catch((error) => res.json({ message: error }));
 });
 
