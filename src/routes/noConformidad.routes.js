@@ -133,9 +133,9 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 // Actualizar datos del pedido
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { descripcionNoConformidad, correccion, analisisCausaRaiz, diagrama, accionCorrectiva, fecha, status, responsables, fechaCierre, statusFinal, evidencia } = req.body;
+    const { descripcionNoConformidad, correccion, analisisCausaRaiz, causaRaiz, diagrama, accionCorrectiva, fecha, status, responsables, fechaCierre, statusFinal, evidencia } = req.body;
     await noConformidad
-        .updateOne({ _id: id }, { $set: { descripcionNoConformidad, correccion, analisisCausaRaiz, diagrama, accionCorrectiva, fecha, status, responsables, fechaCierre, statusFinal, evidencia } })
+        .updateOne({ _id: id }, { $set: { descripcionNoConformidad, correccion, analisisCausaRaiz, causaRaiz, diagrama, accionCorrectiva, fecha, status, responsables, fechaCierre, statusFinal, evidencia } })
         .then((data) => res.status(200).json({ mensaje: "Información de la no conformidad actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
