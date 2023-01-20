@@ -133,6 +133,8 @@ app.use("/unidadesMedida/", verifyToken, require("./src/routes/unidadesMedida.ro
 app.use("/clasificacionMateriales/", verifyToken, require("./src/routes/clasificacionMateriales.routes"));
 app.use("/clasificacionMaquinaria/", verifyToken, require("./src/routes/clasificacionMaquinaria.routes"));
 app.use("/fichasTecnicas/", verifyToken, require("./src/routes/fichasTecnicas.routes"));
+app.use("/alertasCalidad/", verifyToken, require("./src/routes/alertasCalidad.routes"));
+app.use("/noConformidad/", verifyToken, require("./src/routes/noConformidad.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
