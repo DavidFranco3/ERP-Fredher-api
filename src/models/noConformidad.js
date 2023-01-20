@@ -8,6 +8,7 @@ const noConformidad = new Schema({
     correccion: { type: String },
     analisisCausaRaiz: { type: String },
     diagrama: { type: String },
+    causaRaiz: { type: String },
     accionCorrectiva: { type: String },
     fecha: { type: String },
     status: { type: String },
