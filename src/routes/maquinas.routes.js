@@ -34,6 +34,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Para obtener el listado de maquinas
+router.get("/listarActivas", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await maquina
+        .find({ sucursal, status: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Para listar paginando de las maquinas
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
@@ -75,7 +86,7 @@ router.get("/obtenerPorNumero/:numeroMaquina", async (req, res) => {
     const { numeroMaquina } = req.params;
     //console.log("buscando")
     await maquina
-        .findOne({ folio })
+        .findOne({ numeroMaquina })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });

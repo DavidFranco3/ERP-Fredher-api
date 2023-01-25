@@ -36,6 +36,16 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todos las razones sociales
+router.get("/listarActivos", async (req, res) => {
+
+    await razonesSociales
+        .find({ estadoRazonSocial: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el total de registros de la colección
 router.get("/total", async (req, res) => {
     await razonesSociales
