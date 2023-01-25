@@ -40,6 +40,17 @@ router.get("/listar", async (req, res) => {
 });
 
 // Obtener todos las compras
+router.get("/listarActivas", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await compras
+        .find({ sucursal, estado: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener todos las compras
 router.get("/listarDepto", async (req, res) => {
     const { depto } = req.query;
 

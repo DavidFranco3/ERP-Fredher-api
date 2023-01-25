@@ -37,6 +37,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todos los pedidos
+router.get("/listarActivas", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await pedidoVenta
+        .find({ sucursal, estado: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el numero de venta
 router.get("/obtenerNoVenta", async (req, res) => {
     const registroPedidosVenta = await pedidoVenta.find().count();

@@ -37,6 +37,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todos los pedidos
+router.get("/listarActivos", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await inspeccionMaterial
+        .find({ sucursal, estado: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el numero de la inspeccion de material
 router.get("/obtenerNoInspeccion", async (req, res) => {
     const RegistroInspeccion = await inspeccionMaterial.find().count();

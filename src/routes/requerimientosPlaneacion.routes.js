@@ -39,6 +39,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todos las compras
+router.get("/listarActivas", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await requerimientosPlaneacion
+        .find({ sucursal, estado: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Listar paginando los elementos de las compras
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;

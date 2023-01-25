@@ -34,6 +34,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Para obtener el listado de materias primas
+router.get("/listarActivos", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await materiaPrima
+        .find({ sucursal, estado: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el numero de folio de la compra actual
 router.get("/obtenerItem", async (req, res) => {
     const registroAsignacion = await materiaPrima.find().count();

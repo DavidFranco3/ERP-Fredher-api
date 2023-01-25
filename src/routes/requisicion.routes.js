@@ -37,6 +37,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todas las requisiciones
+router.get("/listarActivos", async (req, res) => {
+    const { sucursal } = req.query;
+
+    await requisicion
+        .find({ sucursal, estado: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Listar paginando los requisiciones
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
