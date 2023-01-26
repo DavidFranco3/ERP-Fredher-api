@@ -122,7 +122,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await pedidoVenta
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del pedido de venta actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Pedido de venta cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

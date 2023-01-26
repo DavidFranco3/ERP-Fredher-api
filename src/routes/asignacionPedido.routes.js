@@ -115,7 +115,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await asignacionPedido
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado"}))
+        .then((data) => res.status(200).json({ mensaje: "Asignacion de pedido eliminada"}))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -125,7 +125,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await asignacionPedido
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la asignacion de pedido actualizado"}))
+        .then((data) => res.status(200).json({ mensaje: "Asignación de pedido cancelada correctamente"}))
         .catch((error) => res.json({ message: error }));
 });
 

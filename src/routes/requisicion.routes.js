@@ -149,7 +149,7 @@ router.put("/cambiarStatus/:id", async (req, res) => {
     const { estado } = req.body;
     await requisicion
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la requisicion actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Requisición cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -118,7 +118,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await certificadosCalidad
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Certificado eliminado" }))
+        .then((data) => res.status(200).json({ mensaje: "Certificado de calidad eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -128,7 +128,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await certificadosCalidad
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del certificado de calidad actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Certificado de calidad cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

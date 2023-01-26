@@ -112,7 +112,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estado } = req.body;
     await evaluacionProveedor
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Se ha cambiado el status del proveedor" }))
+        .then((data) => res.status(200).json({ mensaje: "Evaluación de proveedor cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

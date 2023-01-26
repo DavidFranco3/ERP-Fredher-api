@@ -126,7 +126,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await etiquetasIdentificacionPT
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la etiqueta actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Etiqueta de identificación de PT cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -126,7 +126,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await alertasCalidad
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la alerta de calidad actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Alerta de calidad cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -101,7 +101,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await inspeccionPieza
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Inspeccion eliminada" }))
+        .then((data) => res.status(200).json({ mensaje: "Inspeccion de pieza eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -111,7 +111,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { motivoCancelacion, status } = req.body;
     await inspeccionPieza
         .updateOne({ _id: id }, { $set: { motivoCancelacion, status } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la inspeccion de pieza actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Inspeccion de pieza cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

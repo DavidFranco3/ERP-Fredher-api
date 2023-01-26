@@ -129,7 +129,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await programaProduccion
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del programa de producción actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Programa de producción cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

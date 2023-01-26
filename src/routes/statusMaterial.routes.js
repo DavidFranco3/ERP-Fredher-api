@@ -116,7 +116,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await statusMaterial
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
+        .then((data) => res.status(200).json({ mensaje: "Identificación de status de material eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -126,7 +126,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await statusMaterial
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del status de material actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Identificación de status de material cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

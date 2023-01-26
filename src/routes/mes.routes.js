@@ -101,7 +101,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await meses
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
+        .then((data) => res.status(200).json({ mensaje: "Mes eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -111,7 +111,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await meses
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del mes actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Mes cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -121,7 +121,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { mes, dias, noMaquinas } = req.body;
     await meses
         .updateOne({ _id: id }, { $set: { mes, dias, noMaquinas } })
-        .then((data) => res.status(200).json({ mensaje: "Información del pedido de venta actualizada" }))
+        .then((data) => res.status(200).json({ mensaje: "Información del mes actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -140,7 +140,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await requerimientosPlaneacion
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del requerimiento actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Planeación cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

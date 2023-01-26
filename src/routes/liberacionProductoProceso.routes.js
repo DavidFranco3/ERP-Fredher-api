@@ -115,7 +115,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await liberacionProductoProceso
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
+        .then((data) => res.status(200).json({ mensaje: "Hoja de liberación de producto y proceso eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -125,7 +125,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await liberacionProductoProceso
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la hoja de liberacion de producto y proceso actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Hoja de liberación de producto y proceso cancelada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -135,7 +135,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { cliente, descripcionPieza, noParteMolde, procesoRealizado, fechaElaboracion, fechaArranqueMolde, noMaquina, hojaLiberacion, elaboro, turno, proceso, producto, observaciones } = req.body;
     await liberacionProductoProceso
         .updateOne({ _id: id }, { $set: { cliente, descripcionPieza, noParteMolde, procesoRealizado, fechaElaboracion, fechaArranqueMolde, noMaquina, hojaLiberacion, elaboro, turno, proceso, producto, observaciones } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la liberacion actualizada" }))
+        .then((data) => res.status(200).json({ mensaje: "Información de la hoja de liberacion de producto y proceso actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

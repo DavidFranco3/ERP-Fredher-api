@@ -126,7 +126,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await noConformidad
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la no conformidad actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Control de no conformidad cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

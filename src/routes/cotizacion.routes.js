@@ -102,7 +102,7 @@ router.put("/cambiarStatus/:id", async (req, res) => {
 
     await cotizacion
         .updateOne({ _id: id }, { $set: { status } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la cotizacion actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Cotización cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

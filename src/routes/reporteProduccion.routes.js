@@ -91,7 +91,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await reportesProduccion
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del reporte de produccion actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Reporte de producción cancelado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -100,7 +100,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await reportesProduccion
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Reporte eliminado" }))
+        .then((data) => res.status(200).json({ mensaje: "Reporte de producción eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 

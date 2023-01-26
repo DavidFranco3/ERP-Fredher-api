@@ -126,7 +126,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await inspeccionMaterial
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
+        .then((data) => res.status(200).json({ mensaje: "Inspección de calidad del material eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -136,7 +136,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await inspeccionMaterial
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la inspeccion actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Inspección de calidad del material cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -146,7 +146,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } = req.body;
     await inspeccionMaterial
         .updateOne({ _id: id }, { $set: { ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la inspeccion actualizada" }))
+        .then((data) => res.status(200).json({ mensaje: "Información de la inspeccion de calidad de material actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

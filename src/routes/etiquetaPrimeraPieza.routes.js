@@ -116,7 +116,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await primeraPieza
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Primera pieza eliminada" }))
+        .then((data) => res.status(200).json({ mensaje: "Etiqueta de primera pieza eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -126,7 +126,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await primeraPieza
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la primera pieza actualizada" }))
+        .then((data) => res.status(200).json({ mensaje: "Etiqueta de primera pieza cancelada" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -136,7 +136,7 @@ router.put("/actualizar/:id", async (req, res) => {
     const { fecha, noMaquina, descripcion, cliente, peso, noCavidades, turno, inspector, supervisor } = req.body;
     await primeraPieza
         .updateOne({ _id: id }, { $set: { fecha, noMaquina, descripcion, cliente, peso, noCavidades, turno, inspector, supervisor } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la primera pieza actualizada" }))
+        .then((data) => res.status(200).json({ mensaje: "Información de la etiqueta de primera pieza actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 
