@@ -39,6 +39,18 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+
+// Obtener todos las compras
+router.get("/listarPorSemana", async (req, res) => {
+    const { sucursal, semana } = req.query;
+
+    await programaProduccion
+        .find({ sucursal, semana })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Listar paginando los elementos de las compras
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;

@@ -5,6 +5,7 @@ const programaProduccion = new Schema({
     folio: { type: String },
     folioOP: { type: String },
     sucursal: { type: String },
+    semana: { type: String },
     ordenProduccion: {
         noMaquina: { type: String },
         maquina: { type: String },
