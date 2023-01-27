@@ -37,6 +37,17 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todos los pedidos
+router.get("/listarPorSemana", async (req, res) => {
+    const { sucursal, folio } = req.query;
+
+    await semana
+        .find({ sucursal, folio })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el numero de mes
 router.get("/obtenerNoSemana", async (req, res) => {
     const registroSemana = await semana.find().count();
