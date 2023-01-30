@@ -145,6 +145,126 @@ router.put("/actualizarEstado/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Para cambiar el estado de la compra
+router.put("/actualizarEstado/:id", async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { estado } })
+        .then((data) => res.status(200).json({ mensaje: "Programa de producción cancelado correctamente" }))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoLT1/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoLT1 == "true" ? "Se habilito el primer turno del lunes" : "Se inhabilito el primer turno del lunes" }))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoLT2/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoLT2 == "true" ? "Se habilito el segundo turno del lunes" : "Se inhabilito el segundo turno del lunes"}))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoMT1/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoMT1 == "true" ? "Se habilito el primer turno del martes" : "Se inhabilito el primer turno del martes" }))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoMT2/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoMT2 == "true" ? "Se habilito el segundo turno del martes" : "Se inhabilito el segundo turno del martes"}))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoMIT1/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoMIT1 == "true" ? "Se habilito el primer turno del miercoles" : "Se inhabilito el primer turno del miercoles"}))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoMIT2/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoMIT2 == "true" ? "Se habilito el segundo turno del miercoles" : "Se inhabilito el segundo turno del miercoles"}))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoJT1/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoJT1 == "true" ? "Se habilito el primer turno del jueves" : "Se inhabilito el primer turno del jueves" }))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoJT2/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoJT2 == "true" ? "Se habilito el segundo turno del jueves" : "Se inhabilito el segundo turno del jueves"}))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoVT1/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoVT1 == "true" ? "Se habilito el primer turno del viernes" : "Se inhabilito el primer turno del viernes"}))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoVT2/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoVT2 == "true" ? "Se habilito el segundo turno del viernes" : "Se inhabilito el segundo turno del viernes"}))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Para cambiar el estado de la compra
+router.put("/actualizarEstadoST1/:id", async (req, res) => {
+    const { id } = req.params;
+    const { programa } = req.body;
+    await programaProduccion
+        .updateOne({ _id: id }, { $set: { programa } })
+        .then((data) => res.status(200).json({ mensaje: programa.estadoST1 == "true" ? "Se habilito el primer turno del sabado" : "Se inhabilito el primer turno del sabado"}))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Actualizar datos de orden de compra
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
