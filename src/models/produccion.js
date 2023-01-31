@@ -5,6 +5,7 @@ const produccion = new Schema({
     item: { type: String },
     folio: { type: String },
     sucursal: { type: String },
+    acumulado: {type: String},
     generalidades: {
         ordenVenta: { type: String },
         folioPlaneacion: {type: String},
