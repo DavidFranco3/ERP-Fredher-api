@@ -143,9 +143,9 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 // Actualizar datos del pedido
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { acumulado, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } = req.body;
+    const { acumulado, acumuladoMaterial, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } = req.body;
     await produccion
-        .updateOne({ _id: id }, { $set: { acumulado, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } })
+        .updateOne({ _id: id }, { $set: { acumulado, acumuladoMaterial, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } })
         .then((data) => res.status(200).json({ mensaje: "Información de la orden de produccion actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
