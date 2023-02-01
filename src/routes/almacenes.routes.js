@@ -61,7 +61,7 @@ router.get("/listarGeneral", async (req, res) => {
     const { sucursal } = req.query;
 
     await almacenes
-        .find({ sucursal })
+        .find({ sucursal, tipo: "Entrada" })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
