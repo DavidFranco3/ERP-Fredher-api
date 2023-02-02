@@ -84,6 +84,16 @@ router.get("/obtenerDatosCertificado/:folio", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener los datos de una compra segun el folio
+router.get("/obtenerDatosCertificadoPorOP/:noOrdenInterna", async (req, res) => {
+    const { noOrdenInterna } = req.params;
+
+    await certificadosCalidad
+        .findOne({ noOrdenInterna })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el numero de folio de la compra actual
 router.get("/obtenerNoCertificado", async (req, res) => {
     const certificado = await certificadosCalidad.find().count();
@@ -135,9 +145,9 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 // Actualizar datos de orden de compra
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { fecha, noOrdenInterna, tamañoLote, cliente, descripcion, numeroParte, especificacionInforme, revisionAtributos, resultadoDimensional, observacionesResultados, equipoMedicion, referencia, realizo, correo } = req.body;
+    const { fecha, noOrdenInterna, tamañoLote, piezasRechazadas, cliente, descripcion, numeroParte, especificacionInforme, revisionAtributos, resultadoDimensional, observacionesResultados, equipoMedicion, referencia, realizo, correo } = req.body;
     await certificadosCalidad
-        .updateOne({ _id: id }, { $set: { fecha, noOrdenInterna, tamañoLote, cliente, descripcion, numeroParte, especificacionInforme, revisionAtributos, resultadoDimensional, observacionesResultados, equipoMedicion, referencia, realizo, correo } })
+        .updateOne({ _id: id }, { $set: { fecha, noOrdenInterna, tamañoLote, piezasRechazadas, cliente, descripcion, numeroParte, especificacionInforme, revisionAtributos, resultadoDimensional, observacionesResultados, equipoMedicion, referencia, realizo, correo } })
         .then((data) => res.status(200).json({ mensaje: "Informacion del certificado actualizada", datos: data }))
         .catch((error) => res.json({ message: error }));
 });
