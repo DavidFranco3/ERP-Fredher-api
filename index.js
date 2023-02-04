@@ -137,6 +137,7 @@ app.use("/alertasCalidad/", verifyToken, require("./src/routes/alertasCalidad.ro
 app.use("/noConformidad/", verifyToken, require("./src/routes/noConformidad.routes"));
 app.use("/productosOV/", verifyToken, require("./src/routes/productosOV.routes"));
 app.use("/semana/", verifyToken, require("./src/routes/semana.routes"));
+app.use("/etiquetasMoldes/", verifyToken, require("./src/routes/etiquetasMoldes.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
