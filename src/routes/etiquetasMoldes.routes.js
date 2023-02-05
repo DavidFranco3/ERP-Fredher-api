@@ -126,7 +126,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await etiquetaMoldes
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Etiqueta de identificación de molde cancelada correctamente" }))
+        .then((data) => res.status(200).json({ mensaje: "Estado del molde actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 

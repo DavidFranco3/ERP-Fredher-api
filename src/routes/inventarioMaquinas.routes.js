@@ -1,25 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const integracionVentasGastos = require("../models/integracionVentasGastos");
+const inventarioMaquinas = require("../models/inventarioMaquinas");
 
 // Registro de pedidos
 router.post("/registro", async (req, res) => {
-    const { folio } = req.body;
+    const { item } = req.body;
     //console.log(folio)
 
     // Inicia validacion para no registrar pedidos de venta con el mismo folio
-    const busqueda = await integracionVentasGastos.findOne({ folio });
+    const busqueda = await inventarioMaquinas.findOne({ item });
 
-    if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({ mensaje: "Ya existe una integracion de ventas y gastos con este folio" });
+    if (busqueda && busqueda.item === item) {
+        return res.status(401).json({ mensaje: "Ya existe un inventario con este ITEM" });
     } else {
-        const integraciones = integracionVentasGastos(req.body);
-        await integraciones
+        const inventarios = inventarioMaquinas(req.body);
+        await inventarios
             .save()
             .then((data) =>
                 res.status(200).json(
                     {
-                        mensaje: "Se ha registrado la integracion de ventas y gastos", datos: data
+                        mensaje: "Se ha registrado el inventario de maquina", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -30,24 +30,11 @@ router.post("/registro", async (req, res) => {
 router.get("/listar", async (req, res) => {
     const { sucursal } = req.query;
 
-    await integracionVentasGastos
+    await inventarioMaquinas
         .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
-});
-
-// Obtener el numero de venta
-router.get("/obtenerFactura", async (req, res) => {
-    const registroIntegracionVentasGastos = await integracionVentasGastos.find().count();
-    if (registroIntegracionVentasGastos === 0) {
-        res.status(200).json({ factura: "FAC-1" })
-    } else {
-        const ultimaIntegracion = await integracionVentasGastos.findOne().sort({ _id: -1 });
-        const tempFolio1 = ultimaIntegracion.folio.split("-")
-        const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ factura: "FAC-" + tempFolio.toString().padStart(1, 0) })
-    }
 });
 
 // Listar los pedidos de venta registrados
@@ -57,7 +44,7 @@ router.get("/listarPaginando", async (req, res) => {
 
     const skip = (pagina - 1) * limite;
 
-    await integracionVentasGastos
+    await inventarioMaquinas
         .find()
         .sort({ _id: -1 })
         .skip(skip)
@@ -68,11 +55,11 @@ router.get("/listarPaginando", async (req, res) => {
 
 // Obtener el numero de folio de la compra actual
 router.get("/obtenerItem", async (req, res) => {
-    const registroIntegraciones = await integracionVentasGastos.find().count();
-    if (registroIntegraciones === 0) {
+    const registroInventario = await inventarioMaquinas.find().count();
+    if (registroInventario === 0) {
         res.status(200).json({ item: 1 });
     } else {
-        const [ultimoItem] = await integracionVentasGastos
+        const [ultimoItem] = await inventarioMaquinas
             .find({})
             .sort({ item: -1 })
             .limit(1);
@@ -85,7 +72,7 @@ router.get("/obtenerItem", async (req, res) => {
 router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
-    await integracionVentasGastos
+    await inventarioMaquinas
         .findById(id)
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -93,7 +80,7 @@ router.get("/obtener/:id", async (req, res) => {
 
 // Obtener el total de registros de la colección
 router.get("/total", async (req, res) => {
-    await integracionVentasGastos
+    await inventarioMaquinas
         .find()
         .count()
         .sort({ _id: -1 })
@@ -101,22 +88,12 @@ router.get("/total", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Para obtener un pedido de venta segun el folio
-router.get("/obtenerDatosPedido/:folio", async (req, res) => {
-    const { folio } = req.params;
-
-    await integracionVentasGastos
-        .findOne({ folio })
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
-});
-
 // Borrar un pedido
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
-    await integracionVentasGastos
+    await inventarioMaquinas
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "integracion eliminada" }))
+        .then((data) => res.status(200).json({ mensaje: "inventario eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -124,19 +101,19 @@ router.delete("/eliminar/:id", async (req, res) => {
 router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
-    await integracionVentasGastos
+    await inventarioMaquinas
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Integración de ventas y gastos cancelada correctamente" }))
+        .then((data) => res.status(200).json({ mensaje: "Inventario e maquina cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 
 // Actualizar datos del pedido
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { fechaFactura, cliente, importe, iva, total, observaciones } = req.body;
-    await integracionVentasGastos
-        .updateOne({ _id: id }, { $set: { fechaFactura, cliente, importe, iva, total, observaciones } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la integracion de ventas y gastos actualizada" }))
+    const { tipo, codigo, noMaquina, descripcion, capacidad, unidades, marca, modelo, noSerie, fechaAdquisicion } = req.body;
+    await inventarioMaquinas
+        .updateOne({ _id: id }, { $set: { tipo, codigo, noMaquina, descripcion, capacidad, unidades, marca, modelo, noSerie, fechaAdquisicion } })
+        .then((data) => res.status(200).json({ mensaje: "Información del inventario de maquina actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 
