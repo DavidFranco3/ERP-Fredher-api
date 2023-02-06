@@ -103,7 +103,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { estado } = req.body;
     await inventarioMaquinas
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Inventario e maquina cancelado correctamente" }))
+        .then((data) => res.status(200).json({ mensaje: "Inventario de maquina cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -1,25 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const etiquetaMoldes = require("../models/etiquetasMoldes");
+const inventarioMoldes = require("../models/inventarioMoldes");
 
 // Registro de pedidos
 router.post("/registro", async (req, res) => {
-    const { folio } = req.body;
+    const { item } = req.body;
     //console.log(folio)
 
-    // Inicia validacion para no registrar etiquetas de molde con el mismo folio
-    const busqueda = await etiquetaMoldes.findOne({ folio });
+    // Inicia validacion para no registrar pedidos de venta con el mismo folio
+    const busqueda = await inventarioMoldes.findOne({ item });
 
-    if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({ mensaje: "Ya existe una etiqueta con este folio" });
+    if (busqueda && busqueda.item === item) {
+        return res.status(401).json({ mensaje: "Ya existe un inventario con este ITEM" });
     } else {
-        const etiquetas = etiquetaMoldes(req.body);
-        await etiquetas
+        const inventarios = inventarioMoldes(req.body);
+        await inventarios
             .save()
             .then((data) =>
                 res.status(200).json(
                     {
-                        mensaje: "Se ha registrado la etiqueta", datos: data
+                        mensaje: "Se ha registrado el inventario de molde", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -30,35 +30,11 @@ router.post("/registro", async (req, res) => {
 router.get("/listar", async (req, res) => {
     const { sucursal } = req.query;
 
-    await etiquetaMoldes
+    await inventarioMoldes
         .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
-});
-
-// Obtener todos los pedidos
-router.get("/listarActivo", async (req, res) => {
-    const { sucursal } = req.query;
-
-    await etiquetaMoldes
-        .find({ sucursal, estado: "true" })
-        .sort({ _id: -1 })
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
-});
-
-// Obtener el numero de venta
-router.get("/obtenerNoEtiqueta", async (req, res) => {
-    const registroEtiqueta = await etiquetaMoldes.find().count();
-    if (registroEtiqueta === 0) {
-        res.status(200).json({ noEtiqueta: "EIMM-1" })
-    } else {
-        const ultimaEtiqueta = await etiquetaMoldes.findOne().sort({ _id: -1 });
-        const tempFolio1 = ultimaEtiqueta.folio.split("-")
-        const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noEtiqueta: "EIMM-" + tempFolio.toString().padStart(1, 0) })
-    }
 });
 
 // Listar los pedidos de venta registrados
@@ -68,7 +44,7 @@ router.get("/listarPaginando", async (req, res) => {
 
     const skip = (pagina - 1) * limite;
 
-    await etiquetaMoldes
+    await inventarioMoldes
         .find()
         .sort({ _id: -1 })
         .skip(skip)
@@ -79,11 +55,11 @@ router.get("/listarPaginando", async (req, res) => {
 
 // Obtener el numero de folio de la compra actual
 router.get("/obtenerItem", async (req, res) => {
-    const registroEtiqueta = await etiquetaMoldes.find().count();
-    if (registroEtiqueta === 0) {
+    const registroInventario = await inventarioMoldes.find().count();
+    if (registroInventario === 0) {
         res.status(200).json({ item: 1 });
     } else {
-        const [ultimoItem] = await etiquetaMoldes
+        const [ultimoItem] = await inventarioMoldes
             .find({})
             .sort({ item: -1 })
             .limit(1);
@@ -96,7 +72,7 @@ router.get("/obtenerItem", async (req, res) => {
 router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
-    await etiquetaMoldes
+    await inventarioMoldes
         .findById(id)
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -104,7 +80,7 @@ router.get("/obtener/:id", async (req, res) => {
 
 // Obtener el total de registros de la colección
 router.get("/total", async (req, res) => {
-    await etiquetaMoldes
+    await inventarioMoldes
         .find()
         .count()
         .sort({ _id: -1 })
@@ -112,22 +88,12 @@ router.get("/total", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Para obtener un pedido de venta segun el folio
-router.get("/obtenerDatosEtiqueta/:folio", async (req, res) => {
-    const { folio } = req.params;
-
-    await etiquetaMoldes
-        .findOne({ folio })
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
-});
-
 // Borrar un pedido
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
-    await etiquetaMoldes
+    await inventarioMoldes
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Etiqueta de molde eliminada" }))
+        .then((data) => res.status(200).json({ mensaje: "inventario eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -135,19 +101,19 @@ router.delete("/eliminar/:id", async (req, res) => {
 router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
-    await etiquetaMoldes
+    await inventarioMoldes
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado del molde actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Inventario de molde cancelado correctamente" }))
         .catch((error) => res.json({ message: error }));
 });
 
 // Actualizar datos del pedido
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { idInterno, noInterno, noParte, cavidad, descripcion, cliente } = req.body;
-    await etiquetaMoldes
-        .updateOne({ _id: id }, { $set: { idInterno, noInterno, noParte, cavidad, descripcion, cliente } })
-        .then((data) => res.status(200).json({ mensaje: "Información de la etiqueta de molde actualizada" }))
+    const { noInterno, cliente, noMolde, cavMolde, noParte, descripcion, statusMolde } = req.body;
+    await inventarioMoldes
+        .updateOne({ _id: id }, { $set: { noInterno, cliente, noMolde, cavMolde, noParte, descripcion, statusMolde } })
+        .then((data) => res.status(200).json({ mensaje: "Información del inventario de molde actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
 

@@ -139,6 +139,7 @@ app.use("/productosOV/", verifyToken, require("./src/routes/productosOV.routes")
 app.use("/semana/", verifyToken, require("./src/routes/semana.routes"));
 app.use("/etiquetasMoldes/", verifyToken, require("./src/routes/etiquetasMoldes.routes"));
 app.use("/inventarioMaquinas/", verifyToken, require("./src/routes/inventarioMaquinas.routes"));
+app.use("/inventarioMoldes/", verifyToken, require("./src/routes/inventarioMoldes.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());

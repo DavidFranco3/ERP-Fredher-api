@@ -5,6 +5,7 @@ const etiquetasMoldes = new Schema({
     folio: { type: String },
     idInterno: { type: String },
     noInterno: { type: String },
+    noParte: { type: String },
     sucursal: { type: String },
     cavidad: { type: String },
     descripcion: { type: String },
