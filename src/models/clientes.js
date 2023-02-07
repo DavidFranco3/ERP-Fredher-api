@@ -7,6 +7,8 @@ const clientes = new Schema({
     tipoPersona: { type: String },
     regimenFiscal: { type: String },
     sucursal: { type: String },
+    diasCredito: { type: String },
+    comprador: { type: String },
     count: { type: String },
     direccion: {
         calle: { type: String },

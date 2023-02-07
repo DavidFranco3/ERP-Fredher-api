@@ -141,6 +141,7 @@ app.use("/etiquetasMoldes/", verifyToken, require("./src/routes/etiquetasMoldes.
 app.use("/inventarioMaquinas/", verifyToken, require("./src/routes/inventarioMaquinas.routes"));
 app.use("/inventarioMoldes/", verifyToken, require("./src/routes/inventarioMoldes.routes"));
 app.use("/mantenimientoPreventivo/", verifyToken, require("./src/routes/programaMantenimientoPreventivo.routes"));
+app.use("/cuentasPorCobrar/", verifyToken, require("./src/routes/cuentasPorCobrar.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
