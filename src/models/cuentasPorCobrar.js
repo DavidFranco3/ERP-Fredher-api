@@ -14,6 +14,7 @@ const cuentasPorCobrar = new Schema({
     correo: { type: String },
     productos: { type: Array, default: [] },
     iva: { type: String },
+    ivaElegido: { type: String },
     subtotal: { type: String },
     total: { type: String },
     estado: { type: String }

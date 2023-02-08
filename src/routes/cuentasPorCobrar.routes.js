@@ -140,9 +140,9 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 // Actualizar datos del pedido
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { ordenVenta, cliente, nombreCliente, fechaEmision, fechaVencimiento, nombreContacto, telefono, correo, productos, iva, subtotal, total } = req.body;
+    const { ordenVenta, cliente, nombreCliente, fechaEmision, fechaVencimiento, nombreContacto, telefono, correo, productos, iva, ivaElegido, subtotal, total } = req.body;
     await cuentasPorCobrar
-        .updateOne({ _id: id }, { $set: { ordenVenta, cliente, nombreCliente, fechaEmision, fechaVencimiento, nombreContacto, telefono, correo, productos, iva, subtotal, total } })
+        .updateOne({ _id: id }, { $set: { ordenVenta, cliente, nombreCliente, fechaEmision, fechaVencimiento, nombreContacto, telefono, correo, productos, iva, ivaElegido, subtotal, total } })
         .then((data) => res.status(200).json({ mensaje: "Información de la cuenta por cobrar actualizada" }))
         .catch((error) => res.json({ message: error }));
 });
