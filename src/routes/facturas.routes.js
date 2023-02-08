@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const cuentasPorCobrar = require("../models/cuentasPorCobrar");
+const facturas = require("../models/facturas");
 
 // Registro de pedidos
 router.post("/registro", async (req, res) => {
@@ -8,18 +8,18 @@ router.post("/registro", async (req, res) => {
     //console.log(folio)
 
     // Inicia validacion para no registrar cuentas por cobrar con el mismo folio
-    const busqueda = await cuentasPorCobrar.findOne({ folio });
+    const busqueda = await facturas.findOne({ folio });
 
     if (busqueda && busqueda.folio === folio) {
-        return res.status(401).json({ mensaje: "Ya existe una cuenta por cobrar con este folio" });
+        return res.status(401).json({ mensaje: "Ya existe una factura con este folio" });
     } else {
-        const pedidos = cuentasPorCobrar(req.body);
+        const pedidos = facturas(req.body);
         await pedidos
             .save()
             .then((data) =>
                 res.status(200).json(
                     {
-                        mensaje: "Se ha registrado la cuenta por cobrar", datos: data
+                        mensaje: "Se ha registrado la factura", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
@@ -30,7 +30,7 @@ router.post("/registro", async (req, res) => {
 router.get("/listar", async (req, res) => {
     const { sucursal } = req.query;
 
-    await cuentasPorCobrar
+    await facturas
         .find({ sucursal })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -41,7 +41,7 @@ router.get("/listar", async (req, res) => {
 router.get("/listarPorCliente", async (req, res) => {
     const { sucursal, cliente } = req.query;
 
-    await cuentasPorCobrar
+    await facturas
         .find({ sucursal, cliente })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -52,7 +52,7 @@ router.get("/listarPorCliente", async (req, res) => {
 router.get("/listarActivas", async (req, res) => {
     const { sucursal } = req.query;
 
-    await cuentasPorCobrar
+    await facturas
         .find({ sucursal, estado: "true" })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -60,15 +60,15 @@ router.get("/listarActivas", async (req, res) => {
 });
 
 // Obtener el numero de cuenta
-router.get("/obtenerNoCuenta", async (req, res) => {
-    const registroCuentasPorCobrar = await cuentasPorCobrar.find().count();
-    if (registroCuentasPorCobrar === 0) {
-        res.status(200).json({ noCuenta: "CXC-1" })
+router.get("/obtenerNoFactura", async (req, res) => {
+    const registroFactura = await facturas.find().count();
+    if (registroFactura === 0) {
+        res.status(200).json({ noFactura: "FACT-1" })
     } else {
-        const ultimaCuenta = await cuentasPorCobrar.findOne().sort({ _id: -1 });
+        const ultimaCuenta = await facturas.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaCuenta.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noCuenta: "CXC-" + tempFolio.toString().padStart(1, 0) })
+        res.status(200).json({ noFactura: "FACT-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
@@ -79,7 +79,7 @@ router.get("/listarPaginando", async (req, res) => {
 
     const skip = (pagina - 1) * limite;
 
-    await cuentasPorCobrar
+    await facturas
         .find()
         .sort({ _id: -1 })
         .skip(skip)
@@ -92,7 +92,7 @@ router.get("/listarPaginando", async (req, res) => {
 router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
     //console.log("buscando")
-    await cuentasPorCobrar
+    await facturas
         .findById(id)
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -100,7 +100,7 @@ router.get("/obtener/:id", async (req, res) => {
 
 // Obtener el total de registros de la colección
 router.get("/total", async (req, res) => {
-    await cuentasPorCobrar
+    await facturas
         .find()
         .count()
         .sort({ _id: -1 })
@@ -109,10 +109,10 @@ router.get("/total", async (req, res) => {
 });
 
 // Para obtener una cuenta por cobrar segun el folio
-router.get("/obtenerDatosCuenta/:folio", async (req, res) => {
+router.get("/obtenerDatosFactura/:folio", async (req, res) => {
     const { folio } = req.params;
 
-    await cuentasPorCobrar
+    await facturas
         .findOne({ folio })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -121,7 +121,7 @@ router.get("/obtenerDatosCuenta/:folio", async (req, res) => {
 // Borrar un pedido
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
-    await cuentasPorCobrar
+    await facturas
         .remove({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Cuenta eliminada" }))
         .catch((error) => res.json({ message: error }));
@@ -131,7 +131,7 @@ router.delete("/eliminar/:id", async (req, res) => {
 router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
-    await cuentasPorCobrar
+    await facturas
         .updateOne({ _id: id }, { $set: { estado } })
         .then((data) => res.status(200).json({ mensaje: "Cuenta por cobrar cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
@@ -141,7 +141,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { ordenVenta, cliente, nombreCliente, fechaEmision, fechaVencimiento, nombreContacto, telefono, correo, productos, iva, ivaElegido, subtotal, total } = req.body;
-    await cuentasPorCobrar
+    await facturas
         .updateOne({ _id: id }, { $set: { ordenVenta, cliente, nombreCliente, fechaEmision, fechaVencimiento, nombreContacto, telefono, correo, productos, iva, ivaElegido, subtotal, total } })
         .then((data) => res.status(200).json({ mensaje: "Información de la cuenta por cobrar actualizada" }))
         .catch((error) => res.json({ message: error }));
