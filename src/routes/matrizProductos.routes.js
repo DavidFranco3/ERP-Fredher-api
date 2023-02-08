@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const productos = require("../models/matrizProductos");
-const { map } = require("lodash")
+const { map } = require("lodash");
 
 // Para registrar productos
 router.post("/registro", async (req, res) => {
@@ -39,7 +39,7 @@ router.get("/listar", async (req, res) => {
 // Para obtener el listado de productos activos
 router.get("/listarActivos", async (req, res) => {
     const { sucursal } = req.query;
-    
+
     await productos
         .find({ sucursal })
         .sort({ _id: -1 })
