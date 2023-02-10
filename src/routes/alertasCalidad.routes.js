@@ -46,7 +46,7 @@ router.get("/obtenerNoEtiqueta", async (req, res) => {
         const ultimaAlerta = await alertasCalidad.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaAlerta.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noFicha: "ALC-" + tempFolio.toString().padStart(1, 0) })
+        res.status(200).json({ noAlerta: "ALC-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
