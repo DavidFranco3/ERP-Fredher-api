@@ -135,7 +135,6 @@ app.use("/clasificacionMaquinaria/", verifyToken, require("./src/routes/clasific
 app.use("/fichasTecnicas/", verifyToken, require("./src/routes/fichasTecnicas.routes"));
 app.use("/alertasCalidad/", verifyToken, require("./src/routes/alertasCalidad.routes"));
 app.use("/noConformidad/", verifyToken, require("./src/routes/noConformidad.routes"));
-app.use("/productosOV/", verifyToken, require("./src/routes/productosOV.routes"));
 app.use("/semana/", verifyToken, require("./src/routes/semana.routes"));
 app.use("/etiquetasMoldes/", verifyToken, require("./src/routes/etiquetasMoldes.routes"));
 app.use("/inventarioMaquinas/", verifyToken, require("./src/routes/inventarioMaquinas.routes"));
