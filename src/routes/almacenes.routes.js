@@ -83,6 +83,7 @@ router.get("/obtenerFolio", async (req, res) => {
 // Obtener el numero de folio de la compra actual
 router.get("/obtenerItem", async (req, res) => {
     const registroAlmacenMP = await almacenes.find().count();
+    console.log(registroAlmacenMP)
     if (registroAlmacenMP === 0) {
         res.status(200).json({ item: 1 });
     } else {
@@ -90,10 +91,12 @@ router.get("/obtenerItem", async (req, res) => {
             .find({})
             .sort({ item: -1 })
             .limit(1);
+            console.log(ultimoItem.item)
         const tempItem = parseInt(ultimoItem.item) + 1;
         res.status(200).json({ item: tempItem });
     }
 });
+
 
 // Listar las materias primas registradas paginandolas
 router.get("/listarPaginando", async (req, res) => {
@@ -165,7 +168,7 @@ router.get("/listarMovimientosArticulos/:folio", async (req, res) => {
 
 router.get("/listarMovimientos", async (req, res) => {
     const { sucursal, almacen } = req.query;
-    
+
     await almacenes
         .find({ sucursal, almacen })
         .sort({ _id: -1 })

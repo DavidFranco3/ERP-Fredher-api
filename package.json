@@ -15,8 +15,8 @@
     "author": "José David Ayala Franco",
     "license": "ISC",
     "dependencies": {
-        "@sentry/node": "7.37.0",
-        "@sentry/tracing": "7.37.0",
+        "@sentry/node": "7.37.2",
+        "@sentry/tracing": "7.37.2",
         "atob": "^2.1.2",
         "base64-stream": "1.0.0",
         "cors": "2.8.5",
@@ -31,11 +31,11 @@
         "node-blob": "^0.0.2",
         "nodemailer": "6.9.1",
         "pdfkit": "0.13.0",
-        "puppeteer": "^19.6.3",
+        "puppeteer": "^19.7.0",
         "serve-favicon": "2.5.0"
     },
     "devDependencies": {
-        "eslint": "8.33.0",
+        "eslint": "8.34.0",
         "eslint-config-prettier": "8.6.0",
         "eslint-plugin-import": "^2.27.5",
         "eslint-plugin-node": "11.1.0",
