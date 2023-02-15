@@ -141,6 +141,7 @@ app.use("/inventarioMaquinas/", verifyToken, require("./src/routes/inventarioMaq
 app.use("/inventarioMoldes/", verifyToken, require("./src/routes/inventarioMoldes.routes"));
 app.use("/mantenimientoPreventivo/", verifyToken, require("./src/routes/programaMantenimientoPreventivo.routes"));
 app.use("/facturas/", verifyToken, require("./src/routes/facturas.routes"));
+app.use("/notas/", verifyToken, require("./src/routes/notas.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());

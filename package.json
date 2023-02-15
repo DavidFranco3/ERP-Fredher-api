@@ -2,6 +2,7 @@
     "name": "erp-personalizado-api",
     "version": "1.0.0",
     "description": "API del ERP Personalizado de Fredher",
+    "author": "José David Ayala Franco",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
@@ -12,7 +13,6 @@
         "lint": "eslint . --fix",
         "docker:db": "docker-compose up -d"
     },
-    "author": "José David Ayala Franco",
     "license": "ISC",
     "dependencies": {
         "@sentry/node": "7.37.2",
