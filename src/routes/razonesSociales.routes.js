@@ -82,6 +82,16 @@ router.get("/obtener/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener una razon social en especifico
+router.get("/obtenerDatos/:nombre", async (req, res) => {
+    const { nombre } = req.params;
+    console.log(nombre)
+    await razonesSociales
+        .findOne({nombre})
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Borrar una razon social
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
