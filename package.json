@@ -15,8 +15,8 @@
     },
     "license": "ISC",
     "dependencies": {
-        "@sentry/node": "7.37.2",
-        "@sentry/tracing": "7.37.2",
+        "@sentry/node": "7.38.0",
+        "@sentry/tracing": "7.38.0",
         "atob": "^2.1.2",
         "base64-stream": "1.0.0",
         "cors": "2.8.5",
@@ -25,13 +25,12 @@
         "jwt-decode": "3.1.2",
         "lodash": "4.17.21",
         "moment": "2.29.4",
-        "mongoose": "6.9.1",
+        "mongoose": "6.9.2",
         "mongoose-paginate-v2": "1.7.1",
         "morgan": "^1.10.0",
         "node-blob": "^0.0.2",
         "nodemailer": "6.9.1",
         "pdfkit": "0.13.0",
-        "puppeteer": "^19.7.1",
         "serve-favicon": "2.5.0"
     },
     "devDependencies": {
