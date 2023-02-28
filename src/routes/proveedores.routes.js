@@ -106,7 +106,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
 // Actualizar datos del proveedor
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { nombre, apellidos, razonSocial, rfc, tipoPersona, personalContacto, regimenFiscal, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, tipo, correo, telefonoCelular, telefonoFijo, foto } = req.body;
+    const { nombre, apellidos, diasCredito, razonSocial, rfc, tipoPersona, personalContacto, regimenFiscal, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, tipo, correo, telefonoCelular, telefonoFijo, foto } = req.body;
 
     const busqueda = await proveedor .findOne({ rfc });
 
@@ -114,7 +114,7 @@ router.put("/actualizar/:id", async (req, res) => {
         return res.status(401).json({ mensaje: "Ya existe un proveedor con este RFC" });
     } else {
         await proveedor 
-            .updateOne({ _id: id }, { $set: { nombre, apellidos, tipoPersona, razonSocial, rfc, personalContacto, regimenFiscal, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, tipo, correo, telefonoCelular, telefonoFijo, foto } })
+            .updateOne({ _id: id }, { $set: { nombre, apellidos, diasCredito, tipoPersona, razonSocial, rfc, personalContacto, regimenFiscal, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, tipo, correo, telefonoCelular, telefonoFijo, foto } })
             .then((data) => res.status(200).json({ mensaje: "Datos actualizados" }))
             .catch((error) => res.json({ message: error }));
     }

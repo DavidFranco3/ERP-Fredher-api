@@ -7,6 +7,7 @@ const proveedores = new Schema({
     tipoPersona: { type: String },
     regimenFiscal: { type: String },
     sucursal: { type: String },
+    diasCredito: { type: String },
     personalContacto: { type: String },
     direccion: {
         calle: { type: String },
