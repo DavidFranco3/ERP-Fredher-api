@@ -75,7 +75,7 @@ router.get("/obtener/:id", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await sucursales
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Sucursal eliminada"}))
         .catch((error) => res.json({ message: error }));
 });

@@ -125,7 +125,7 @@ router.get("/obtenerDatosProduccion/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await produccion
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Orden de producción eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
@@ -135,7 +135,7 @@ router.put("/actualizarEstado/:id", async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
     await produccion
-        .updateOne({ _id: id }, { $set: { estado} })
+        .updateOne({ _id: id }, { $set: { estado } })
         .then((data) => res.status(200).json({ mensaje: "Orden de producción cancelada correctamente" }))
         .catch((error) => res.json({ message: error }));
 });

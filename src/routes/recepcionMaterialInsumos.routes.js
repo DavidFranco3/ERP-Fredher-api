@@ -111,7 +111,7 @@ router.get("/obtenerDatosRecepcion/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await requerimiento
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Recepcion eliminada" }))
         .catch((error) => res.json({ message: error }));
 });

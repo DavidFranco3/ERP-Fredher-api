@@ -114,7 +114,7 @@ router.get("/obtenerDatosLiberacion/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await liberacionProductoProceso
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Hoja de liberación de producto y proceso eliminada" }))
         .catch((error) => res.json({ message: error }));
 });

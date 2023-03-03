@@ -76,7 +76,7 @@ router.get("/obtener/:id", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await gestionAlmacen
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Almacen eliminada" }))
         .catch((error) => res.json({ message: error }));
 });

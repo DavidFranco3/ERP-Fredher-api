@@ -115,7 +115,7 @@ router.get("/obtenerDatosPedido/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await primeraPieza
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Etiqueta de primera pieza eliminada" }))
         .catch((error) => res.json({ message: error }));
 });

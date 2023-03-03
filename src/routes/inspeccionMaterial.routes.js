@@ -125,7 +125,7 @@ router.get("/obtenerDatosInspeccion/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await inspeccionMaterial
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Inspección de calidad del material eliminado" }))
         .catch((error) => res.json({ message: error }));
 });

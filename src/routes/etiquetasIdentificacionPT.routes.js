@@ -115,7 +115,7 @@ router.get("/obtenerDatosEtiquetaPT/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await etiquetasIdentificacionPT
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
         .catch((error) => res.json({ message: error }));
 });

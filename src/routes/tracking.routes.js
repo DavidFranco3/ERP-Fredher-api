@@ -100,7 +100,7 @@ router.get("/obtenerTracking/:ordenVenta", async (req, res) => {
 router.delete("/eliminar/:ordenVenta", async (req, res) => {
     const { ordenVenta } = req.params;
     await tracking
-        .remove({ ordenVenta: ordenVenta })
+        .deleteOne({ ordenVenta: ordenVenta })
         .then((data) => res.status(200).json({ status: "Tracking eliminado" }))
         .catch((error) => res.json({ message: error }));
 });

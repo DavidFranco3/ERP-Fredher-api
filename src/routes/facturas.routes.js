@@ -122,7 +122,7 @@ router.get("/obtenerDatosFactura/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await facturas
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Cuenta por cobrar eliminada" }))
         .catch((error) => res.json({ message: error }));
 });

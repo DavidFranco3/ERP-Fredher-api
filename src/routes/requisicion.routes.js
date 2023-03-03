@@ -138,7 +138,7 @@ router.get("/obtenerItem", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await requisicion
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Requisicion eliminada" }))
         .catch((error) => res.json({ message: error }));
 });

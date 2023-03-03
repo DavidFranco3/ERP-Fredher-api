@@ -122,7 +122,7 @@ router.get("/obtenerDatosCuentaPagar/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await cuentasPorPagar
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Cuenta por pagar eliminada" }))
         .catch((error) => res.json({ message: error }));
 });

@@ -100,7 +100,7 @@ router.get("/obtenerDatos/:folio", async (req, res) => {
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     await salidaPlanta
-        .remove({ _id: id })
+        .deleteOne({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Salida de planta eliminada" }))
         .catch((error) => res.json({ message: error }));
 });
