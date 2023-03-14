@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const notas = require("../models/notas");
+const notas = require("../models/notasPagar");
 
 // Registro de pedidos
 router.post("/registro", async (req, res) => {
@@ -63,12 +63,12 @@ router.get("/listarActivas", async (req, res) => {
 router.get("/obtenerNoNotaCredito", async (req, res) => {
     const registroNotas = await notas.find().count();
     if (registroNotas === 0) {
-        res.status(200).json({ noNota: "NCREC-1" })
+        res.status(200).json({ noNota: "NCREP-1" })
     } else {
         const ultimaNota = await notas.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaNota.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noNota: "NCREC-" + tempFolio.toString().padStart(1, 0) })
+        res.status(200).json({ noNota: "NCREP-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
@@ -76,12 +76,12 @@ router.get("/obtenerNoNotaCredito", async (req, res) => {
 router.get("/obtenerNoNotaCargo", async (req, res) => {
     const registroNotas = await notas.find().count();
     if (registroNotas === 0) {
-        res.status(200).json({ noNota: "NCARC-1" })
+        res.status(200).json({ noNota: "NCARP-1" })
     } else {
         const ultimaNota = await notas.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaNota.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noNota: "NCARC-" + tempFolio.toString().padStart(1, 0) })
+        res.status(200).json({ noNota: "NCARP-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 
@@ -89,12 +89,12 @@ router.get("/obtenerNoNotaCargo", async (req, res) => {
 router.get("/obtenerNoNotaDevolucion", async (req, res) => {
     const registroNotas = await notas.find().count();
     if (registroNotas === 0) {
-        res.status(200).json({ noNota: "NDEVC-1" })
+        res.status(200).json({ noNota: "NDEVP-1" })
     } else {
         const ultimaNota = await notas.findOne().sort({ _id: -1 });
         const tempFolio1 = ultimaNota.folio.split("-")
         const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noNota: "NDEVC-" + tempFolio.toString().padStart(1, 0) })
+        res.status(200).json({ noNota: "NDEVP-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 

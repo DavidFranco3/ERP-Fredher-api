@@ -144,6 +144,7 @@ app.use("/facturas/", verifyToken, require("./src/routes/facturas.routes"));
 app.use("/notas/", verifyToken, require("./src/routes/notas.routes"));
 app.use("/cuentasClientes/", verifyToken, require("./src/routes/cuentasClientes.routes"));
 app.use("/cuentasPorPagar/", verifyToken, require("./src/routes/cuentasPorPagar.routes"));
+app.use("/notasPagar/", verifyToken, require("./src/routes/notasPagar.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
