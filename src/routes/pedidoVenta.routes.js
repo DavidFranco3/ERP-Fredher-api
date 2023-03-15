@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pedidoVenta = require("../models/ventas");
+const { map } = require("lodash");
 
 // Registro de pedidos
 router.post("/registro", async (req, res) => {
@@ -45,6 +46,30 @@ router.get("/listarActivas", async (req, res) => {
         .find({ sucursal, estado: "true" })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener todos los pedidos
+router.get("/listarProductosOVActivas", async (req, res) => {
+    const { sucursal } = req.query;
+    //console.log(sucursal)
+    await pedidoVenta
+        .find({ estado: "true", sucursal: sucursal })
+        .sort({ _id: -1 })
+        .then((data) => {
+            let dataTemp = []
+            //console.log(data)
+            map(data, (datos, indexPrincipal) => {
+
+                map(datos.productos, (producto, index) => {
+                    const { item, ID, cantidad, total } = producto;
+                    dataTemp.push({ ordenVenta: data[indexPrincipal].folio, item: item, ID: ID, cantidad: cantidad, total: total })
+                })
+
+            })
+            console.log(dataTemp)
+            res.status(200).json(dataTemp)
+        })
         .catch((error) => res.json({ message: error }));
 });
 
