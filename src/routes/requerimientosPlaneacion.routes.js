@@ -20,7 +20,7 @@ router.post("/registro", async (req, res) => {
             .then((data) =>
                 res.status(200).json(
                     {
-                        mensaje: "Registro exitoso del requerimiento", datos: data
+                        mensaje: "Registro exitoso de la planeación", datos: data
                     }
                 ))
             .catch((error) => res.json({ message: error }));
