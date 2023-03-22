@@ -143,9 +143,9 @@ router.put("/actualizarEstado/:id", async (req, res) => {
 // Actualizar datos del pedido
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } = req.body;
+    const { ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, etiqueta, rechazo, nombreExterno, turno, auditor, supervisor, descripcionDefecto, cantidadNoConforme, tipoRechazo, correccion, condicion, observaciones } = req.body;
     await inspeccionMaterial
-        .updateOne({ _id: id }, { $set: { ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } })
+        .updateOne({ _id: id }, { $set: { ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, etiqueta, rechazo, nombreExterno, turno, auditor, supervisor, descripcionDefecto, cantidadNoConforme, tipoRechazo, correccion, condicion, observaciones } })
         .then((data) => res.status(200).json({ mensaje: "Información de la inspeccion de calidad de material actualizada" }))
         .catch((error) => res.json({ message: error }));
 });

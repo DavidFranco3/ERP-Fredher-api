@@ -20,8 +20,18 @@ const InspeccionMaterial = new Schema({
     empaqueDañado: { type: String },
     resultadoFinalInspeccion: { type: String },
     etiqueta: { type: String },
+    rechazo: { type: String },
+    nombreExterno: { type: String },
+    turno: { type: String },
+    auditor: { type: String },
+    supervisor: { type: String },
+    descripcionDefecto: { type: String },
+    cantidadNoConforme: { type: String },
+    tipoRechazo: { type: String },
+    correccion: { type: String },
+    condicion: { type: String },
     sucursal: { type: String },
-    estado: {type: String},
+    estado: { type: String },
     observaciones: { type: String }
 }, {
     timestamps: true
