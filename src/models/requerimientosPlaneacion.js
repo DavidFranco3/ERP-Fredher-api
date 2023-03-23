@@ -25,7 +25,13 @@ const RequerimientosPlaneacion = new Schema({
     planeacion: {
         numeroMolde: { type: String },
         numeroCavidades: { type: String },
-        opcionesMaquinaria: { type: Array, default: [] }
+        opcionesMaquinaria: {
+            numeroMaquina: { type: String },
+            maquina: { type: String },
+            ciclo: { type: String },
+            pieza: { type: String },
+            bolsa: { type: String },
+        }
     },
     bom: {
         material: { type: String },
